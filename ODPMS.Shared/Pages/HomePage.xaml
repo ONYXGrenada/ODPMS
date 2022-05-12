@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="ODPMS.Pages.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ODPMS.Pages"
+    xmlns:models="using:ODPMS.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="TicketListViewTemplate" x:DataType="models:Ticket">
+            <TextBlock Text="{x:Bind Type}" x:Phase="1" Margin="0,5,0,5"/>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Button x:Name="ButtonNewTicket" Content="New Ticket" Style="{StaticResource AccentButtonStyle}" />
+        </Grid>
+
+        <ListView x:Name="TicketList"
+                  Grid.Row="1"
+                  ItemTemplate="{StaticResource TicketListViewTemplate}"
+                  Margin="20"
+                  HorizontalAlignment="Left"/>
+    </Grid>
+</Page>

@@ -1,0 +1,14 @@
+{
+  "solution": {
+    "path": "ODPMS.sln",
+    "projects": [
+		"ODPMS.Shared\\ODPMS.Shared.shproj",
+
+		"ODPMS.Mobile\\ODPMS.Mobile.csproj",
+
+		"ODPMS.Wasm\\ODPMS.Wasm.csproj",
+
+		"ODPMS.Skia.Gtk\\ODPMS.Skia.Gtk.csproj",
+    ]
+  }
+}

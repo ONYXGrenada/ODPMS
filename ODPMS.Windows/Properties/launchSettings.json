@@ -1,0 +1,10 @@
+{
+	"profiles": {
+		"ODPMS.Windows (Package)": {
+			"commandName": "MsixPackage"
+		},
+		"ODPMS.Windows (Unpackaged)": {
+			"commandName": "Project"
+		}
+	}
+}
