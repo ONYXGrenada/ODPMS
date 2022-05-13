@@ -11,6 +11,10 @@
   <Import Project="ODPMS.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
   <ItemGroup>
+    <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
+    <_Globbed_Compile Remove="Models\DatabaseConn.cs" />
+    <_Globbed_Compile Remove="Models\DatabaseHandler.cs" />
+    <_Globbed_Compile Remove="Models\SQLite.cs" />
     <_Globbed_Compile Remove="Models\Ticket.cs" />
     <_Globbed_Compile Remove="Pages\AppsPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\GamesPage.xaml.cs" />

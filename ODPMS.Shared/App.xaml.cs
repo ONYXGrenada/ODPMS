@@ -5,6 +5,7 @@ using Windows.ApplicationModel.Activation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using ODPMS.Helpers;
 
 namespace ODPMS
 {
@@ -25,9 +26,10 @@ namespace ODPMS
 
             this.InitializeComponent();
 
-#if HAS_UNO || NETFX_CORE
+            #if HAS_UNO || NETFX_CORE
             this.Suspending += OnSuspending;
 #endif
+            DatabaseHelper.InitializeDatabase();
         }
 
         /// <summary>
