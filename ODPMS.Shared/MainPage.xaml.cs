@@ -16,6 +16,10 @@ using Windows.UI.Core;
 using Windows.System;
 using Microsoft.UI.Xaml.Media.Animation;
 using ODPMS.Pages;
+using System.Threading.Tasks;
+using Windows.UI.ViewManagement;
+using Microsoft.UI;
+using Windows.ApplicationModel.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -27,9 +31,13 @@ namespace ODPMS
     public sealed partial class MainPage : Page
     {
         private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
+        public UIElement TitleBar { get { return AppTitleBar; } }
+
         public MainPage()
         {
             this.InitializeComponent();
+            App._window.ExtendsContentIntoTitleBar = true;
+            App._window.SetTitleBar(AppTitleBar);
         }
 
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -39,12 +47,13 @@ namespace ODPMS
 
         // List of ValueTuple holding the Navigation Tag and the relative Navigation Page
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
-{
-    ("home", typeof(HomePage)),
-    ("apps", typeof(AppsPage)),
-    ("games", typeof(GamesPage)),
-    ("music", typeof(MusicPage)),
-};
+        {
+            ("home", typeof(HomePage)),
+            ("reports", typeof(ReportsPage)),
+            //("apps", typeof(AppsPage)),
+            //("games", typeof(GamesPage)),
+            //("music", typeof(MusicPage)),
+        };
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
         {

@@ -11,13 +11,19 @@
   <Import Project="ODPMS.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
   <ItemGroup>
+    <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
+    <_Globbed_Compile Remove="Models\DatabaseConn.cs" />
+    <_Globbed_Compile Remove="Models\DatabaseHandler.cs" />
+    <_Globbed_Compile Remove="Models\SQLite.cs" />
     <_Globbed_Compile Remove="Models\Ticket.cs" />
     <_Globbed_Compile Remove="Pages\AppsPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\GamesPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\HomePage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\LoginPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\MusicPage.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\ReportsPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\SettingsPage.xaml.cs" />
+    <_Globbed_Compile Remove="TitleBarPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <_Globbed_Content Remove="Assets\Tickets.txt" />
@@ -28,6 +34,8 @@
     <_Globbled_Page Remove="Pages\HomePage.xaml" />
     <_Globbled_Page Remove="Pages\LoginPage.xaml" />
     <_Globbled_Page Remove="Pages\MusicPage.xaml" />
+    <_Globbled_Page Remove="Pages\ReportsPage.xaml" />
     <_Globbled_Page Remove="Pages\SettingsPage.xaml" />
+    <_Globbled_Page Remove="TitleBarPage.xaml" />
   </ItemGroup>
 </Project>

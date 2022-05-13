@@ -12,7 +12,9 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using ODPMS.Models;
 using ODPMS.Helpers;
+using System.Collections.ObjectModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -21,15 +23,24 @@ namespace ODPMS.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class AppsPage : Page
+    public sealed partial class ReportsPage : Page
     {
-        public AppsPage()
+        public ReportsPage()
         {
             this.InitializeComponent();
-            //DatabaseHelper databaseHelper = new DatabaseHelper();
-            //DatabaseHelper.AddData();
-            var tickets = DatabaseHelper.GetData();
-            this.mainArea_txt.Text = tickets[0];
+            TicketListView.Loaded += TicketListView_Loaded;
+        }
+
+        private void TicketListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Set focus so the first item of the listview has focus
+            // instead of some item which is not visible on page load
+            TicketListView.Focus(FocusState.Programmatic);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            TicketListView.ItemsSource = DatabaseHelper.GetTicketListViewData();
         }
     }
 }

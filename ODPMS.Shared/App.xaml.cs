@@ -5,6 +5,8 @@ using Windows.ApplicationModel.Activation;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.ApplicationModel.Core;
+using ODPMS.Helpers;
 
 namespace ODPMS
 {
@@ -13,7 +15,8 @@ namespace ODPMS
     /// </summary>
     public sealed partial class App : Application
     {
-        private Window _window;
+        //private Window _window;
+        public static Window _window { get; set; }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -24,6 +27,7 @@ namespace ODPMS
             InitializeLogging();
 
             this.InitializeComponent();
+            DatabaseHelper.InitializeDatabase();
 
 #if HAS_UNO || NETFX_CORE
             this.Suspending += OnSuspending;
@@ -82,8 +86,6 @@ namespace ODPMS
                     // parameter
                     rootFrame.Navigate(typeof(MainPage), args.Arguments);
                 }
-                // Merge contents into the Title Page
-                _window.ExtendsContentIntoTitleBar = true;
                 // Ensure the current window is active
                 _window.Activate();
             }
