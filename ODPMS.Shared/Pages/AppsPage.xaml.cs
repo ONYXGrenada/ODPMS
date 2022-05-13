@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using ODPMS.Helpers;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace ODPMS.Pages
@@ -24,6 +26,10 @@ namespace ODPMS.Pages
         public AppsPage()
         {
             this.InitializeComponent();
+            //DatabaseHelper databaseHelper = new DatabaseHelper();
+            //DatabaseHelper.AddData();
+            var tickets = DatabaseHelper.GetData();
+            this.mainArea_txt.Text = tickets[0];
         }
     }
 }
