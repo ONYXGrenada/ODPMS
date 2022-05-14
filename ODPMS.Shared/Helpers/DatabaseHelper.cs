@@ -392,5 +392,31 @@ namespace ODPMS.Helpers
             }
             //return users;
         }
+        public static ObservableCollection<UserViewModel> GetUsers()
+        {
+            ObservableCollection<UserViewModel> users = new ObservableCollection<UserViewModel>();
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                string selectCMD = "SELECT * from Users";
+                SqliteCommand selectCommand = new SqliteCommand(selectCMD, dbconn);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    users.Add(new UserViewModel(Int32.Parse(query.GetString(0)), query.GetString(1), 
+                        query.GetString(4), query.GetString(5), query.GetString(6),
+                        query.GetString(7), DateTime.Parse(query.GetString(8))));
+                }
+
+                dbconn.Close();
+            }
+
+            return users;
+        }
     }
 }

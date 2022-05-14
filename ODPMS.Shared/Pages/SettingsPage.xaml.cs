@@ -14,6 +14,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
 using ODPMS.Helpers;
+using System.Collections.ObjectModel;
+using System.Reflection;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -24,7 +26,7 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        public List<User> Users { get; set; }
+        public ObservableCollection<UserViewModel> Users { get; set; }
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -33,19 +35,37 @@ namespace ODPMS.Pages
 
         private void GetSettingsData()
         {
-            //if(App.User.Type == "Admin")
-            //{
-            //    List<User> users = DatabaseHelper.GetData;
-            //}
+            if (App.LoggedInUser.UserType == "admin")
+            {
+                Users = DatabaseHelper.GetUsers();
+            }
         }
 
         private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             var selectedTheme = ((RadioButton)sender)?.Tag?.ToString();
+            if (selectedTheme != null)
+            {
+                ((sender as RadioButton).XamlRoot.Content as Frame).RequestedTheme = GetEnum<ElementTheme>(selectedTheme);
+            }
         }
+
         private void OnThemeRadioButtonKeyDown(object sender, KeyRoutedEventArgs e)
         {
             var selectedTheme = ((RadioButton)sender)?.Tag?.ToString();
+            if (selectedTheme != null)
+            {
+                ((sender as RadioButton).XamlRoot.Content as Frame).RequestedTheme = GetEnum<ElementTheme>(selectedTheme);
+            }
+        }
+
+        private TEnum GetEnum<TEnum>(string text) where TEnum : struct
+        {
+            if (!typeof(TEnum).GetTypeInfo().IsEnum)
+            {
+                throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
+            }
+            return (TEnum)Enum.Parse(typeof(TEnum), text);
         }
 
         private void UpdateUser_Clicked(object sender, RoutedEventArgs e)
