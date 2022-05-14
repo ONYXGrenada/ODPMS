@@ -40,5 +40,16 @@ namespace ODPMS.Pages
         {
             TicketList.ItemsSource = await Ticket.GetTicketsAsync();
         }
+
+        private void NewTicket_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PayTicket_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

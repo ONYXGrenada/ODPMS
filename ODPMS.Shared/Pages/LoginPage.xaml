@@ -9,6 +9,45 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
+
+        <Grid x:Name="AppTitleBar">
+            <Image Source="Images/WindowIcon.png"
+               HorizontalAlignment="Left" 
+               Width="16" Height="16" 
+               Margin="8,0"/>
+            <TextBlock x:Name="AppTitleTextBlock" 
+                       Text="Onyx Parking Management Solution"
+                       TextWrapping="NoWrap"
+                       Style="{StaticResource CaptionTextBlockStyle}" 
+                       VerticalAlignment="Center"
+                       Margin="28,0,0,0"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Vertical" 
+                        VerticalAlignment="Center"
+                        Padding="20"
+                        Spacing="10">
+                <TextBlock Text="Username:"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" />
+                <TextBox PlaceholderText="Enter your username"/>
+                <TextBlock Text="Password:"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"/>
+                <PasswordBox PasswordChanged="Password_Changed" 
+                             PlaceholderText="Enter your password"/>
+                <Button x:Name="LoginButton" 
+                        Content="Login" 
+                        Click="Login_Clicked"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
