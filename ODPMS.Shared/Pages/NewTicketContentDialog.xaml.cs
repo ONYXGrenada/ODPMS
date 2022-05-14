@@ -12,22 +12,30 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using ODPMS.Models;
 
 namespace ODPMS.Pages
 {
 	public sealed partial class NewTicketContentDialog : ContentDialog
 	{
+		private Ticket NewTicket;
 		public NewTicketContentDialog()
 		{
 			this.InitializeComponent();
 		}
 
-		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		private void NewTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+        {
+			// Create a new ticket object and display on content dialog
+        }
+		private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
+			// Add the new ticket object to the database
 		}
 
-		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		private void CloseButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
+			// Discard the new ticket object
 		}
 	}
 }

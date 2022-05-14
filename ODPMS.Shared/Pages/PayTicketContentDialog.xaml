@@ -1,0 +1,36 @@
+﻿<ContentDialog
+    x:Class="ODPMS.Pages.PayTicketContentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ODPMS.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Pay Ticket"
+    PrimaryButtonText="Pay"
+    PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
+    CloseButtonText="Cancel"
+    PrimaryButtonClick="PrimaryButton_Clicked"
+    CloseButtonClick="CloseButton_Clicked"
+    Opened="PayTicket_Opened">
+
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <!-- Content body -->
+        <TextBlock x:Name="TicketNumberText" TextWrapping="Wrap" />
+        <TextBlock x:Name="TicketStartTimeText" TextWrapping="Wrap" />
+        <TextBlock x:Name="TicketEndTimeText" TextWrapping="Wrap" />
+        <TextBlock x:Name="TicketDurationText" TextWrapping="Wrap" />
+        <TextBlock x:Name="TicketCostText" TextWrapping="Wrap" />
+        <Grid Padding="20"
+              RowSpacing="10"
+              HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="Payment Amount:"/>
+            <TextBox Grid.Row="1"  x:Name="PaymentAmount" TextChanged="PayAmount_Changed"/>
+            <TextBlock Grid.Row="2" x:Name="ChangeReturned" />
+        </Grid>
+        
+    </StackPanel>
+</ContentDialog>

@@ -7,8 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
+    <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"-->
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>

@@ -6,8 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="New Ticket"
     PrimaryButtonText="Okay"
-    CloseButtonText="Cancel">
-    <!--PrimaryButtonClick="ContentDialog_PrimaryButtonClick">-->
+    PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
+    CloseButtonText="Cancel"
+    PrimaryButtonClick="PrimaryButton_Clicked"
+    CloseButtonClick="CloseButton_Clicked"
+    Opened="NewTicket_Opened">
 
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

@@ -43,15 +43,18 @@ namespace ODPMS.Pages
 
         private async void NewTicket_Clicked(object sender, RoutedEventArgs e)
         {
-            //DisplayTicketDialog();
+            // Display the new ticket dialog
             ContentDialog ticketDialog = new NewTicketContentDialog();
             ticketDialog.XamlRoot = this.XamlRoot;
             await ticketDialog.ShowAsync();
         }
          
-        private void PayTicket_Clicked(object sender, RoutedEventArgs e)
+        private async void PayTicket_Clicked(object sender, RoutedEventArgs e)
         {
-
+            // Display the pay ticket dialog
+            ContentDialog payDialog = new PayTicketContentDialog();
+            payDialog.XamlRoot = this.XamlRoot;
+            await payDialog.ShowAsync();
         }
 
         //private async void DisplayTicketDialog()
