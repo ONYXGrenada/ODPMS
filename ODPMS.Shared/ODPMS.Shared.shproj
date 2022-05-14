@@ -17,6 +17,7 @@
     <_Globbed_Compile Remove="Models\DatabaseHandler.cs" />
     <_Globbed_Compile Remove="Models\SQLite.cs" />
     <_Globbed_Compile Remove="Models\Ticket.cs" />
+    <_Globbed_Compile Remove="Models\User.cs" />
     <_Globbed_Compile Remove="Pages\AppsPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\BlankPage1.xaml.cs" />
     <_Globbed_Compile Remove="Pages\GamesPage.xaml.cs" />

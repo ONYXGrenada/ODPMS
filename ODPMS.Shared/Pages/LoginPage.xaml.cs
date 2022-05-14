@@ -13,6 +13,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI;
+using ODPMS.Models;
+using ODPMS.Helpers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -61,7 +63,10 @@ namespace ODPMS.Pages
 
         private bool Login(string username, string password)
         {
-            if (username == "Admin" && password == "admin")
+
+            List<User> users = DatabaseHelper.userLogin(username, password);            
+
+            if (users[0].Username == username && users[0].Password == password)
             {
                 return true;
             } else

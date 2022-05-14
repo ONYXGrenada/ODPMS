@@ -17,6 +17,7 @@ namespace ODPMS.Helpers
         public DatabaseHelper()
         {
             InitializeDatabase();
+            //C:\Users\ozimb\AppData\Local\Packages\88F4E003-88EB-4609-91FA-E1AFB2A8D4B2_0bh81f1kpqatm\LocalState
         }
 
         public async static void InitializeDatabase()
@@ -80,7 +81,7 @@ namespace ODPMS.Helpers
             var closed = DateTime.Parse("05-12-2022 18:25:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
             string status = "Closed";
             double rate = 3.50;
-            double cost = 10.50;
+            double cost = 10.00;
             double balance = 0.0;
             string user = "test";
 
@@ -93,7 +94,7 @@ namespace ODPMS.Helpers
             string lastName = "User";
             string userType = "admin";
             string userStatus = "Active";
-            //DateTime lastLogin;
+            DateTime lastLogin = DateTime.Now;
 
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -132,7 +133,7 @@ namespace ODPMS.Helpers
                 insertUserCommand.Parameters.AddWithValue("@LastName", lastName);
                 insertUserCommand.Parameters.AddWithValue("@UserType", userType);
                 insertUserCommand.Parameters.AddWithValue("@Status", userStatus);
-                insertUserCommand.Parameters.AddWithValue("@LastLogin", null);
+                insertUserCommand.Parameters.AddWithValue("@LastLogin", lastLogin);
 
                 insertUserCommand.ExecuteReader();
 
@@ -299,7 +300,7 @@ namespace ODPMS.Helpers
                 SqliteCommand selectCommand = new SqliteCommand();
                 selectCommand.Connection = dbconn;
 
-                selectCommand.CommandText = "SELECT * FROM Tickets WHERE (Username=@Username, Status=@Status);";
+                selectCommand.CommandText = "SELECT * FROM Users WHERE Username=@Username AND Status=@Status;";
                 selectCommand.Parameters.AddWithValue("@Username", username);
                 selectCommand.Parameters.AddWithValue("@Status", "Active");
 
