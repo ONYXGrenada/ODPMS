@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI;
+using BCrypt.Net;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,7 +33,9 @@ namespace ODPMS.Pages
 
         private void Login_Clicked(object sender, RoutedEventArgs e)
         {
+            // Replace the Login function with the database login.
             App.IsUserLoggedIn = Login(Username.Text, Password.Password);
+            // Check to see if the user is logged in and navigate to next page or display error message.
             if (App.IsUserLoggedIn)
             {
                 Frame rootFrame = new Frame();
@@ -59,9 +62,11 @@ namespace ODPMS.Pages
             }
         }
 
+        //Replace with database login function
         private bool Login(string username, string password)
         {
-            if (username == "Admin" && password == "admin")
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword("admin");
+            if (username == "Admin" && BCrypt.Net.BCrypt.Verify(password, passwordHash))
             {
                 return true;
             } else
