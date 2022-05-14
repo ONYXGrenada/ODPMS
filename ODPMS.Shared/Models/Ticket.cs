@@ -16,12 +16,12 @@ namespace ODPMS.Models
         public DateTime Created { get; set; }
         public DateTime Closed { get; set; }
         public string Status { get; set; }
-        public float Rate { get; set; }
-        public float Cost { get; set; }
-        public float Balance { get; set; }
+        public double Rate { get; set; }
+        public double Cost { get; set; }
+        public double Balance { get; set; }
         public string User { get; set; }
 
-        public Ticket(int id, int number, string type, string description, DateTime created, DateTime closed, string status, float rate, float cost, float balance, string user)
+        public Ticket(int id, int number, string type, string description, DateTime created, DateTime closed, string status, double rate, double cost, double balance, string user)
         {
             Id = id;
             Number = number;
@@ -48,7 +48,7 @@ namespace ODPMS.Models
                 try
                 {
                     tickets.Add(new Ticket(Int32.Parse(lines[i]), Int32.Parse(lines[i + 1]), lines[i + 2], lines[i + 3], DateTime.Parse(lines[i + 4]),
-                    DateTime.Parse(lines[i + 5]), lines[i + 6], float.Parse(lines[i + 7]), float.Parse(lines[i + 8]), float.Parse(lines[i + 9]), lines[i + 10]));
+                    DateTime.Parse(lines[i + 5]), lines[i + 6], double.Parse(lines[i + 7]), double.Parse(lines[i + 8]), double.Parse(lines[i + 9]), lines[i + 10]));
                 } 
                 catch (Exception e)
                 {

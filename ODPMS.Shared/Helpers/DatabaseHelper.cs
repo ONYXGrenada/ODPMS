@@ -77,7 +77,7 @@ namespace ODPMS.Helpers
             string type = "Hour";
             string description = "Hourly Ticket";
             var created = DateTime.Parse("05-12-2022 16:01:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
-            var closed = DateTime.Parse("05-12-2022 18:25:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
+            var closed = default(DateTime);
             string status = "Closed";
             double rate = 3.50;
             double cost = 10.00;
@@ -199,6 +199,31 @@ namespace ODPMS.Helpers
 
         }
 
+        public static Ticket CreateTicket(string user)
+        {
+            Ticket ticket;
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                selectCommand.CommandText = "SELECT Id FROM Tickets ORDER BY Id DESC LIMIT 1;";
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                query.Read();
+                int ticketNumber = Int32.Parse(query.GetString(0));
+
+                ticket = new Ticket(ticketNumber, ticketNumber, "Hour", "Hourly Ticket", DateTime.Now, default(DateTime), "Open", float.Parse("2.5"), float.Parse("0.0"), float.Parse("0.0"), user);
+
+                dbconn.Close();
+            }
+
+            return ticket;
+        }
+
         public static void PayTicket(Ticket ticket)
         {
             //var cultureInfo = new CultureInfo("en-US");
@@ -225,6 +250,48 @@ namespace ODPMS.Helpers
 
                 dbconn.Close();
             }
+        }
+
+        public static Ticket FindTicket(int number)
+        {
+            Ticket ticket;
+            int gracePeriod = 5;
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                // Use parameterized query to prevent SQL injection attacks
+                selectCommand.CommandText = "SELECT * FROM Tickets WHERE Number = @Number LIMIT 1;";
+                selectCommand.Parameters.AddWithValue("@Number", number);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                query.Read();
+                ticket = new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
+                        query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
+                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10));
+
+                ticket.Closed = DateTime.Now;
+                ticket.Status = "Paid";
+                TimeSpan ts = ticket.Closed - ticket.Created;
+
+                if (ts.TotalMinutes % 60 >= gracePeriod)
+                {
+                    ticket.Cost = ticket.Rate * Math.Ceiling(ts.TotalHours);
+                }
+                else
+                {
+                    ticket.Cost = ticket.Rate * Math.Floor(ts.TotalHours);
+                }
+
+                dbconn.Close();
+            }
+
+            return ticket;
         }
 
         public static ObservableCollection<Ticket> GetTicketListViewData()
@@ -283,7 +350,7 @@ namespace ODPMS.Helpers
             }
         }
 
-        public static void createUser()
+        public static void updateUser()
         {
 
         }
