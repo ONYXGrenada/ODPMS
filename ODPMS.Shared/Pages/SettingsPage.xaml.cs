@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using ODPMS.Models;
+using ODPMS.Helpers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,9 +24,33 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        public List<User> Users { get; set; }
         public SettingsPage()
         {
             this.InitializeComponent();
+            GetSettingsData();
+        }
+
+        private void GetSettingsData()
+        {
+            //if(App.User.Type == "Admin")
+            //{
+            //    List<User> users = DatabaseHelper.GetData;
+            //}
+        }
+
+        private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
+        {
+            var selectedTheme = ((RadioButton)sender)?.Tag?.ToString();
+        }
+        private void OnThemeRadioButtonKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            var selectedTheme = ((RadioButton)sender)?.Tag?.ToString();
+        }
+
+        private void UpdateUser_Clicked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
