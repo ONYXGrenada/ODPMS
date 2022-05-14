@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Core;
 using ODPMS.Helpers;
+using ODPMS.Pages;
 
 namespace ODPMS
 {
@@ -17,7 +18,7 @@ namespace ODPMS
     {
         //private Window _window;
         public static Window _window { get; set; }
-
+        public static bool IsUserLoggedIn { get; set; }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -84,7 +85,14 @@ namespace ODPMS
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), args.Arguments);
+                    if (!IsUserLoggedIn)
+                    {
+                        rootFrame.Navigate(typeof(LoginPage), args.Arguments);
+                    }
+                    else
+                    {
+                        rootFrame.Navigate(typeof(MainPage), args.Arguments);
+                    }
                 }
                 // Ensure the current window is active
                 _window.Activate();
