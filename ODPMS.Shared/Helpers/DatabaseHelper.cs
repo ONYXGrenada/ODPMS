@@ -48,7 +48,7 @@ namespace ODPMS.Helpers
                 //Users Table
                 tableCommand =
                     "CREATE TABLE IF NOT EXISTS " +
-                    "Users (Id INTEGER PRIMARY KEY AUTO_INCREMENT, "  +
+                    "Users (Id INTEGER PRIMARY KEY, "  +
                     "Username NVARCHAR(25) NOT NULL, " +
                     "Password NVARCHAR(255), " +
                     "Salt NVARCHAR(25), " + 
@@ -67,20 +67,32 @@ namespace ODPMS.Helpers
 
         public static void AddData()
         {
+            //This function creates initial database state (Default admin User & 1 ticket)
             var cultureInfo = new CultureInfo("en-US");
 
-            int id = 1;
-            int number = 1;
+            //Default Ticket
+            int id = 2;
+            int number = 2;
             string type = "Hour";
             string description = "Hourly Ticket";
-            var created = DateTime.Parse("05-11-2022 16:01:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
-            var closed = DateTime.Parse("05-11-2022 18:25:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
+            var created = DateTime.Parse("05-12-2022 16:01:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
+            var closed = DateTime.Parse("05-12-2022 18:25:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
             string status = "Closed";
             double rate = 3.50;
-            double cost = 10.00;
+            double cost = 10.50;
             double balance = 0.0;
             string user = "test";
-            
+
+            //Admin User
+            int userId = 1;
+            string username = "admin";
+            string password = "Password1";
+            string salt = "Random Salt";
+            string firstName = "Admin";
+            string lastName = "User";
+            string userType = "admin";
+            //DateTime lastLogin;
+
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
             {
@@ -104,6 +116,22 @@ namespace ODPMS.Helpers
                 insertCommand.Parameters.AddWithValue("@User", user);
 
                 insertCommand.ExecuteReader();
+
+                SqliteCommand insertUserCommand = new SqliteCommand();
+                insertUserCommand.Connection = dbconn;
+
+                // Use parameterized query to prevent SQL injection attacks
+                insertUserCommand.CommandText = "INSERT INTO Users VALUES (@Id, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @LastLogin);";
+                insertUserCommand.Parameters.AddWithValue("@Id", userId);
+                insertUserCommand.Parameters.AddWithValue("@Username", username);
+                insertUserCommand.Parameters.AddWithValue("@Password", password);
+                insertUserCommand.Parameters.AddWithValue("@Salt", salt);
+                insertUserCommand.Parameters.AddWithValue("@FirstName", firstName);
+                insertUserCommand.Parameters.AddWithValue("@LastName", lastName);
+                insertUserCommand.Parameters.AddWithValue("@UserType", userType);
+                insertUserCommand.Parameters.AddWithValue("@LastLogin", null);
+
+                insertUserCommand.ExecuteReader();
 
                 dbconn.Close();
             }
@@ -222,6 +250,38 @@ namespace ODPMS.Helpers
             }
 
             return tickets;
+        }
+
+        public static void addUser(int id, string username, string password, string salt, string firstName, string lastName, string userType, DateTime lastLogin)
+        {
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand insertCommand = new SqliteCommand();
+                insertCommand.Connection = dbconn;
+
+                // Use parameterized query to prevent SQL injection attacks
+                insertCommand.CommandText = "INSERT INTO Users VALUES (@Id, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @LastLogin);";
+                insertCommand.Parameters.AddWithValue("@Id", id);
+                insertCommand.Parameters.AddWithValue("@Username", username);
+                insertCommand.Parameters.AddWithValue("@Password", password);
+                insertCommand.Parameters.AddWithValue("@Salt", salt);
+                insertCommand.Parameters.AddWithValue("@FirstName", firstName);
+                insertCommand.Parameters.AddWithValue("@LastName", lastName);
+                insertCommand.Parameters.AddWithValue("@UserType", userType);
+                insertCommand.Parameters.AddWithValue("@LastLogin", lastLogin);
+
+                insertCommand.ExecuteReader();
+
+                dbconn.Close();
+            }
+        }
+
+        public static void createUser()
+        {
+
         }
     }
 }
