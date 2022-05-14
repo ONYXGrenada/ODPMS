@@ -275,7 +275,6 @@ namespace ODPMS.Helpers
                         float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10));
 
                 ticket.Closed = DateTime.Now;
-                ticket.Status = "Paid";
                 TimeSpan ts = ticket.Closed - ticket.Created;
 
                 if (ts.TotalMinutes % 60 >= gracePeriod)
@@ -289,7 +288,6 @@ namespace ODPMS.Helpers
 
                 dbconn.Close();
             }
-
             return ticket;
         }
 

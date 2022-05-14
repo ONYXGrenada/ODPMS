@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
 using ODPMS.Helpers;
+using System.Globalization;
 
 namespace ODPMS.Pages
 {
@@ -32,10 +33,11 @@ namespace ODPMS.Pages
             NewTicket = DatabaseHelper.FindTicket(this.PayTicketNumber);
 
             this.TicketNumberText.Text = "Ticket Number: " + NewTicket.Number;
+            this.TicketStatusText.Text = "Status: " + NewTicket.Status;
             this.TicketStartTimeText.Text = "Start Time: " + NewTicket.Created;
             this.TicketEndTimeText.Text = "End Time: " + NewTicket.Closed;
-            this.TicketDurationText.Text = "Duration: " + NewTicket.Cost / NewTicket.Rate;
-            this.TicketCostText.Text = "Cost: " + NewTicket.Cost;
+            this.TicketDurationText.Text = "Duration: " + NewTicket.Cost / NewTicket.Rate + " Hours";
+            this.TicketCostText.Text = "Cost: " + NewTicket.Cost.ToString("C", CultureInfo.CurrentCulture);
         }
         private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
@@ -59,8 +61,15 @@ namespace ODPMS.Pages
             {
                 payAmount = 0.0;
             }
-
-            this.ChangeReturned.Text = (NewTicket.Cost - payAmount).ToString();
+            double change = NewTicket.Cost - payAmount;
+            if (change > 0)
+            {
+                this.ChangeReturned.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
+            }
+            else
+            {
+                this.ChangeReturned.Text = string.Format("Please return {0} to the customer", (change*-1).ToString("C", CultureInfo.CurrentCulture));
+            }
         }
     }
 }

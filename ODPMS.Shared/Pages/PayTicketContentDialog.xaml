@@ -15,6 +15,7 @@
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <!-- Content body -->
         <TextBlock x:Name="TicketNumberText" TextWrapping="Wrap" />
+        <TextBlock x:Name="TicketStatusText" TextWrapping="Wrap" />
         <TextBlock x:Name="TicketStartTimeText" TextWrapping="Wrap" />
         <TextBlock x:Name="TicketEndTimeText" TextWrapping="Wrap" />
         <TextBlock x:Name="TicketDurationText" TextWrapping="Wrap" />
