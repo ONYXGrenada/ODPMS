@@ -17,7 +17,6 @@ namespace ODPMS.Helpers
         public DatabaseHelper()
         {
             InitializeDatabase();
-            //C:\Users\ozimb\AppData\Local\Packages\88F4E003-88EB-4609-91FA-E1AFB2A8D4B2_0bh81f1kpqatm\LocalState
         }
 
         public async static void InitializeDatabase()
@@ -88,8 +87,8 @@ namespace ODPMS.Helpers
             //Admin User
             int userId = 1;
             string username = "admin";
-            string password = "Password1";
-            string salt = "Random Salt";
+            string salt = BCrypt.Net.BCrypt.GenerateSalt();
+            string password = BCrypt.Net.BCrypt.HashPassword("Password1", salt);
             string firstName = "Admin";
             string lastName = "User";
             string userType = "admin";
@@ -302,6 +301,7 @@ namespace ODPMS.Helpers
 
                 selectCommand.CommandText = "SELECT * FROM Users WHERE Username=@Username AND Status=@Status;";
                 selectCommand.Parameters.AddWithValue("@Username", username);
+                //selectCommand.Parameters.AddWithValue("@Password", password);
                 selectCommand.Parameters.AddWithValue("@Status", "Active");
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
@@ -315,8 +315,16 @@ namespace ODPMS.Helpers
 
                 dbconn.Close();
             }
-
-            return users;
+            //if (users.Count > 0 && BCrypt.Net.BCrypt.Verify(BCrypt.Net.BCrypt.HashPassword(password, users[0].Salt), users[0].Password))
+            if (users.Count > 0 && BCrypt.Net.BCrypt.HashPassword(password, users[0].Salt) == users[0].Password)
+            {
+                return users;
+            }
+            else
+            {
+                return users = new List<User>();
+            }
+            //return users;
         }
     }
 }

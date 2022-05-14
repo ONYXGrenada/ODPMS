@@ -63,10 +63,9 @@ namespace ODPMS.Pages
 
         private bool Login(string username, string password)
         {
-
             List<User> users = DatabaseHelper.userLogin(username, password);            
 
-            if (users[0].Username == username && users[0].Password == password)
+            if (users.Count > 0)
             {
                 return true;
             } else
