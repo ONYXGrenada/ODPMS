@@ -26,7 +26,7 @@ namespace ODPMS.Models
             Password = password;
             Salt = salt;
             FirstName = firstName;
-            LastName = firstName;
+            LastName = lastName;
             UserType = userType;
             Status = status;
             Created = created;
