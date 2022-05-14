@@ -6,8 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    KeyDown="Key_Pressed">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
@@ -36,12 +37,17 @@
                 <TextBlock Text="Username:"
                            VerticalAlignment="Center" 
                            HorizontalAlignment="Center" />
-                <TextBox PlaceholderText="Enter your username"/>
+                <TextBox x:Name="Username" 
+                         PlaceholderText="Enter your username"/>
                 <TextBlock Text="Password:"
                            VerticalAlignment="Center" 
                            HorizontalAlignment="Center"/>
-                <PasswordBox PasswordChanged="Password_Changed" 
+                <PasswordBox x:Name="Password"
+                             PasswordChanged="Password_Changed" 
                              PlaceholderText="Enter your password"/>
+                <TextBlock x:Name="StatusMessage" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"/>
                 <Button x:Name="LoginButton" 
                         Content="Login" 
                         Click="Login_Clicked"

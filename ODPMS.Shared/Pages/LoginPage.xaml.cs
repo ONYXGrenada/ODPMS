@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -31,14 +32,30 @@ namespace ODPMS.Pages
 
         private void Login_Clicked(object sender, RoutedEventArgs e)
         {
-            Frame rootFrame = new Frame();
-            rootFrame.Navigate(typeof(MainPage));
-            App._window.Content = rootFrame;
+            if (Username.Text == "Admin" && Password.Password == "admin")
+            {
+                Frame rootFrame = new Frame();
+                rootFrame.Navigate(typeof(MainPage));
+                App._window.Content = rootFrame;
+            } else
+            {
+                StatusMessage.Foreground = new SolidColorBrush(Colors.Red);
+                StatusMessage.Text = "Invalid login information. Please try again";
+            }
         }
 
         private void Password_Changed(object sender, RoutedEventArgs e)
         {
+            StatusMessage.Foreground = new SolidColorBrush(Colors.Black);
+            StatusMessage.Text = "";
+        }
 
+        private void Key_Pressed(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Login_Clicked(sender, e);
+            }
         }
     }
 }

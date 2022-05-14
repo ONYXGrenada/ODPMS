@@ -12,6 +12,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
   <ItemGroup>
     <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\LoginHelper.cs" />
     <_Globbed_Compile Remove="Models\DatabaseConn.cs" />
     <_Globbed_Compile Remove="Models\DatabaseHandler.cs" />
     <_Globbed_Compile Remove="Models\SQLite.cs" />
