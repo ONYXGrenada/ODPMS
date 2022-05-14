@@ -55,6 +55,7 @@ namespace ODPMS.Helpers
                     "FirstName NVARCHAR(25), " +
                     "LastName NVARCHAR(25), " +
                     "UserType NVARCHAR(25), " +
+                    "Status NVARCHAR(25), " +
                     "LastLogin DATETIME);";
 
                 createTable = new SqliteCommand(tableCommand, dbconn);
@@ -91,6 +92,7 @@ namespace ODPMS.Helpers
             string firstName = "Admin";
             string lastName = "User";
             string userType = "admin";
+            string userStatus = "Active";
             //DateTime lastLogin;
 
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
@@ -121,7 +123,7 @@ namespace ODPMS.Helpers
                 insertUserCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
-                insertUserCommand.CommandText = "INSERT INTO Users VALUES (@Id, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @LastLogin);";
+                insertUserCommand.CommandText = "INSERT INTO Users VALUES (@Id, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @Status, @LastLogin);";
                 insertUserCommand.Parameters.AddWithValue("@Id", userId);
                 insertUserCommand.Parameters.AddWithValue("@Username", username);
                 insertUserCommand.Parameters.AddWithValue("@Password", password);
@@ -129,6 +131,7 @@ namespace ODPMS.Helpers
                 insertUserCommand.Parameters.AddWithValue("@FirstName", firstName);
                 insertUserCommand.Parameters.AddWithValue("@LastName", lastName);
                 insertUserCommand.Parameters.AddWithValue("@UserType", userType);
+                insertUserCommand.Parameters.AddWithValue("@Status", userStatus);
                 insertUserCommand.Parameters.AddWithValue("@LastLogin", null);
 
                 insertUserCommand.ExecuteReader();
@@ -233,7 +236,7 @@ namespace ODPMS.Helpers
             {
                 dbconn.Open();
 
-                string selectCMD = "SELECT * from Tickets";
+                string selectCMD = "SELECT * FROM Tickets";
                 SqliteCommand selectCommand = new SqliteCommand(selectCMD, dbconn);
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
@@ -252,7 +255,7 @@ namespace ODPMS.Helpers
             return tickets;
         }
 
-        public static void addUser(int id, string username, string password, string salt, string firstName, string lastName, string userType, DateTime lastLogin)
+        public static void addUser(int id, string username, string password, string salt, string firstName, string lastName, string userType, string userStatus, DateTime lastLogin)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -271,6 +274,7 @@ namespace ODPMS.Helpers
                 insertCommand.Parameters.AddWithValue("@FirstName", firstName);
                 insertCommand.Parameters.AddWithValue("@LastName", lastName);
                 insertCommand.Parameters.AddWithValue("@UserType", userType);
+                insertCommand.Parameters.AddWithValue("@Status", userStatus);
                 insertCommand.Parameters.AddWithValue("@LastLogin", lastLogin);
 
                 insertCommand.ExecuteReader();
@@ -282,6 +286,36 @@ namespace ODPMS.Helpers
         public static void createUser()
         {
 
+        }
+
+        public static List<User> userLogin(string username, string password)
+        {
+            List<User> users = new List<User>();
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                selectCommand.CommandText = "SELECT * FROM Tickets WHERE (Username=@Username, Status=@Status);";
+                selectCommand.Parameters.AddWithValue("@Username", username);
+                selectCommand.Parameters.AddWithValue("@Status", "Active");
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    users.Add(new User(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
+                        query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6),
+                        query.GetString(7), DateTime.Parse(query.GetString(8))));
+                }
+
+                dbconn.Close();
+            }
+
+            return users;
         }
     }
 }
