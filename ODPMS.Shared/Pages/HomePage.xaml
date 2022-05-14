@@ -40,12 +40,16 @@
                     Style="{StaticResource AccentButtonStyle}" 
                     Click="NewTicket_Clicked"
                     HorizontalAlignment="Center"/>
-            <Button x:Name="ButtonPayTicket"
-                    Grid.Column="1"
-                    Content="Pay A Ticket" 
-                    Style="{StaticResource AccentButtonStyle}" 
-                    Click="PayTicket_Clicked"
-                    HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="1">
+                <TextBox x:Name="TicketNumber"/>
+                <Button x:Name="ButtonPayTicket"
+                        Grid.Column="1"
+                        Content="Pay Ticket" 
+                        Style="{StaticResource AccentButtonStyle}" 
+                        Click="PayTicket_Clicked"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
         </Grid>
 
         <ListView x:Name="TicketList"

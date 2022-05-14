@@ -91,12 +91,12 @@
         <Grid.RowDefinitions>
             <!--Section 1: Theme Settings -->
             <RowDefinition Height="2*" />
-            <!--Section 2: General Settings -->
-            <RowDefinition Height="2*" />
-            <!--Section 3: Mail Server Settings -->
-            <RowDefinition Height="3*" />
-            <!--Section 4: E-Mail Settings -->
-            <RowDefinition Height="3*" />
+            <!--Section 2: User Settings -->
+            <RowDefinition Height="4*" />
+            <!--Section 3: User Administration -->
+            <RowDefinition Height="4*" />
+            <!--Section 4: Ticket Administration -->
+            <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

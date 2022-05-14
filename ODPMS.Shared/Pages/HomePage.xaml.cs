@@ -52,18 +52,10 @@ namespace ODPMS.Pages
         private async void PayTicket_Clicked(object sender, RoutedEventArgs e)
         {
             // Display the pay ticket dialog
-            ContentDialog payDialog = new PayTicketContentDialog();
+            ContentDialog payDialog = new PayTicketContentDialog(Int32.Parse(TicketNumber.Text));
             payDialog.XamlRoot = this.XamlRoot;
             await payDialog.ShowAsync();
         }
-
-        //private async void DisplayTicketDialog()
-        //{
-        //    ContentDialog ticketDialog = new ContentDialog();
-        //    ticketDialog.Content = new NewTicketContentDialog();
-
-        //    //await ticketDialog.ShowAsync();
-        //}
 
     }
 }

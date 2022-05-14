@@ -19,15 +19,17 @@ namespace ODPMS.Pages
 	{
         private Ticket NewTicket;
         double payAmount;
-        public PayTicketContentDialog()
+        private int PayTicketNumber { get; set; }
+        public PayTicketContentDialog(int PayTicketNumber)
 		{
 			this.InitializeComponent();
+            this.PayTicketNumber = PayTicketNumber;
 		}
 
         private void PayTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
         {
             // Get ticket object from database
-            NewTicket = DatabaseHelper.FindTicket(3);
+            NewTicket = DatabaseHelper.FindTicket(this.PayTicketNumber);
 
             this.TicketNumberText.Text = "Ticket Number: " + NewTicket.Number;
             this.TicketStartTimeText.Text = "Start Time: " + NewTicket.Created;
