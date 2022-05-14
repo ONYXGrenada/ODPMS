@@ -15,7 +15,22 @@
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <!-- Content body -->
-        <TextBlock Text="Ticket Number: " TextWrapping="Wrap" />
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Ticket Number: " TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketNumber_txt" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Ticket Description: " TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketDescription_txt" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Ticket Created: " TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketCreated_txt" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Ticket Rate: " TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketRate_txt" />
+        </StackPanel>
     </StackPanel>
 
 </ContentDialog>
