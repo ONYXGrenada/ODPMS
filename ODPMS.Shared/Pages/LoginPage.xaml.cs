@@ -32,7 +32,8 @@ namespace ODPMS.Pages
 
         private void Login_Clicked(object sender, RoutedEventArgs e)
         {
-            if (Username.Text == "Admin" && Password.Password == "admin")
+            App.IsUserLoggedIn = Login(Username.Text, Password.Password);
+            if (App.IsUserLoggedIn)
             {
                 Frame rootFrame = new Frame();
                 rootFrame.Navigate(typeof(MainPage));
@@ -55,6 +56,17 @@ namespace ODPMS.Pages
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 Login_Clicked(sender, e);
+            }
+        }
+
+        private bool Login(string username, string password)
+        {
+            if (username == "Admin" && password == "admin")
+            {
+                return true;
+            } else
+            {
+                return false;
             }
         }
     }
