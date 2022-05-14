@@ -41,15 +41,26 @@ namespace ODPMS.Pages
             TicketList.ItemsSource = await Ticket.GetTicketsAsync();
         }
 
-        private void NewTicket_Clicked(object sender, RoutedEventArgs e)
+        private async void NewTicket_Clicked(object sender, RoutedEventArgs e)
         {
-
+            //DisplayTicketDialog();
+            ContentDialog ticketDialog = new NewTicketContentDialog();
+            ticketDialog.XamlRoot = this.XamlRoot;
+            await ticketDialog.ShowAsync();
         }
-
+         
         private void PayTicket_Clicked(object sender, RoutedEventArgs e)
         {
 
         }
+
+        //private async void DisplayTicketDialog()
+        //{
+        //    ContentDialog ticketDialog = new ContentDialog();
+        //    ticketDialog.Content = new NewTicketContentDialog();
+
+        //    //await ticketDialog.ShowAsync();
+        //}
 
     }
 }

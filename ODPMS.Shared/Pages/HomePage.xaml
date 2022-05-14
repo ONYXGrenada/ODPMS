@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Button x:Name="ButtonNewTicket" 
                     Grid.Column="0"
                     Content="New Ticket"
