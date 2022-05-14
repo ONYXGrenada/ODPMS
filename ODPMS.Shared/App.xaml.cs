@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Core;
 using ODPMS.Helpers;
 using ODPMS.Pages;
+using ODPMS.Models;
 
 namespace ODPMS
 {
@@ -19,6 +20,7 @@ namespace ODPMS
         //private Window _window;
         public static Window _window { get; set; }
         public static bool IsUserLoggedIn { get; set; }
+        public static User LoggedInUser { get; set; }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().

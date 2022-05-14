@@ -67,6 +67,7 @@ namespace ODPMS.Pages
 
             if (users.Count > 0)
             {
+                App.LoggedInUser = users[0];
                 return true;
             } else
             {

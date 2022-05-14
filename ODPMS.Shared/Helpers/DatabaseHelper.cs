@@ -199,7 +199,7 @@ namespace ODPMS.Helpers
 
         }
 
-        public static Ticket CreateTicket(string user)
+        public static Ticket CreateTicket()
         {
             Ticket ticket;
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
@@ -216,7 +216,7 @@ namespace ODPMS.Helpers
                 query.Read();
                 int ticketNumber = Int32.Parse(query.GetString(0));
 
-                ticket = new Ticket(ticketNumber, ticketNumber, "Hour", "Hourly Ticket", DateTime.Now, default(DateTime), "Open", float.Parse("2.5"), float.Parse("0.0"), float.Parse("0.0"), user);
+                ticket = new Ticket(ticketNumber+1, ticketNumber+1, "Hour", "Hourly Ticket", DateTime.Now, default(DateTime), "Open", float.Parse("2.5"), float.Parse("0.0"), float.Parse("0.0"), App.LoggedInUser.Username);
 
                 dbconn.Close();
             }
@@ -227,6 +227,7 @@ namespace ODPMS.Helpers
         public static void PayTicket(Ticket ticket)
         {
             //var cultureInfo = new CultureInfo("en-US");
+            ticket.Status = "Paid";
 
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -237,13 +238,11 @@ namespace ODPMS.Helpers
                 updateCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
-                updateCommand.CommandText = "UPDATE Tickets SET (Closed = @Closed, Status = @Status, Cost = @Cost, Balance = @Balance, User = @User) WHERE (Number = @Number);";
+                updateCommand.CommandText = "UPDATE Tickets SET Closed = @Closed, Status = @Status, Cost = @Cost WHERE Number = @Number;";
                 //updateCommand.Parameters.AddWithValue("@Id", ticket.Id);
                 updateCommand.Parameters.AddWithValue("@Closed", ticket.Closed);
                 updateCommand.Parameters.AddWithValue("@Status", ticket.Status);
                 updateCommand.Parameters.AddWithValue("@Cost", ticket.Cost);
-                updateCommand.Parameters.AddWithValue("@Balance", ticket.Balance);
-                updateCommand.Parameters.AddWithValue("@User", ticket.User);
                 updateCommand.Parameters.AddWithValue("@Number", ticket.Number);
 
                 updateCommand.ExecuteReader();
