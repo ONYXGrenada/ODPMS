@@ -10,7 +10,8 @@
     CloseButtonText="Cancel"
     PrimaryButtonClick="PrimaryButton_Clicked"
     CloseButtonClick="CloseButton_Clicked"
-    Opened="PayTicket_Opened">
+    Opened="PayTicket_Opened"
+    CornerRadius="8">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <!-- Content body -->

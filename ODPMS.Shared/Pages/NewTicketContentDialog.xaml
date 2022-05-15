@@ -10,27 +10,154 @@
     CloseButtonText="Cancel"
     PrimaryButtonClick="PrimaryButton_Clicked"
     CloseButtonClick="CloseButton_Clicked"
-    Opened="NewTicket_Opened">
+    Opened="NewTicket_Opened"
+    CornerRadius="8">
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320"/>
+            <!--<ColumnDefinition Width="250"/>-->
+        </Grid.ColumnDefinitions>
+        <!--<StackPanel Grid.Column="0">
+            --><!-- Content body --><!--
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Ticket Number: " 
+                           TextWrapping="Wrap" />
+                <TextBlock x:Name="ticketNumber_txt" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Ticket Description: " 
+                           TextWrapping="Wrap" />
+                <TextBlock x:Name="ticketDescription_txt" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Ticket Created: " 
+                           TextWrapping="Wrap" />
+                <TextBlock x:Name="ticketCreated_txt" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Ticket Rate: " 
+                           TextWrapping="Wrap" />
+                <TextBlock x:Name="ticketRate_txt" />
+            </StackPanel>
+        </StackPanel>-->
+        <StackPanel x:Name="TicketTemplate" 
+                    Grid.Column="0"
+                    Padding="12,12"
+                    Background="White">
+            <Grid x:Name="TicketHeader">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image x:Name="CompanyLogo"
+                       Source="Images/logo-placeholder.png"
+                       HorizontalAlignment="Left" 
+                       Width="16" 
+                       Height="16" 
+                       Margin="8,0"/>
+                <TextBlock x:Name="CompanyName" 
+                           Text="Generic Company Ltd."
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+                <TextBlock x:Name="CompanyAddress" 
+                           Grid.Row="1"
+                           Text="St. George, Grenada"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+                <TextBlock x:Name="CompanyEmail" 
+                           Grid.Row="2"
+                           Text="email: info@genericcompany.com"
+                           FontSize="12"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+                <TextBlock x:Name="CompanyPhone" 
+                           Grid.Row="3"
+                           Text="Phone: 473 440-1234"
+                           FontSize="12"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+            </Grid>
+            <Grid x:Name="TicketBody">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Ticket Number:"
+                           Grid.Column="0"
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           HorizontalAlignment="Left"
+                           Margin="0,12,0,0"/>
+                <TextBlock x:Name="TicketNumber" 
+                           Grid.Column="1"
+                           TextWrapping="NoWrap"
+                           FontSize="16"
+                           HorizontalAlignment="Right"
+                           Margin="0,12,0,0"/>
+                <TextBlock Text="Ticket Date:"
+                           Grid.Column="0"
+                           Grid.Row="1"
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           HorizontalAlignment="Left"
+                           Margin="0,0,0,0"/>
+                <TextBlock x:Name="TicketDate" 
+                           Grid.Column="1"
+                           Grid.Row="1"
+                           TextWrapping="NoWrap"
+                           FontSize="16"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,0,0"/>
+                <TextBlock Text="Ticket Time:"
+                           Grid.Column="0"
+                           Grid.Row="2"
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           HorizontalAlignment="Left"
+                           Margin="0,0,0,0"/>
+                <TextBlock x:Name="TicketTime" 
+                           Grid.Column="1"
+                           Grid.Row="2"
+                           TextWrapping="NoWrap"
+                           FontSize="16"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,0,0"/>
+            </Grid>
+            <Grid x:Name="TicketFooter">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="TicketGreeting"
+                           Grid.Row="0"
+                           TextWrapping="Wrap"
+                           FontSize="12"
+                           HorizontalAlignment="Center"
+                           Margin="0,12,0,0"/>
+                <TextBlock x:Name="TicketTerms"
+                           Grid.Row="1"
+                           TextWrapping="Wrap"
+                           FontSize="12"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+            </Grid>
 
-    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <!-- Content body -->
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Ticket Number: " TextWrapping="Wrap" />
-            <TextBlock x:Name="ticketNumber_txt" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Ticket Description: " TextWrapping="Wrap" />
-            <TextBlock x:Name="ticketDescription_txt" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Ticket Created: " TextWrapping="Wrap" />
-            <TextBlock x:Name="ticketCreated_txt" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Ticket Rate: " TextWrapping="Wrap" />
-            <TextBlock x:Name="ticketRate_txt" />
-        </StackPanel>
-    </StackPanel>
 
+    </Grid>
 </ContentDialog>

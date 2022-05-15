@@ -11,6 +11,9 @@
   <Import Project="ODPMS.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
   <ItemGroup>
+    <Content Remove="Assets\logo-placeholder.webp" />
+  </ItemGroup>
+  <ItemGroup>
     <_Globbed_Compile Remove="Helpers\Common.cs" />
     <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
     <_Globbed_Compile Remove="Helpers\LoginHelper.cs" />
@@ -35,6 +38,7 @@
     <_Globbed_Compile Remove="TitleBarPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
+    <_Globbed_Content Remove="Assets\Images\logo-placeholder.png" />
     <_Globbed_Content Remove="Assets\Tickets.txt" />
   </ItemGroup>
   <ItemGroup>

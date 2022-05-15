@@ -42,6 +42,7 @@ namespace ODPMS.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             TicketList = DatabaseHelper.GetTicketListViewData();
+            WelcomeMessage.Text = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
         }
 
         private async void NewTicket_Clicked(object sender, RoutedEventArgs e)

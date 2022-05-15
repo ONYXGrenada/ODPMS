@@ -26,15 +26,22 @@ namespace ODPMS.Pages
 		}
 
 		private void NewTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
-        {
-            // Create a new ticket object and display on content dialog
-            NewTicket = DatabaseHelper.CreateTicket();
+		{
+			// Create a new ticket object and display on content dialog
+			NewTicket = DatabaseHelper.CreateTicket();
 
-			this.ticketNumber_txt.Text = NewTicket.Number.ToString();
-            this.ticketDescription_txt.Text = NewTicket.Description.ToString();
-            this.ticketCreated_txt.Text = NewTicket.Created.ToString();
-            this.ticketRate_txt.Text = NewTicket.Rate.ToString();
-        }
+			//this.ticketNumber_txt.Text = " " + NewTicket.Number.ToString();
+			//this.ticketDescription_txt.Text = " " + NewTicket.Description.ToString();
+			//this.ticketCreated_txt.Text = " " + NewTicket.Created.ToString();
+			//this.ticketRate_txt.Text = " " + NewTicket.Rate.ToString();
+
+			this.TicketNumber.Text = NewTicket.Number.ToString();
+			this.TicketDate.Text = NewTicket.Created.ToString("MM/dd/yyyy");
+			this.TicketTime.Text = NewTicket.Created.ToString("T");
+			this.TicketGreeting.Text = "Thank you for your business!";
+			this.TicketTerms.Text = String.Format("The hourly rate is {0}. Lost tickets will result in a full date charge of $18.00", NewTicket.Rate.ToString());
+		}
+
 		private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 			// Add the new ticket object to the database

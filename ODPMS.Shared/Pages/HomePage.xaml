@@ -10,25 +10,19 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <DataTemplate x:Key="TicketListViewTemplate" x:DataType="models:Ticket">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Bind Number}" x:Phase="1" Margin="0,5,0,5"/>
-                <TextBlock Grid.Column="1" Text="{x:Bind Type}" x:Phase="1" Margin="0,5,0,5"/>
-            </Grid>
-        </DataTemplate>
-    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid HorizontalAlignment="Stretch"
+        <TextBlock x:Name="WelcomeMessage"
+                   FontSize="16"
+                   HorizontalAlignment="Center"/>
+
+        <Grid Grid.Row="1"
+              HorizontalAlignment="Stretch"
               Padding="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -68,7 +62,7 @@
                   HorizontalAlignment="Left"/>-->
 
         <controls:DataGrid x:Name="TicketListDataGrid"
-                           Grid.Row="1"
+                           Grid.Row="2"
                            AutoGenerateColumns="True"
                            ItemsSource="{x:Bind TicketList}"/>
     </Grid>

@@ -92,6 +92,7 @@
 		 explicitly included in the projitem, so files can be added from vscode
 		 without manipulating the projitem file.
 	-->
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Images\logo-placeholder.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Tickets.txt" />
     <_Globbled_Page Include="$(MSBuildThisFileDirectory)**/*.xaml" Exclude="@(Page);@(ApplicationDefinition)">
       <SubType>Designer</SubType>

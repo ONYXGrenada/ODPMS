@@ -33,7 +33,8 @@
             <StackPanel Orientation="Vertical" 
                         VerticalAlignment="Center"
                         Padding="20"
-                        Spacing="10">
+                        Spacing="10"
+                        MaxWidth="320">
                 <TextBlock Text="Username:"
                            VerticalAlignment="Center" 
                            HorizontalAlignment="Center" />
