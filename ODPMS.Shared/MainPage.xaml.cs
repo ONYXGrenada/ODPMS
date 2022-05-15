@@ -31,8 +31,6 @@ namespace ODPMS
     public sealed partial class MainPage : Page
     {
         private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
-        public UIElement TitleBar { get { return AppTitleBar; } }
-
         public MainPage()
         {
             this.InitializeComponent();

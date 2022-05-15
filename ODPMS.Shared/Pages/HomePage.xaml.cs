@@ -29,15 +29,15 @@ namespace ODPMS.Pages
         public HomePage()
         {
             this.InitializeComponent();
-            TicketListDataGrid.Loaded += TicketListDataGrid_Loaded;
+            //TicketListDataGrid.Loaded += TicketListDataGrid_Loaded;
         }
 
-        private void TicketListDataGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Set focus so the first item of the listview has focus
-            // instead of some item which is not visible on page load
-            TicketListDataGrid.Focus(FocusState.Programmatic);
-        }
+        //private void TicketListDataGrid_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    // Set focus so the first item of the listview has focus
+        //    // instead of some item which is not visible on page load
+        //    TicketListDataGrid.Focus(FocusState.Programmatic);
+        //}
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -50,6 +50,8 @@ namespace ODPMS.Pages
             ContentDialog ticketDialog = new NewTicketContentDialog();
             ticketDialog.XamlRoot = this.XamlRoot;
             await ticketDialog.ShowAsync();
+            TicketList = DatabaseHelper.GetTicketListViewData();
+            TicketListDataGrid.ItemsSource = TicketList;
         }
          
         private async void PayTicket_Clicked(object sender, RoutedEventArgs e)
