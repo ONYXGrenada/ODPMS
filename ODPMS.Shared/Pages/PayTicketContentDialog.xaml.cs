@@ -19,7 +19,7 @@ namespace ODPMS.Pages
 	public sealed partial class PayTicketContentDialog : ContentDialog
 	{
         private Ticket NewTicket;
-        double payAmount;
+        private double payAmount;
         private int PayTicketNumber { get; set; }
         public PayTicketContentDialog(int PayTicketNumber)
 		{
