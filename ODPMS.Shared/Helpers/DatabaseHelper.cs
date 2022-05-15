@@ -399,7 +399,7 @@ namespace ODPMS.Helpers
             return tickets;
         }
 
-        public static void addUser(int id, string username, string password, string salt, string firstName, string lastName, string userType, string userStatus, DateTime lastLogin)
+        public static void addUser(User newUser)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -411,20 +411,68 @@ namespace ODPMS.Helpers
 
                 // Use parameterized query to prevent SQL injection attacks
                 insertCommand.CommandText = "INSERT INTO Users VALUES (@Id, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @LastLogin);";
-                insertCommand.Parameters.AddWithValue("@Id", id);
-                insertCommand.Parameters.AddWithValue("@Username", username);
-                insertCommand.Parameters.AddWithValue("@Password", password);
-                insertCommand.Parameters.AddWithValue("@Salt", salt);
-                insertCommand.Parameters.AddWithValue("@FirstName", firstName);
-                insertCommand.Parameters.AddWithValue("@LastName", lastName);
-                insertCommand.Parameters.AddWithValue("@UserType", userType);
-                insertCommand.Parameters.AddWithValue("@Status", userStatus);
-                insertCommand.Parameters.AddWithValue("@LastLogin", lastLogin);
+                insertCommand.Parameters.AddWithValue("@Id", newUser.Id);
+                insertCommand.Parameters.AddWithValue("@Username", newUser.Username);
+                insertCommand.Parameters.AddWithValue("@Password", newUser.Password);
+                insertCommand.Parameters.AddWithValue("@Salt", newUser.Salt);
+                insertCommand.Parameters.AddWithValue("@FirstName", newUser.FirstName);
+                insertCommand.Parameters.AddWithValue("@LastName", newUser.LastName);
+                insertCommand.Parameters.AddWithValue("@UserType", newUser.UserType);
+                insertCommand.Parameters.AddWithValue("@Status", newUser.Status);
+                insertCommand.Parameters.AddWithValue("@LastLogin", newUser.LastLogin);
+                
 
                 insertCommand.ExecuteReader();
 
                 dbconn.Close();
             }
+        }
+
+        public static bool CreateUser(string username, string password, string firstName, string lastName, string userType)
+        {
+            User user;
+            string salt = string.Empty;
+            string status = "Active";
+            bool functionStatus = false;
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                selectCommand.CommandText = "SELECT Id FROM Users WHERE Username = @Username;";
+                selectCommand.Parameters.AddWithValue("@Username", username);
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                query.Read();
+                
+
+                if (!query.HasRows) 
+                {
+                    selectCommand.CommandText = "SELECT Id FROM Users ORDER BY Id DESC LIMIT 1;";
+                    query = selectCommand.ExecuteReader();
+
+                    query.Read();
+                    int userId = Int32.Parse(query.GetString(0));
+
+                    user = new User(userId + 1, username, password, salt, firstName, lastName, userType, status, default(DateTime));
+                    addUser(user);
+
+                    functionStatus = true;
+                }
+
+                else
+                {
+                    functionStatus = false;
+                }                
+
+                dbconn.Close();
+            }
+
+            return functionStatus;
         }
 
         public static void updateUser(User updateUser)
