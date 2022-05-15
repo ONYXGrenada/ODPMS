@@ -270,25 +270,64 @@ namespace ODPMS.Helpers
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
                 query.Read();
-                ticket = new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
+                if (query.HasRows)
+                {
+                    ticket = new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
                         query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
                         float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10));
 
-                ticket.Closed = DateTime.Now;
-                TimeSpan ts = ticket.Closed - ticket.Created;
+                    ticket.Closed = DateTime.Now;
+                    TimeSpan ts = ticket.Closed - ticket.Created;
 
-                if (ts.TotalMinutes % 60 >= gracePeriod)
-                {
-                    ticket.Cost = ticket.Rate * Math.Ceiling(ts.TotalHours);
+                    if (ts.TotalMinutes % 60 >= gracePeriod)
+                    {
+                        ticket.Cost = ticket.Rate * Math.Ceiling(ts.TotalHours);
+                    }
+                    else
+                    {
+                        ticket.Cost = ticket.Rate * Math.Floor(ts.TotalHours);
+                    }
+                    dbconn.Close();
+                    return ticket;
                 }
                 else
                 {
-                    ticket.Cost = ticket.Rate * Math.Floor(ts.TotalHours);
+                    dbconn.Close();
+                    return null;
                 }
-
-                dbconn.Close();
             }
-            return ticket;
+            //return ticket;
+        }
+
+        public static bool CheckTicket(int number)
+        {
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                // Use parameterized query to prevent SQL injection attacks
+                selectCommand.CommandText = "SELECT * FROM Tickets WHERE Number = @Number AND Status = @Status LIMIT 1;";
+                selectCommand.Parameters.AddWithValue("@Number", number);
+                selectCommand.Parameters.AddWithValue("@Status", "Open");
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                query.Read();
+                if (query.HasRows)
+                {
+                    dbconn.Close();
+                    return true;
+                }
+                else
+                {
+                    dbconn.Close();
+                    return false;
+                }
+            }
         }
 
         public static ObservableCollection<Ticket> GetTicketListViewData()

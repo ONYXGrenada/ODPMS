@@ -13,6 +13,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
+using ODPMS.Helpers;
+using System.Collections.ObjectModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,22 +25,23 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class HomePage : Page
     {
+        public ObservableCollection<Ticket> TicketList { get; set; }
         public HomePage()
         {
             this.InitializeComponent();
-            TicketList.Loaded += TicketList_Loaded;
+            TicketListDataGrid.Loaded += TicketListDataGrid_Loaded;
         }
 
-        private void TicketList_Loaded(object sender, RoutedEventArgs e)
+        private void TicketListDataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             // Set focus so the first item of the listview has focus
             // instead of some item which is not visible on page load
-            TicketList.Focus(FocusState.Programmatic);
+            TicketListDataGrid.Focus(FocusState.Programmatic);
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            TicketList.ItemsSource = await Ticket.GetTicketsAsync();
+            TicketList = DatabaseHelper.GetTicketListViewData();
         }
 
         private async void NewTicket_Clicked(object sender, RoutedEventArgs e)
@@ -52,9 +55,26 @@ namespace ODPMS.Pages
         private async void PayTicket_Clicked(object sender, RoutedEventArgs e)
         {
             // Display the pay ticket dialog
-            ContentDialog payDialog = new PayTicketContentDialog(Int32.Parse(TicketNumber.Text));
-            payDialog.XamlRoot = this.XamlRoot;
-            await payDialog.ShowAsync();
+            ValidTicketMessage.Text = "";
+            int ticketNumber;
+            if (Int32.TryParse(this.TicketNumber.Text, out ticketNumber))
+            {
+                ticketNumber = Int32.Parse(this.TicketNumber.Text);
+                if (DatabaseHelper.CheckTicket(ticketNumber))
+                {
+                    ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
+                    payDialog.XamlRoot = this.XamlRoot;
+                    await payDialog.ShowAsync();
+                } 
+                else
+                {
+                    ValidTicketMessage.Text = string.Format("The ticket number you entered does not exist or is not open.");
+                }
+            }
+            else
+            {
+                ValidTicketMessage.Text = string.Format("That was not a valid ticket number.");
+            }
         }
 
     }

@@ -2,6 +2,7 @@
     x:Class="ODPMS.Pages.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="using:ODPMS.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -34,28 +35,41 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="ButtonNewTicket" 
-                    Grid.Column="0"
-                    Content="New Ticket"
-                    Style="{StaticResource AccentButtonStyle}" 
-                    Click="NewTicket_Clicked"
-                    HorizontalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal"
-                        Grid.Column="1">
-                <TextBox x:Name="TicketNumber"/>
-                <Button x:Name="ButtonPayTicket"
-                        Grid.Column="1"
-                        Content="Pay Ticket" 
+            <StackPanel Grid.Column="0"
+                        Spacing="10">
+                <Button x:Name="ButtonNewTicket" 
+                        Content="New Ticket"
                         Style="{StaticResource AccentButtonStyle}" 
-                        Click="PayTicket_Clicked"
+                        Click="NewTicket_Clicked"
                         HorizontalAlignment="Center"/>
+                <TextBlock x:Name="NewTicketMessage"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Spacing="10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="TicketNumber"/>
+                    <Button x:Name="ButtonPayTicket"
+                            Grid.Column="1"
+                            Content="Pay Ticket" 
+                            Style="{StaticResource AccentButtonStyle}" 
+                            Click="PayTicket_Clicked"
+                            HorizontalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock x:Name="ValidTicketMessage"
+                           TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>
 
-        <ListView x:Name="TicketList"
+        <!--<ListView x:Name="TicketList"
                   Grid.Row="1"
                   ItemTemplate="{StaticResource TicketListViewTemplate}"
                   Margin="0"
-                  HorizontalAlignment="Left"/>
+                  HorizontalAlignment="Left"/>-->
+
+        <controls:DataGrid x:Name="TicketListDataGrid"
+                           Grid.Row="1"
+                           AutoGenerateColumns="True"
+                           ItemsSource="{x:Bind TicketList}"/>
     </Grid>
 </Page>
