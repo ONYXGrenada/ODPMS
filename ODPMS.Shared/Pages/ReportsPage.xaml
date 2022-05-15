@@ -9,145 +9,49 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!--<Page.Resources>
-        <DataTemplate x:Key="TicketListViewTemplate" x:DataType="models:Ticket">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{x:Bind Number}" x:Phase="1" Margin="0,5,0,5"/>
-                <TextBlock Grid.Column="1" Text="{x:Bind Type}" x:Phase="1" Margin="0,5,0,5"/>
-            </Grid>
-        </DataTemplate>
-    </Page.Resources>-->
-
     <Grid>
-        <ListView x:Name="TicketListView"
-                  Margin="0"
-                  HorizontalAlignment="Left">
-            <ListView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Column="0" MinWidth="120" MaxWidth="320" Text="Ticket #" Margin="0,5,0,5"/>
-                        <TextBlock Grid.Column="1" MinWidth="120" MaxWidth="320" Text="Type" Margin="0,5,0,5"/>
-                        <TextBlock Grid.Column="2" MinWidth="120" MaxWidth="320" Text="Status" Margin="0,5,0,5"/>
-                        <TextBlock Grid.Column="3" MinWidth="120" MaxWidth="320" Text="Cost" Margin="0,5,0,5"/>
-                    </Grid>
-                </DataTemplate>
-            </ListView.HeaderTemplate>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1"
+              HorizontalAlignment="Stretch"
+              Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" MinWidth="120" MaxWidth="320" Text="{Binding Number}" Margin="0,5,0,5"/>
-                        <TextBlock Grid.Column="1" MinWidth="120" MaxWidth="320" Text="{Binding Type}" Margin="0,5,0,5"/>
-                        <TextBlock Grid.Column="2" MinWidth="120" MaxWidth="320" Text="{Binding Status}" Margin="0,5,0,5"/>
-                        <TextBlock Grid.Column="3" MinWidth="120" MaxWidth="320" Text="{Binding Cost}" Margin="0,5,0,5"/>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <StackPanel Grid.Column="0"
+                        Spacing="10" >
+                <DatePicker x:Name="fromDate_pkr" Header="From Date: " />
+                <TimePicker x:Name="fromTime_pkr" Header="Time: " />
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1"
+                        Spacing="10">
+                <DatePicker x:Name="toDate_pkr" Header="To Date: " />
+                <TimePicker x:Name="toTime_pkr" Header="Time: " />
+            </StackPanel>
 
+            <StackPanel Grid.Column="2" >
+                <ComboBox x:Name="status_cbox" Header="Status">
+                    <ComboBoxItem Content = "Item #1"/>
+                    <ComboBoxItem Content = "Item #2"/>
+                    <ComboBoxItem Content = "Item #3"/>
+                </ComboBox>
+                <Button Content="Submit" Click="ReportSubmit_Clicked" />
+            </StackPanel>
+        </Grid>
+        <TextBlock x:Name="text_text" />
 
+        <controls:DataGrid x:Name="TicketListDataGrid"
+                           Grid.Row="2"
+                           AutoGenerateColumns="True"
+                           ItemsSource="{x:Bind TicketList}"/>
     </Grid>
-    <!--<Grid>
-        <Grid.Resources>
-            <converters:StringFormatConverter x:Key="StringFormatConverter"/>
-            <DataTemplate x:Key="RowDetailsTemplate">
-                <StackPanel>
-                    <TextBlock Margin="20" Text="Here are the details for the selected mountain:" />
-                    <Grid Margin="20,10" Padding="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Coordinates: " FontWeight="SemiBold" FontSize="13" />
-                        <TextBlock Grid.Row="1" Text="Prominence (m): " FontWeight="SemiBold" FontSize="13" />
-                        <TextBlock Grid.Row="2" Text="First Ascent (year): " FontWeight="SemiBold" FontSize="13" />
-                        <TextBlock Grid.Row="3" Text="No. of ascents: " FontWeight="SemiBold" FontSize="13" />
-                        <TextBlock Grid.Column="1" FontSize="13" Text="{Binding Coordinates}" HorizontalAlignment="Right" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="13" Text="{Binding Prominence}" HorizontalAlignment="Right" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" FontSize="13" Text="{Binding First_ascent}" HorizontalAlignment="Right" />
-                        <TextBlock Grid.Row="3" Grid.Column="1" FontSize="13" Text="{Binding Ascents}" HorizontalAlignment="Right" />
-                    </Grid>
-                </StackPanel>
-            </DataTemplate>
-        </Grid.Resources>
-        <controls:DataGrid x:Name="TicketDataGrid"
-                           Margins="12"
-                           VerticalAlignment="Stretch"
-                           HorizontalAlignment="Stretch"
-                           HorizontalScrollBarVisibility="Visible"
-                           VerticalScrollBarVisibility="Visible"
-                           AlternatingRowBackground="Transparent"
-                           AlternatingRowForeground="Gray"
-                           AreRowDetailsFrozen="False"
-                           AreRowGroupHeadersFrozen="True"
-                           AutoGenerateColumns="False"
-                           CanUserSortColumns="False"
-                           CanUserReorderColumns="True"
-                           CanUserResizeColumns="True"
-                           ColumnHeaderHeight="32"
-                           MaxColumnWidth="400"
-                           FrozenColumnCount="0"
-                           GridLinesVisibility="None"
-                           HeadersVisibility="Column"
-                           IsReadOnly="False"
-                           RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
-                           RowDetailsVisibilityMode="Collapsed"
-                           SelectionMode="Extended"
-                           RowGroupHeaderPropertyNameAlternative="Range">      
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Ticket Number" Binding="{Binding TicketNumber}" Tag="Number" />
-                <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" Tag="Type" />
-                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" Tag="Status" />
-                <controls:DataGridTemplateColumn Header="Opened" Binding="{Binding Created}" Tag="Created" />
-                <controls:DataGridTemplateColumn Header="Closed" Binding="{Binding Closed}" Tag="Closed" />
-                <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}" Tag="Cost" />
-                <controls:DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Created, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:MM/dd/yyy}'}" VerticalAlignment="Center" Margin="8,0,0,0"/>
-                    </DataTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Closed, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:MM/dd/yyy}'}" VerticalAlignment="Center" Margin="8,0,0,0"/>
-                    </DataTemplate>
-                </controls:DataGridTemplateColumn.CellTemplate>
-                <controls:DataGridTemplateColumn.CellEditingTemplate>
-                    <DataTemplate>
-                        <CalendarDatePicker Margin="3,4,3,3" Date="{Binding Created, Mode=TwoWay}"/>
-                    </DataTemplate>
-                    <DataTemplate>
-                        <CalendarDatePicker Margin="3,4,3,3" Date="{Binding Closed, Mode=TwoWay}"/>
-                    </DataTemplate>
-                </controls:DataGridTemplateColumn.CellEditingTemplate>
-                </controls:DataGridTemplateColumn>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
-    </Grid>-->
+
 </Page>

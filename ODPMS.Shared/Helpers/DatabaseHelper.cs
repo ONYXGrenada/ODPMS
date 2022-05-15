@@ -77,17 +77,22 @@ namespace ODPMS.Helpers
 
                 dbconn.Close();
             }
-            //AddData();
+            
+            AddData();
         }
 
         public static void AddData()
         {
+            //Add data only if admin user does not exist
+            if (FindUser(1) != null)
+                return;            
+
             //This function creates initial database state (Default admin User & 1 ticket)
             var cultureInfo = new CultureInfo("en-US");
 
             //Default Ticket
-            int id = 2;
-            int number = 2;
+            int id = 1;
+            int number = 1;
             string type = "Hour";
             string description = "Hourly Ticket";
             var created = DateTime.Parse("05-12-2022 16:01:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
@@ -163,7 +168,7 @@ namespace ODPMS.Helpers
 
                 //Ticket Type
                 SqliteCommand insertTTypeCommand = new SqliteCommand();
-                insertUserCommand.Connection = dbconn;
+                insertTTypeCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
                 insertTTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @UnitCost, @Status, @Username, @ActivityDate);";
@@ -399,6 +404,39 @@ namespace ODPMS.Helpers
             return tickets;
         }
 
+        public static ObservableCollection<Ticket> GetTicketListRange(DateTime fromDate, DateTime toDate, string status)
+        {
+            ObservableCollection<Ticket> tickets = new ObservableCollection<Ticket>();
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                selectCommand.CommandText = "SELECT * FROM Tickets WHERE Created >= @CreatedFrom AND Created <= @CreatedTo AND Status = @Status;";
+                selectCommand.Parameters.AddWithValue("@CreatedFrom", fromDate);
+                selectCommand.Parameters.AddWithValue("@CreatedTo", toDate);
+                selectCommand.Parameters.AddWithValue("@Status", status);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    tickets.Add(new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
+                        query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
+                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                    //tickets.Add(new Ticket(query.GetString(0)));
+                }
+
+                dbconn.Close();
+            }
+
+            return tickets;
+        }
+
         public static void addUser(User newUser)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
@@ -505,7 +543,7 @@ namespace ODPMS.Helpers
 
         public static User FindUser(int id)
         {
-            User user;
+            User user = null;
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
             {
@@ -521,10 +559,12 @@ namespace ODPMS.Helpers
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
-                query.Read();                
-                user = new User(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
+                while (query.Read())
+                {
+                    user = new User(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
                         query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6),
-                        query.GetString(7), DateTime.Parse(query.GetString(8)));
+                        query.GetString(7), DateTime.Parse(query.GetString(8)));                    
+                }
 
                 dbconn.Close();
             }
