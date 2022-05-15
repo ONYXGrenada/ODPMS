@@ -17,9 +17,9 @@ namespace ODPMS.Models
         public string LastName { get; set; }
         public string UserType { get; set; }
         public string Status { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime LastLogin { get; set; }
 
-        public User(int id, string username, string password, string salt, string firstName, string lastName, string userType, string status, DateTime created)
+        public User(int id, string username, string password, string salt, string firstName, string lastName, string userType, string status, DateTime lastLogin)
         {
             Id = id;
             Username = username;
@@ -29,7 +29,7 @@ namespace ODPMS.Models
             LastName = lastName;
             UserType = userType;
             Status = status;
-            Created = created;
+            LastLogin = lastLogin;
         }
 
         public override string ToString()
@@ -46,9 +46,9 @@ namespace ODPMS.Models
         public string LastName { get; set; }
         public string UserType { get; set; }
         public string Status { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime LastLogin { get; set; }
 
-        public UserViewModel(int id, string username, string firstName, string lastName, string userType, string status, DateTime created)
+        public UserViewModel(int id, string username, string firstName, string lastName, string userType, string status, DateTime lastLogin)
         {
             Id = id;
             Username = username;
@@ -56,7 +56,7 @@ namespace ODPMS.Models
             LastName = lastName;
             UserType = userType;
             Status = status;
-            Created = created;
+            LastLogin = lastLogin;
         }
     }
 }
