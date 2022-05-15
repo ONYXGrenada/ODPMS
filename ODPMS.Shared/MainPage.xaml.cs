@@ -48,9 +48,6 @@ namespace ODPMS
         {
             ("home", typeof(HomePage)),
             ("reports", typeof(ReportsPage)),
-            //("apps", typeof(AppsPage)),
-            //("games", typeof(GamesPage)),
-            //("music", typeof(MusicPage)),
         };
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
