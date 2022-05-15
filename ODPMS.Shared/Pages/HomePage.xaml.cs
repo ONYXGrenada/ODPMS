@@ -42,7 +42,7 @@ namespace ODPMS.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             TicketList = DatabaseHelper.GetTicketListViewData();
-            WelcomeMessage.Text = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
+            welcomeMessage_txtBlock.Text = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
         }
 
         private async void NewTicket_Clicked(object sender, RoutedEventArgs e)
@@ -52,17 +52,17 @@ namespace ODPMS.Pages
             ticketDialog.XamlRoot = this.XamlRoot;
             await ticketDialog.ShowAsync();
             TicketList = DatabaseHelper.GetTicketListViewData();
-            TicketListDataGrid.ItemsSource = TicketList;
+            ticketList_dataGrid.ItemsSource = TicketList;
         }
          
         private async void PayTicket_Clicked(object sender, RoutedEventArgs e)
         {
             // Display the pay ticket dialog
-            ValidTicketMessage.Text = "";
+            validTicketMessage_txtBlock.Text = "";
             int ticketNumber;
-            if (Int32.TryParse(this.TicketNumber.Text, out ticketNumber))
+            if (Int32.TryParse(this.ticketNumber_txt.Text, out ticketNumber))
             {
-                ticketNumber = Int32.Parse(this.TicketNumber.Text);
+                ticketNumber = Int32.Parse(this.ticketNumber_txt.Text);
                 if (DatabaseHelper.CheckTicket(ticketNumber))
                 {
                     ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
@@ -71,12 +71,12 @@ namespace ODPMS.Pages
                 } 
                 else
                 {
-                    ValidTicketMessage.Text = string.Format("The ticket number you entered does not exist or is not open.");
+                    validTicketMessage_txtBlock.Text = string.Format("The ticket number you entered does not exist or is not open.");
                 }
             }
             else
             {
-                ValidTicketMessage.Text = string.Format("That was not a valid ticket number.");
+                validTicketMessage_txtBlock.Text = string.Format("That was not a valid ticket number.");
             }
         }
 

@@ -42,9 +42,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\TitleBarPage.xaml.cs">
-      <DependentUpon>TitleBarPage.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)MainPage.xaml">
@@ -75,10 +72,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Pages\TitleBarPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Assets\SharedAssets.md" />
@@ -93,7 +86,6 @@
 		 without manipulating the projitem file.
 	-->
     <Content Include="$(MSBuildThisFileDirectory)Assets\Images\logo-placeholder.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Tickets.txt" />
     <_Globbled_Page Include="$(MSBuildThisFileDirectory)**/*.xaml" Exclude="@(Page);@(ApplicationDefinition)">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

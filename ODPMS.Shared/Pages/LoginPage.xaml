@@ -16,12 +16,12 @@
         </Grid.RowDefinitions>
 
 
-        <Grid x:Name="AppTitleBar">
+        <Grid x:Name="appTitleBar_grid">
             <Image Source="Images/WindowIcon.png"
                HorizontalAlignment="Left" 
                Width="16" Height="16" 
                Margin="8,0"/>
-            <TextBlock x:Name="AppTitleTextBlock" 
+            <TextBlock x:Name="appTitle_txtBlock" 
                        Text="Onyx Parking Management Solution"
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}" 
@@ -38,18 +38,18 @@
                 <TextBlock Text="Username:"
                            VerticalAlignment="Center" 
                            HorizontalAlignment="Center" />
-                <TextBox x:Name="Username" 
+                <TextBox x:Name="username_txt" 
                          PlaceholderText="Enter your username"/>
                 <TextBlock Text="Password:"
                            VerticalAlignment="Center" 
                            HorizontalAlignment="Center"/>
-                <PasswordBox x:Name="Password"
+                <PasswordBox x:Name="password_txt"
                              PasswordChanged="Password_Changed" 
                              PlaceholderText="Enter your password"/>
-                <TextBlock x:Name="StatusMessage" 
+                <TextBlock x:Name="statusMessage_txtBlock" 
                            VerticalAlignment="Center" 
                            HorizontalAlignment="Center"/>
-                <Button x:Name="LoginButton" 
+                <Button x:Name="loginButton_btn" 
                         Content="Login" 
                         Click="Login_Clicked"
                         VerticalAlignment="Center"

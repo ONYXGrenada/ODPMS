@@ -32,12 +32,12 @@ namespace ODPMS.Pages
             // Get ticket object from database
             NewTicket = DatabaseHelper.FindTicket(this.PayTicketNumber);
 
-            this.TicketNumberText.Text = "Ticket Number: " + NewTicket.Number;
-            this.TicketStatusText.Text = "Status: " + NewTicket.Status;
-            this.TicketStartTimeText.Text = "Start Time: " + NewTicket.Created;
-            this.TicketEndTimeText.Text = "End Time: " + NewTicket.Closed;
-            this.TicketDurationText.Text = "Duration: " + NewTicket.Cost / NewTicket.Rate + " Hours";
-            this.TicketCostText.Text = "Cost: " + NewTicket.Cost.ToString("C", CultureInfo.CurrentCulture);
+            this.ticketNumber_txtBlock.Text = "Ticket Number: " + NewTicket.Number;
+            this.ticketStatus_txtBlock.Text = "Status: " + NewTicket.Status;
+            this.ticketStartTime_txtBlock.Text = "Start Time: " + NewTicket.Created;
+            this.ticketEndTime_txtBlock.Text = "End Time: " + NewTicket.Closed;
+            this.ticketDuration_txtBlock.Text = "Duration: " + NewTicket.Cost / NewTicket.Rate + " Hours";
+            this.ticketCost_txtBlock.Text = "Cost: " + NewTicket.Cost.ToString("C", CultureInfo.CurrentCulture);
         }
         private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
@@ -53,9 +53,9 @@ namespace ODPMS.Pages
 
         private void PayAmount_Changed(object sender, RoutedEventArgs e)
         {            
-            if (Double.TryParse(this.PaymentAmount.Text,out payAmount))
+            if (Double.TryParse(this.paymentAmount_txt.Text,out payAmount))
             {
-                payAmount = double.Parse(this.PaymentAmount.Text);
+                payAmount = double.Parse(this.paymentAmount_txt.Text);
             }
             else
             {
@@ -64,11 +64,11 @@ namespace ODPMS.Pages
             double change = NewTicket.Cost - payAmount;
             if (change > 0)
             {
-                this.ChangeReturned.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
+                this.changeReturned_txtBlock.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
             }
             else
             {
-                this.ChangeReturned.Text = string.Format("Please return {0} to the customer", (change*-1).ToString("C", CultureInfo.CurrentCulture));
+                this.changeReturned_txtBlock.Text = string.Format("Please return {0} to the customer", (change*-1).ToString("C", CultureInfo.CurrentCulture));
             }
         }
     }

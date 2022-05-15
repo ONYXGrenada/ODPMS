@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="WelcomeMessage"
+        <TextBlock x:Name="welcomeMessage_txtBlock"
                    FontSize="16"
                    HorizontalAlignment="Center"/>
 
@@ -31,26 +31,26 @@
 
             <StackPanel Grid.Column="0"
                         Spacing="10">
-                <Button x:Name="ButtonNewTicket" 
+                <Button x:Name="buttonNewTicket_btn" 
                         Content="New Ticket"
                         Style="{StaticResource AccentButtonStyle}" 
                         Click="NewTicket_Clicked"
                         HorizontalAlignment="Center"/>
-                <TextBlock x:Name="NewTicketMessage"
+                <TextBlock x:Name="newTicketMessage_txtBlock"
                            TextWrapping="Wrap"/>
             </StackPanel>
             <StackPanel Grid.Column="1"
                         Spacing="10">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="TicketNumber"/>
-                    <Button x:Name="ButtonPayTicket"
+                    <TextBox x:Name="ticketNumber_txt"/>
+                    <Button x:Name="buttonPayTicket_btn"
                             Grid.Column="1"
                             Content="Pay Ticket" 
                             Style="{StaticResource AccentButtonStyle}" 
                             Click="PayTicket_Clicked"
                             HorizontalAlignment="Center"/>
                 </StackPanel>
-                <TextBlock x:Name="ValidTicketMessage"
+                <TextBlock x:Name="validTicketMessage_txtBlock"
                            TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>
@@ -61,7 +61,7 @@
                   Margin="0"
                   HorizontalAlignment="Left"/>-->
 
-        <controls:DataGrid x:Name="TicketListDataGrid"
+        <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="2"
                            AutoGenerateColumns="True"
                            ItemsSource="{x:Bind TicketList}"/>

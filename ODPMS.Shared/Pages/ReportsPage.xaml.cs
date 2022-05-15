@@ -74,7 +74,7 @@ namespace ODPMS.Pages
             //string toDateStr = this.toDate_pkr.SelectedDate.ToString();
             //string status = this.status_cbox.SelectedItem.ToString();
             TicketList = DatabaseHelper.GetTicketListRange(fromDate, toDate, status);
-            TicketListDataGrid.ItemsSource = TicketList;
+            ticketList_dataGrid.ItemsSource = TicketList;
         }
     }
 }

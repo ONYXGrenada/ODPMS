@@ -41,11 +41,11 @@
                 <TextBlock x:Name="ticketRate_txt" />
             </StackPanel>
         </StackPanel>-->
-        <StackPanel x:Name="TicketTemplate" 
+        <StackPanel x:Name="ticketTemplate_sp" 
                     Grid.Column="0"
                     Padding="12,12"
                     Background="White">
-            <Grid x:Name="TicketHeader">
+            <Grid x:Name="ticketHeader_grid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -58,14 +58,14 @@
                        Width="16" 
                        Height="16" 
                        Margin="8,0"/>
-                <TextBlock x:Name="CompanyName" 
+                <TextBlock x:Name="companyName_txtBlock" 
                            Text="Generic Company Ltd."
                            TextWrapping="Wrap"
                            FontSize="16"
                            Foreground="Black"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,0"/>
-                <TextBlock x:Name="CompanyAddress" 
+                <TextBlock x:Name="companyAddress_txtBlock" 
                            Grid.Row="1"
                            Text="St. George, Grenada"
                            FontSize="12"
@@ -73,7 +73,7 @@
                            TextWrapping="Wrap"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,0"/>
-                <TextBlock x:Name="CompanyEmail" 
+                <TextBlock x:Name="companyEmail_txtBlock" 
                            Grid.Row="2"
                            Text="email: info@genericcompany.com"
                            FontSize="12"
@@ -81,7 +81,7 @@
                            TextWrapping="NoWrap"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,0"/>
-                <TextBlock x:Name="CompanyPhone" 
+                <TextBlock x:Name="companyPhone_txtBlock" 
                            Grid.Row="3"
                            Text="Phone: 473 440-1234"
                            FontSize="12"
@@ -90,7 +90,7 @@
                            HorizontalAlignment="Center"
                            Margin="0,0,0,0"/>
             </Grid>
-            <Grid x:Name="TicketBody">
+            <Grid x:Name="ticketBody_grid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -108,7 +108,7 @@
                            Foreground="Black"
                            HorizontalAlignment="Left"
                            Margin="0,12,0,0"/>
-                <TextBlock x:Name="TicketNumber" 
+                <TextBlock x:Name="ticketNumber_txtBlock" 
                            Grid.Column="1"
                            TextWrapping="NoWrap"
                            FontSize="16"
@@ -123,7 +123,7 @@
                            Foreground="Black"
                            HorizontalAlignment="Left"
                            Margin="0,0,0,0"/>
-                <TextBlock x:Name="TicketDate" 
+                <TextBlock x:Name="ticketDate_txtBlock" 
                            Grid.Column="1"
                            Grid.Row="1"
                            TextWrapping="NoWrap"
@@ -139,7 +139,7 @@
                            Foreground="Black"
                            HorizontalAlignment="Left"
                            Margin="0,0,0,0"/>
-                <TextBlock x:Name="TicketTime" 
+                <TextBlock x:Name="ticketTime_txtBlock" 
                            Grid.Column="1"
                            Grid.Row="2"
                            TextWrapping="NoWrap"
@@ -148,19 +148,19 @@
                            HorizontalAlignment="Right"
                            Margin="0,0,0,0"/>
             </Grid>
-            <Grid x:Name="TicketFooter">
+            <Grid x:Name="ticketFooter_grid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="TicketGreeting"
+                <TextBlock x:Name="ticketGreeting_txtBlock"
                            Grid.Row="0"
                            TextWrapping="Wrap"
                            FontSize="12"
                            Foreground="Black"
                            HorizontalAlignment="Center"
                            Margin="0,12,0,0"/>
-                <TextBlock x:Name="TicketTerms"
+                <TextBlock x:Name="ticketTerms_txtBlock"
                            Grid.Row="1"
                            TextWrapping="Wrap"
                            FontSize="12"

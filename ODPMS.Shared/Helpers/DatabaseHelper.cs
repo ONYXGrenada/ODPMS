@@ -167,20 +167,20 @@ namespace ODPMS.Helpers
                 insertUserCommand.ExecuteReader();
 
                 //Ticket Type
-                SqliteCommand insertTTypeCommand = new SqliteCommand();
-                insertTTypeCommand.Connection = dbconn;
+                SqliteCommand insertTypeCommand = new SqliteCommand();
+                insertTypeCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
-                insertTTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @UnitCost, @Status, @Username, @ActivityDate);";
-                insertTTypeCommand.Parameters.AddWithValue("@Id", ttId);
-                insertTTypeCommand.Parameters.AddWithValue("@TicketType", ticketType);
-                insertTTypeCommand.Parameters.AddWithValue("@Description", ttDescription);
-                insertTTypeCommand.Parameters.AddWithValue("@UnitCost", unitCost);
-                insertTTypeCommand.Parameters.AddWithValue("@Status", ttStatus);
-                insertTTypeCommand.Parameters.AddWithValue("@Username", ttUsername);
-                insertTTypeCommand.Parameters.AddWithValue("@ActivityDate", activityDate);
+                insertTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @UnitCost, @Status, @Username, @ActivityDate);";
+                insertTypeCommand.Parameters.AddWithValue("@Id", ttId);
+                insertTypeCommand.Parameters.AddWithValue("@TicketType", ticketType);
+                insertTypeCommand.Parameters.AddWithValue("@Description", ttDescription);
+                insertTypeCommand.Parameters.AddWithValue("@UnitCost", unitCost);
+                insertTypeCommand.Parameters.AddWithValue("@Status", ttStatus);
+                insertTypeCommand.Parameters.AddWithValue("@Username", ttUsername);
+                insertTypeCommand.Parameters.AddWithValue("@ActivityDate", activityDate);
 
-                insertTTypeCommand.ExecuteReader();
+                insertTypeCommand.ExecuteReader();
 
                 dbconn.Close();
             }

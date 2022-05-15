@@ -15,12 +15,12 @@
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <!-- Content body -->
-        <TextBlock x:Name="TicketNumberText" TextWrapping="Wrap" />
-        <TextBlock x:Name="TicketStatusText" TextWrapping="Wrap" />
-        <TextBlock x:Name="TicketStartTimeText" TextWrapping="Wrap" />
-        <TextBlock x:Name="TicketEndTimeText" TextWrapping="Wrap" />
-        <TextBlock x:Name="TicketDurationText" TextWrapping="Wrap" />
-        <TextBlock x:Name="TicketCostText" TextWrapping="Wrap" />
+        <TextBlock x:Name="ticketNumber_txtBlock" TextWrapping="Wrap" />
+        <TextBlock x:Name="ticketStatus_txtBlock" TextWrapping="Wrap" />
+        <TextBlock x:Name="ticketStartTime_txtBlock" TextWrapping="Wrap" />
+        <TextBlock x:Name="ticketEndTime_txtBlock" TextWrapping="Wrap" />
+        <TextBlock x:Name="ticketDuration_txtBlock" TextWrapping="Wrap" />
+        <TextBlock x:Name="ticketCost_txtBlock" TextWrapping="Wrap" />
         <Grid Padding="20"
               RowSpacing="10"
               HorizontalAlignment="Center">
@@ -30,8 +30,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="Payment Amount:"/>
-            <TextBox Grid.Row="1"  x:Name="PaymentAmount" TextChanged="PayAmount_Changed"/>
-            <TextBlock Grid.Row="2" x:Name="ChangeReturned" />
+            <TextBox Grid.Row="1"  x:Name="paymentAmount_txt" TextChanged="PayAmount_Changed"/>
+            <TextBlock Grid.Row="2" x:Name="changeReturned_txtBlock" />
         </Grid>
         
     </StackPanel>

@@ -29,12 +29,12 @@ namespace ODPMS.Pages
         {
             this.InitializeComponent();
             App._window.ExtendsContentIntoTitleBar = true;
-            App._window.SetTitleBar(AppTitleBar);
+            App._window.SetTitleBar(appTitleBar_grid);
         }
 
         private void Login_Clicked(object sender, RoutedEventArgs e)
         {
-            App.IsUserLoggedIn = Login(Username.Text, Password.Password);
+            App.IsUserLoggedIn = Login(username_txt.Text, password_txt.Password);
             if (App.IsUserLoggedIn)
             {
                 Frame rootFrame = new Frame();
@@ -42,15 +42,15 @@ namespace ODPMS.Pages
                 App._window.Content = rootFrame;
             } else
             {
-                StatusMessage.Foreground = new SolidColorBrush(Colors.Red);
-                StatusMessage.Text = "Invalid login information. Please try again";
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Invalid login information. Please try again";
             }
         }
 
         private void Password_Changed(object sender, RoutedEventArgs e)
         {
-            StatusMessage.Foreground = new SolidColorBrush(Colors.Black);
-            StatusMessage.Text = "";
+            statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
+            statusMessage_txtBlock.Text = "";
         }
 
         private void Key_Pressed(object sender, KeyRoutedEventArgs e)

@@ -48,7 +48,7 @@
         </Grid>
         <TextBlock x:Name="text_text" />
 
-        <controls:DataGrid x:Name="TicketListDataGrid"
+        <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="2"
                            AutoGenerateColumns="True"
                            ItemsSource="{x:Bind TicketList}"/>
