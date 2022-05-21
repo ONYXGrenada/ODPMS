@@ -30,51 +30,37 @@ namespace ODPMS.Pages
         public ReportsPage()
         {
             this.InitializeComponent();
-            //TicketListView.Loaded += TicketListView_Loaded;
-        }
-
-        //private void TicketListView_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    // Set focus so the first item of the listview has focus
-        //    // instead of some item which is not visible on page load
-        //    TicketListView.Focus(FocusState.Programmatic);
-        //    int test = 0;
-        //}
+        }   
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //TicketListView.ItemsSource = DatabaseHelper.GetTicketListViewData();
+            this.fromDate_pkr.Date = DateTime.Now;
+            this.toDate_pkr.Date = DateTime.Now;
+            this.fromTime_pkr.Time = new TimeSpan(0, 0, 0, 0);
+            this.toTime_pkr.Time = new TimeSpan(0, 23, 59, 59);
         }
 
         private void ReportSubmit_Clicked(object sender, RoutedEventArgs e)
         {
             var cultureInfo = new CultureInfo("en-US");
-            // Get requested data from database
-            string fromDateStr = this.fromDate_pkr.SelectedDate.ToString();
-            fromDateStr = fromDateStr.Substring(0, fromDateStr.IndexOf(" "));
+            // Create from date and time for use with database query
+            string fromDateStr = this.fromDate_pkr.Date.ToString();
             string fromTimeStr = this.fromTime_pkr.SelectedTime.ToString();
+            fromDateStr = fromDateStr.Substring(0, fromDateStr.IndexOf(" "));            
             DateTime fromDate = DateTime.Parse(fromDateStr + " " + fromTimeStr, cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
 
-            string toDateStr = this.toDate_pkr.SelectedDate.ToString();
-            toDateStr = toDateStr.Substring(0, toDateStr.IndexOf(" "));
+            // Create to date and time for use with database query
+            string toDateStr = this.toDate_pkr.Date.ToString();
             string toTimeStr = this.toTime_pkr.SelectedTime.ToString();
+            toDateStr = toDateStr.Substring(0, toDateStr.IndexOf(" "));            
             DateTime toDate = DateTime.Parse(toDateStr + " " + toTimeStr, cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
 
-            string status = "Paid";
+            //Retrieves status for use with database query
+            string selectedStatus = this.status_cbox.SelectionBoxItem.ToString();
 
-            //string status = this.status_cbox.Items[this.status_cbox.SelectedIndex].ToString();
-
-
-            //this.text_text.Text = status;
-
-            //5/12/2022
-
-
-            //string fromDateStr = this.fromDate_pkr.SelectedDate.ToString();
-            //string toDateStr = this.toDate_pkr.SelectedDate.ToString();
-            //string status = this.status_cbox.SelectedItem.ToString();
-            TicketList = DatabaseHelper.GetTicketListRange(fromDate, toDate, status);
-            TicketListDataGrid.ItemsSource = TicketList;
+            TicketList = DatabaseHelper.GetTicketListRange(fromDate, toDate, selectedStatus);
+            this.TicketListDataGrid.ItemsSource = TicketList;
         }
     }
 }

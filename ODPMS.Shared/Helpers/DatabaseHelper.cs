@@ -77,16 +77,14 @@ namespace ODPMS.Helpers
 
                 dbconn.Close();
             }
-            
-            AddData();
+
+            //Add data only if admin user does not exist
+            if (FindUser(1) == null)
+                AddData();
         }
 
         public static void AddData()
         {
-            //Add data only if admin user does not exist
-            if (FindUser(1) != null)
-                return;            
-
             //This function creates initial database state (Default admin User & 1 ticket)
             var cultureInfo = new CultureInfo("en-US");
 
@@ -416,10 +414,15 @@ namespace ODPMS.Helpers
                 SqliteCommand selectCommand = new SqliteCommand();
                 selectCommand.Connection = dbconn;
 
-                selectCommand.CommandText = "SELECT * FROM Tickets WHERE Created >= @CreatedFrom AND Created <= @CreatedTo AND Status = @Status;";
+                if (status == "All")
+                    selectCommand.CommandText = "SELECT * FROM Tickets WHERE Created >= @CreatedFrom AND Created <= @CreatedTo;";                    
+                else
+                {
+                    selectCommand.CommandText = "SELECT * FROM Tickets WHERE Created >= @CreatedFrom AND Created <= @CreatedTo AND Status = @Status;";
+                    selectCommand.Parameters.AddWithValue("@Status", status);
+                }
                 selectCommand.Parameters.AddWithValue("@CreatedFrom", fromDate);
                 selectCommand.Parameters.AddWithValue("@CreatedTo", toDate);
-                selectCommand.Parameters.AddWithValue("@Status", status);
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
