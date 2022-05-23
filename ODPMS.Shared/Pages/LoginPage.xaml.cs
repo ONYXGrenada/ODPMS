@@ -28,8 +28,9 @@ namespace ODPMS.Pages
         public LoginPage()
         {
             this.InitializeComponent();
-            App._window.ExtendsContentIntoTitleBar = true;
-            App._window.SetTitleBar(appTitleBar_grid);
+            Window window = (Application.Current as App)?.Window;
+            window.ExtendsContentIntoTitleBar = true;
+            window.SetTitleBar(appTitleBar_grid);
         }
 
         private void Login_Clicked(object sender, RoutedEventArgs e)
@@ -39,7 +40,8 @@ namespace ODPMS.Pages
             {
                 Frame rootFrame = new Frame();
                 rootFrame.Navigate(typeof(MainPage));
-                App._window.Content = rootFrame;
+                Window window = (Application.Current as App)?.Window;
+                window.Content = rootFrame;
             } else
             {
                 statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
@@ -63,7 +65,7 @@ namespace ODPMS.Pages
 
         private bool Login(string username, string password)
         {
-            List<User> users = DatabaseHelper.userLogin(username, password);            
+            List<User> users = DatabaseHelper.UserLogin(username, password);            
 
             if (users.Count > 0)
             {

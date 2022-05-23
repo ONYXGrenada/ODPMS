@@ -30,6 +30,7 @@
     <_Globbed_Compile Remove="Pages\LoginPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\MusicPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\NewTicketContentDialog.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\NewUserContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Pages\PayTicketContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Pages\ReportsPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\SettingsPage.xaml.cs" />
@@ -49,6 +50,7 @@
     <_Globbled_Page Remove="Pages\LoginPage.xaml" />
     <_Globbled_Page Remove="Pages\MusicPage.xaml" />
     <_Globbled_Page Remove="Pages\NewTicketContentDialog.xaml" />
+    <_Globbled_Page Remove="Pages\NewUserContentDialog.xaml" />
     <_Globbled_Page Remove="Pages\PayTicketContentDialog.xaml" />
     <_Globbled_Page Remove="Pages\ReportsPage.xaml" />
     <_Globbled_Page Remove="Pages\SettingsPage.xaml" />

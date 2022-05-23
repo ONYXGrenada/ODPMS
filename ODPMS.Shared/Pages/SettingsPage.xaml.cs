@@ -16,6 +16,9 @@ using ODPMS.Models;
 using ODPMS.Helpers;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using WinRT.Interop;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -38,6 +41,10 @@ namespace ODPMS.Pages
             if (App.LoggedInUser.UserType == "admin")
             {
                 Users = DatabaseHelper.GetUsers();
+            }
+            else
+            {
+                userPanel_sp.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -68,9 +75,30 @@ namespace ODPMS.Pages
             return (TEnum)Enum.Parse(typeof(TEnum), text);
         }
 
-        private void UpdateUser_Clicked(object sender, RoutedEventArgs e)
+        private async void UpdateUser_Clicked(object sender, RoutedEventArgs e)
         {
+            // Example FileSavePicker as reference
+            //FileSavePicker picker = new();
+            //picker.SuggestedStartLocation = PickerLocationId.Downloads;
+            //picker.FileTypeChoices.Add("Csv", new List<string>() { ".csv" });
+            //picker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            //picker.SuggestedFileName = String.Format("Ticket Report - {0}", DateTime.Now.ToString("d"));
+            //picker.SettingsIdentifier = "settingsIdentifier";
+            //picker.DefaultFileExtension = ".csv";
 
+            //Window window = (Application.Current as App)?.Window;
+            //var hWnd = WindowNative.GetWindowHandle(window);
+            //InitializeWithWindow.Initialize(picker, hWnd);
+
+            //StorageFile file = await picker.PickSaveFileAsync();
+        }
+
+        private async void AddUser_Clicked(object sender, RoutedEventArgs e)
+        {
+            // Display the new user dialog
+            ContentDialog newUserDialog = new NewUserContentDialog();
+            newUserDialog.XamlRoot = this.XamlRoot;
+            await newUserDialog.ShowAsync();
         }
     }
 }

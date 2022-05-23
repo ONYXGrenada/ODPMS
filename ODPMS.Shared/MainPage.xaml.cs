@@ -20,6 +20,9 @@ using System.Threading.Tasks;
 using Windows.UI.ViewManagement;
 using Microsoft.UI;
 using Windows.ApplicationModel.Core;
+using WinRT.Interop;
+using Microsoft.UI.Windowing;
+using Windows.UI;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -34,8 +37,15 @@ namespace ODPMS
         public MainPage()
         {
             this.InitializeComponent();
-            App._window.ExtendsContentIntoTitleBar = true;
-            App._window.SetTitleBar(AppTitleBar);
+            Window window = (Application.Current as App)?.Window;
+            window.ExtendsContentIntoTitleBar = true;
+            window.SetTitleBar(AppTitleBar);
+            //var content = (Content as FrameworkElement)!;
+            //content.ActualThemeChanged += (s, e) =>
+            //{
+            //    ModifyTitlebarTheme();
+            //};
+            //ModifyTitlebarTheme();
         }
 
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -209,6 +219,59 @@ namespace ODPMS
                 NavView.Header =
                     ((NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
             }
+        }
+
+        private void ModifyTitlebarTheme()
+        {
+            var content = (Content as FrameworkElement)!;
+            var value = content.ActualTheme;
+
+            Window window = (Application.Current as App)?.Window;
+            var hWnd = WindowNative.GetWindowHandle(window);
+            var winId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            AppWindow appWindow = AppWindow.GetFromWindowId(winId);
+            var titleBar = appWindow.TitleBar;
+            if (value == ElementTheme.Light)
+            {
+                titleBar.ForegroundColor = Colors.Black;
+                titleBar.BackgroundColor = Colors.White;
+                titleBar.InactiveForegroundColor = Colors.Gray;
+                titleBar.InactiveBackgroundColor = Colors.White;
+
+                titleBar.ButtonForegroundColor = Colors.Black;
+                titleBar.ButtonBackgroundColor = Colors.White;
+                titleBar.ButtonInactiveForegroundColor = Colors.Gray;
+                titleBar.ButtonInactiveBackgroundColor = Colors.White;
+
+                titleBar.ButtonHoverForegroundColor = Colors.Black;
+                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(255, 245, 245, 245);
+                titleBar.ButtonPressedForegroundColor = Colors.Black;
+                titleBar.ButtonPressedBackgroundColor = Colors.White;
+            }
+            else if (value == ElementTheme.Dark)
+            {
+                titleBar.ForegroundColor = Colors.White;
+                titleBar.BackgroundColor = Color.FromArgb(255, 31, 31, 31);
+                titleBar.InactiveForegroundColor = Colors.Gray;
+                titleBar.InactiveBackgroundColor = Color.FromArgb(255, 31, 31, 31);
+
+                titleBar.ButtonForegroundColor = Colors.White;
+                titleBar.ButtonBackgroundColor = Color.FromArgb(255, 31, 31, 31);
+                titleBar.ButtonInactiveForegroundColor = Colors.Gray;
+                titleBar.ButtonInactiveBackgroundColor = Color.FromArgb(255, 31, 31, 31);
+
+                titleBar.ButtonHoverForegroundColor = Colors.White;
+                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(255, 51, 51, 51);
+                titleBar.ButtonPressedForegroundColor = Colors.White;
+                titleBar.ButtonPressedBackgroundColor = Colors.Gray;
+            }
+
+            // Fixed bug where icon background color was not applied 
+            titleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
+            titleBar.IconShowOptions = IconShowOptions.ShowIconAndSystemMenu;
+
+            window.ExtendsContentIntoTitleBar = true;
+            window.SetTitleBar(AppTitleBar);
         }
     }
 }

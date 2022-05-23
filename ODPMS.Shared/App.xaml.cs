@@ -17,8 +17,8 @@ namespace ODPMS
     /// </summary>
     public sealed partial class App : Application
     {
-        //private Window _window;
-        public static Window _window { get; set; }
+        private Window _window;
+        public Window Window => _window;
         public static bool IsUserLoggedIn { get; set; }
         public static User LoggedInUser { get; set; }
         /// <summary>

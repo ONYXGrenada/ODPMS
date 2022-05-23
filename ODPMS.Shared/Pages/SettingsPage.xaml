@@ -87,7 +87,7 @@
 
     </ListView>-->
     <Grid Padding="56,0,0,0"
-                  Margin="5">
+          Margin="5">
         <Grid.RowDefinitions>
             <!--Section 1: Theme Settings -->
             <RowDefinition Height="2*" />
@@ -127,6 +127,7 @@
                     Grid.Column="0"
                     Margin="0,16,40,16"
                     Padding="16"
+                    Spacing="8"
                     CornerRadius="8"
                     Background="{ThemeResource LayerFillColorDefaultBrush}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
@@ -160,10 +161,12 @@
 
         <!--Section 3: User Administration -->
 
-        <StackPanel Grid.Row="2"
+        <StackPanel x:Name="userPanel_sp"
+                    Grid.Row="2"
                     Grid.Column="0"
                     Margin="0,16,40,16"
                     Padding="16"
+                    Spacing="8"
                     CornerRadius="8"
                     Background="{ThemeResource LayerFillColorDefaultBrush}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
@@ -172,6 +175,10 @@
             <controls:DataGrid x:Name="user_dataGrid"
                                AutoGenerateColumns="True"
                                ItemsSource="{x:Bind Users}"/>
+            <Button Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Content="Add User"
+                    Click="AddUser_Clicked" />
         </StackPanel>
 
         <!--Section 4: Ticket Administration -->

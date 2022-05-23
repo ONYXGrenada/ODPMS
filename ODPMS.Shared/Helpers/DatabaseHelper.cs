@@ -437,7 +437,7 @@ namespace ODPMS.Helpers
             return tickets;
         }
 
-        public static void addUser(User newUser)
+        public static void AddUser(User newUser)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -497,7 +497,7 @@ namespace ODPMS.Helpers
                     int userId = Int32.Parse(query.GetString(0));
 
                     user = new User(userId + 1, username, password, salt, firstName, lastName, userType, status, default(DateTime));
-                    addUser(user);
+                    AddUser(user);
 
                     functionStatus = true;
                 }
@@ -513,7 +513,7 @@ namespace ODPMS.Helpers
             return functionStatus;
         }
 
-        public static void updateUser(User updateUser)
+        public static void UpdateUser(User updateUser)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -572,7 +572,7 @@ namespace ODPMS.Helpers
             return user;
         }
 
-        public static List<User> userLogin(string username, string password)
+        public static List<User> UserLogin(string username, string password)
         {
             List<User> users = new List<User>();
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
