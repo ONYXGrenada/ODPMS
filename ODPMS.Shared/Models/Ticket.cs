@@ -64,5 +64,11 @@ namespace ODPMS.Models
         {
             return Type;
         }
+
+        public string ToCsv()
+        {
+            return Id.ToString() + "," + Number.ToString() + "," + Type + "," + Description + "," + Created + "," + Closed.ToString() + "," + Status +
+                "," + Rate.ToString() + "," + Cost.ToString() + "," + Balance.ToString() + "," + User;
+        }
     }
 }
