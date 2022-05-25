@@ -17,60 +17,63 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1"
-              HorizontalAlignment="Stretch"
+        <Grid HorizontalAlignment="Stretch"
               Padding="20">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0"
-                        Orientation="Horizontal"
-                        Spacing="10" >
-                <CalendarDatePicker x:Name="fromDate_pkr" Header="From Date: " />
-                <TimePicker x:Name="fromTime_pkr" Header="Time: " />
+            <StackPanel Orientation="Horizontal"
+                        Spacing="10">
+                <CalendarDatePicker x:Name="fromDate_pkr" 
+                                    Header="From Date:"
+                                    VerticalAlignment="Bottom"/>
+                <TimePicker x:Name="fromTime_pkr" 
+                            VerticalAlignment="Bottom"/>
             </StackPanel>
-            
+
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         Spacing="10">
-                <CalendarDatePicker x:Name="toDate_pkr" Header="To Date: " />
-                <TimePicker x:Name="toTime_pkr" Header="Time: " />
+                <CalendarDatePicker x:Name="toDate_pkr" 
+                                    Header="To Date:"
+                                    VerticalAlignment="Bottom"/>
+                <TimePicker x:Name="toTime_pkr"
+                            VerticalAlignment="Bottom"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" 
                         Orientation="Horizontal"
                         Spacing="10">
                 <ComboBox x:Name="status_cbox" 
-                          Header="Status">
+                          Header="Status:">
                     <ComboBoxItem Name="All" Content="All" IsSelected="True"/>
-                    <ComboBoxItem Name="Closed" Content="Closed"  />
-                    <ComboBoxItem Name="Open" Content="Open" />
-                    <ComboBoxItem Name="Paid" Content="Paid" />
+                    <ComboBoxItem Name="Closed" Content="Closed"/>
+                    <ComboBoxItem Name="Open" Content="Open"/>
+                    <ComboBoxItem Name="Paid" Content="Paid"/>
                 </ComboBox>
                 <Button Content="Submit"
                         Click="ReportSubmit_Clicked" 
-                        Style="{StaticResource AccentButtonStyle}"/>
+                        Style="{StaticResource AccentButtonStyle}"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"/>
             </StackPanel>
-        </Grid>
-        <TextBlock x:Name="text_text" />
 
-            <controls:DataGrid x:Name="TicketListDataGrid"
-                           Grid.Row="2"
-                           AutoGenerateColumns="True"
-                           ItemsSource="{x:Bind TicketList}"/>
-
-        <Button Grid.Row="3"
+            <Button Grid.Column="3"
+                VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
                 Content="Export"
                 Click="ReportExport_Clicked"
-                Style="{StaticResource AccentButtonStyle}" />
-        
+                Style="{StaticResource AccentButtonStyle}"/>
+        </Grid>
+
+        <controls:DataGrid x:Name="ticketList_dataGrid"
+                           Grid.Row="3"
+                           AutoGenerateColumns="True"
+                           ItemsSource="{x:Bind TicketList}"/>
+
     </Grid>
-
-    
-
-
 </Page>

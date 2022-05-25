@@ -57,7 +57,7 @@ namespace ODPMS.Pages
             string selectedStatus = this.status_cbox.SelectionBoxItem.ToString();
 
             TicketList = DatabaseHelper.GetTicketListRange(fromDate, toDate, selectedStatus);
-            this.TicketListDataGrid.ItemsSource = TicketList;
+            this.ticketList_dataGrid.ItemsSource = TicketList;
         }
 
         private async void ReportExport_Clicked(object sender, RoutedEventArgs e)
@@ -67,11 +67,12 @@ namespace ODPMS.Pages
             picker.SuggestedStartLocation = PickerLocationId.Downloads;
             picker.FileTypeChoices.Add("Csv", new List<string>() { ".csv" });
             picker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-            picker.SuggestedFileName = "Activity Codes";
+            picker.SuggestedFileName = "Ticket Report";
             picker.SettingsIdentifier = "settingsIdentifier";
             picker.DefaultFileExtension = ".csv";
 
-            var hwnd = WindowNative.GetWindowHandle(App._window);  // App.m_window?
+            Window window = (Application.Current as App)?.Window;
+            var hwnd = WindowNative.GetWindowHandle(window); 
             InitializeWithWindow.Initialize(picker, hwnd);
 
             StorageFile saveFile = await picker.PickSaveFileAsync();
