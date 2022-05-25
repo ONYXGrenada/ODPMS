@@ -14,44 +14,63 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1"
               HorizontalAlignment="Stretch"
               Padding="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0"
+                        Orientation="Horizontal"
                         Spacing="10" >
-                <DatePicker x:Name="fromDate_pkr" Header="From Date: " />
+                <CalendarDatePicker x:Name="fromDate_pkr" Header="From Date: " />
                 <TimePicker x:Name="fromTime_pkr" Header="Time: " />
             </StackPanel>
             
             <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
                         Spacing="10">
-                <DatePicker x:Name="toDate_pkr" Header="To Date: " />
+                <CalendarDatePicker x:Name="toDate_pkr" Header="To Date: " />
                 <TimePicker x:Name="toTime_pkr" Header="Time: " />
             </StackPanel>
 
-            <StackPanel Grid.Column="2" >
-                <ComboBox x:Name="status_cbox" Header="Status">
-                    <ComboBoxItem Content = "Item #1"/>
-                    <ComboBoxItem Content = "Item #2"/>
-                    <ComboBoxItem Content = "Item #3"/>
+            <StackPanel Grid.Column="2" 
+                        Orientation="Horizontal"
+                        Spacing="10">
+                <ComboBox x:Name="status_cbox" 
+                          Header="Status">
+                    <ComboBoxItem Name="All" Content="All" IsSelected="True"/>
+                    <ComboBoxItem Name="Closed" Content="Closed"  />
+                    <ComboBoxItem Name="Open" Content="Open" />
+                    <ComboBoxItem Name="Paid" Content="Paid" />
                 </ComboBox>
-                <Button Content="Submit" Click="ReportSubmit_Clicked" />
+                <Button Content="Submit"
+                        Click="ReportSubmit_Clicked" 
+                        Style="{StaticResource AccentButtonStyle}"/>
             </StackPanel>
         </Grid>
         <TextBlock x:Name="text_text" />
 
-        <controls:DataGrid x:Name="ticketList_dataGrid"
+            <controls:DataGrid x:Name="TicketListDataGrid"
                            Grid.Row="2"
                            AutoGenerateColumns="True"
                            ItemsSource="{x:Bind TicketList}"/>
+
+        <Button Grid.Row="3"
+                HorizontalAlignment="Right"
+                Content="Export"
+                Click="ReportExport_Clicked"
+                Style="{StaticResource AccentButtonStyle}" />
+        
     </Grid>
+
+    
+
 
 </Page>

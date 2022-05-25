@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using ODPMS.Models;
-using ODPMS.Helpers;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using ODPMS.Models;
+using ODPMS.Helpers;
+using Windows.Storage;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
+using System.Linq;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,51 +27,113 @@ namespace ODPMS.Pages
         public ReportsPage()
         {
             this.InitializeComponent();
-            //TicketListView.Loaded += TicketListView_Loaded;
-        }
-
-        //private void TicketListView_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    // Set focus so the first item of the listview has focus
-        //    // instead of some item which is not visible on page load
-        //    TicketListView.Focus(FocusState.Programmatic);
-        //    int test = 0;
-        //}
+        }   
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //TicketListView.ItemsSource = DatabaseHelper.GetTicketListViewData();
+            this.fromDate_pkr.Date = DateTime.Now;
+            this.toDate_pkr.Date = DateTime.Now;
+            this.fromTime_pkr.Time = new TimeSpan(0, 0, 0, 0);
+            this.toTime_pkr.Time = new TimeSpan(0, 23, 59, 59);
         }
 
         private void ReportSubmit_Clicked(object sender, RoutedEventArgs e)
         {
             var cultureInfo = new CultureInfo("en-US");
-            // Get requested data from database
-            string fromDateStr = this.fromDate_pkr.SelectedDate.ToString();
-            fromDateStr = fromDateStr.Substring(0, fromDateStr.IndexOf(" "));
+            // Create from date and time for use with database query
+            string fromDateStr = this.fromDate_pkr.Date.ToString();
             string fromTimeStr = this.fromTime_pkr.SelectedTime.ToString();
+            fromDateStr = fromDateStr.Substring(0, fromDateStr.IndexOf(" "));            
             DateTime fromDate = DateTime.Parse(fromDateStr + " " + fromTimeStr, cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
 
-            string toDateStr = this.toDate_pkr.SelectedDate.ToString();
-            toDateStr = toDateStr.Substring(0, toDateStr.IndexOf(" "));
+            // Create to date and time for use with database query
+            string toDateStr = this.toDate_pkr.Date.ToString();
             string toTimeStr = this.toTime_pkr.SelectedTime.ToString();
+            toDateStr = toDateStr.Substring(0, toDateStr.IndexOf(" "));            
             DateTime toDate = DateTime.Parse(toDateStr + " " + toTimeStr, cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
 
-            string status = "Paid";
+            //Retrieves status for use with database query
+            string selectedStatus = this.status_cbox.SelectionBoxItem.ToString();
 
-            //string status = this.status_cbox.Items[this.status_cbox.SelectedIndex].ToString();
+            TicketList = DatabaseHelper.GetTicketListRange(fromDate, toDate, selectedStatus);
+            this.TicketListDataGrid.ItemsSource = TicketList;
+        }
+
+        private async void ReportExport_Clicked(object sender, RoutedEventArgs e)
+        {
+
+            FileSavePicker picker = new();
+            picker.SuggestedStartLocation = PickerLocationId.Downloads;
+            picker.FileTypeChoices.Add("Csv", new List<string>() { ".csv" });
+            picker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            picker.SuggestedFileName = "Activity Codes";
+            picker.SettingsIdentifier = "settingsIdentifier";
+            picker.DefaultFileExtension = ".csv";
+
+            var hwnd = WindowNative.GetWindowHandle(App._window);  // App.m_window?
+            InitializeWithWindow.Initialize(picker, hwnd);
+
+            StorageFile saveFile = await picker.PickSaveFileAsync();
+            if (saveFile != null)
+            {
+                List<string> TicketListStr = new List<string>();
+                TicketListStr.Add("Id,Number,Type,Description,Created,Closed,Status,Rate,Cost,Balance,User");
+                // Save file was picked, you can now write in it
+                foreach (Ticket ticket in TicketList)
+                {
+                    TicketListStr.Add(ticket.ToCsv());
+                }
+
+                await FileIO.WriteLinesAsync(saveFile, TicketListStr);
+
+            }
+            else
+            {
+                // No file was picked or the dialog was cancelled.
+            }
+
+            //myButton.Content = $"{file?.DisplayName}";
+            //var test = new CsvHelper.CsvWriter(TicketList, CultureInfo.InvariantCulture);
+
+            //var fileSavePicker = new FileSavePicker();
+            //fileSavePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+            //fileSavePicker.SuggestedFileName = "myfile.txt";
+            //fileSavePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt", ".text" });
+            //StorageFile saveFile = await fileSavePicker.PickSaveFileAsync();
+            //if (saveFile != null)
+            //{
+            //    // Save file was picked, you can now write in it
+            //    await FileIO.WriteTextAsync(saveFile, "Hello, world!");
+            //}
+            //else
+            //{
+            //    // No file was picked or the dialog was cancelled.
+            //}
+
+            // Use this code to associate the dialog to the appropriate AppWindow by setting
+            // the dialog's XamlRoot to the same XamlRoot as an element that is already present in the AppWindow.
+            //var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            //picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            //picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+            //picker.FileTypeFilter.Add(".xlsx");
+            //var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            //WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+            //Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+            //if (file != null)
+            //{
+            //    //SettingsHelper.ExcelFile = file;
+            //    //this.dataFile_txt.Text = SettingsHelper.ExcelFile.Path;
+            //}
+
+            //using (var writer = new StreamWriter("C:\\Users\\ozimb\\Downloads\\file.csv"))
+            //using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            //{
+            //    csv.WriteRecords(TicketList);
+            //}
 
 
-            //this.text_text.Text = status;
-
-            //5/12/2022
-
-
-            //string fromDateStr = this.fromDate_pkr.SelectedDate.ToString();
-            //string toDateStr = this.toDate_pkr.SelectedDate.ToString();
-            //string status = this.status_cbox.SelectedItem.ToString();
-            TicketList = DatabaseHelper.GetTicketListRange(fromDate, toDate, status);
-            ticketList_dataGrid.ItemsSource = TicketList;
         }
     }
 }
