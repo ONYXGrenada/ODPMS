@@ -25,7 +25,7 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        public ObservableCollection<Ticket> TicketList { get; set; }
+        public ObservableCollection<TicketViewModel> TicketList { get; set; }
         public HomePage()
         {
             this.InitializeComponent();
@@ -41,7 +41,7 @@ namespace ODPMS.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            TicketList = DatabaseHelper.GetTicketListViewData();
+            TicketList = DatabaseHelper.GetTicketListViewData("Open");
             welcomeMessage_txtBlock.Text = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
         }
 
@@ -51,7 +51,7 @@ namespace ODPMS.Pages
             ContentDialog ticketDialog = new NewTicketContentDialog();
             ticketDialog.XamlRoot = this.XamlRoot;
             await ticketDialog.ShowAsync();
-            TicketList = DatabaseHelper.GetTicketListViewData();
+            TicketList = DatabaseHelper.GetTicketListViewData("Open");
             ticketList_dataGrid.ItemsSource = TicketList;
         }
          
@@ -68,6 +68,9 @@ namespace ODPMS.Pages
                     ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
                     payDialog.XamlRoot = this.XamlRoot;
                     await payDialog.ShowAsync();
+                    TicketList = DatabaseHelper.GetTicketListViewData("Open");
+                    ticketList_dataGrid.ItemsSource = TicketList;
+                    this.ticketNumber_txt.Text = "";
                 } 
                 else
                 {

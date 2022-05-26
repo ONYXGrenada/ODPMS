@@ -374,25 +374,34 @@ namespace ODPMS.Helpers
             }
         }
 
-        public static ObservableCollection<Ticket> GetTicketListViewData()
+        public static ObservableCollection<TicketViewModel> GetTicketListViewData(string? status)
         {
-            ObservableCollection<Ticket> tickets = new ObservableCollection<Ticket>();
+            ObservableCollection<TicketViewModel> tickets = new ObservableCollection<TicketViewModel>();
 
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
             {
                 dbconn.Open();
 
-                string selectCMD = "SELECT * FROM Tickets";
-                SqliteCommand selectCommand = new SqliteCommand(selectCMD, dbconn);
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                if (status != null)
+                {
+                    selectCommand.CommandText = "SELECT * FROM Tickets WHERE Status = @Status";
+                    selectCommand.Parameters.AddWithValue("@Status", status);
+                } else
+                {
+                    selectCommand.CommandText = "SELECT * FROM Tickets";
+                }
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
                 while (query.Read())
                 {
-                    tickets.Add(new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
-                        query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
-                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                    tickets.Add(new TicketViewModel(Int32.Parse(query.GetString(1)), query.GetString(2), query.GetString(3), 
+                        DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6), float.Parse(query.GetString(7)),
+                        float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
                     //tickets.Add(new Ticket(query.GetString(0)));
                 }
 

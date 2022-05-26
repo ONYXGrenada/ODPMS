@@ -71,4 +71,32 @@ namespace ODPMS.Models
                 "," + Rate.ToString() + "," + Cost.ToString() + "," + Balance.ToString() + "," + User;
         }
     }
+
+    public class TicketViewModel
+    {
+        public int Number { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Closed { get; set; }
+        public string Status { get; set; }
+        public double Rate { get; set; }
+        public double Cost { get; set; }
+        public double Balance { get; set; }
+        public string User { get; set; }
+
+        public TicketViewModel(int number, string type, string description, DateTime created, DateTime closed, string status, double rate, double cost, double balance, string user)
+        {
+            Number = number;
+            Type = type;
+            Description = description;
+            Created = created;
+            Closed = closed;
+            Status = status;
+            Rate = rate;
+            Cost = cost;
+            Balance = balance;
+            User = user;
+        }
+    }
 }

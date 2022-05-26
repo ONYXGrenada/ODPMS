@@ -90,13 +90,13 @@
           Margin="5">
         <Grid.RowDefinitions>
             <!--Section 1: Theme Settings -->
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
             <!--Section 2: User Settings -->
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="Auto" />
             <!--Section 3: User Administration -->
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="Auto" />
             <!--Section 4: Ticket Administration -->
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
