@@ -44,7 +44,7 @@
 
             <StackPanel Orientation="Horizontal" 
                         Margin="5"
-                        Spacing="10">
+                        Spacing="8">
                 <TextBlock VerticalAlignment="Center"
                            Text="First Name:" />
                 <TextBox x:Name="firstName_txt"
@@ -53,7 +53,7 @@
 
             <StackPanel Orientation="Horizontal" 
                         Margin="5"
-                        Spacing="10">
+                        Spacing="8">
                 <TextBlock VerticalAlignment="Center"
                            Text="Last Name:" />
                 <TextBox x:Name="lastName_txt"
@@ -109,23 +109,57 @@
                        Margin="0,12,0,0"
                        Text="Company Administration"/>
 
-            <StackPanel Orientation="Horizontal" 
-                        Margin="5"
-                        Spacing="10">
+            <Grid RowSpacing="8"
+                  ColumnSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
                 <TextBlock VerticalAlignment="Center"
                            Text="Company Logo:" />
-                <Image Source="Assets\Images\logo-placeholder.png"/>
-            </StackPanel>
+                <Image Grid.Column="1" 
+                       Source="Images\StoreLogo.png"/>
 
-            <StackPanel Orientation="Horizontal" 
-                        Margin="5"
-                        Spacing="10">
-                <TextBlock VerticalAlignment="Center"
+                <TextBlock Grid.Row="1"
+                           VerticalAlignment="Center"
                            Text="Company Name:" />
                 <TextBox x:Name="companyName_txt"
-                         MinWidth="180"/>
-            </StackPanel>
+                         Grid.Row="1"
+                         Grid.Column="1"
+                         MinWidth="200"/>
 
+                <TextBlock Grid.Row="2"
+                           VerticalAlignment="Center"
+                           Text="Address:" />
+                <TextBox x:Name="companyAddress_txt"
+                         Grid.Row="2"
+                         Grid.Column="1"
+                         MinWidth="200"/>
+
+                <TextBlock Grid.Row="3"
+                           VerticalAlignment="Center"
+                           Text="Email:" />
+                <TextBox x:Name="companyEmail_txt"
+                         Grid.Row="3"
+                         Grid.Column="1"
+                         MinWidth="200"/>
+
+                <TextBlock Grid.Row="4"
+                           VerticalAlignment="Center"
+                           Text="Phone:" />
+                <TextBox x:Name="companyPhone_txt"
+                         Grid.Row="4"
+                         Grid.Column="1"
+                         MinWidth="200"/>
+            </Grid>
         </StackPanel>
 
         <!--Section 4: Ticket Administration -->
