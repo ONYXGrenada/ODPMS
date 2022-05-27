@@ -14,7 +14,7 @@ using ODPMS.Models;
 using ODPMS.Helpers;
 using System.Globalization;
 
-namespace ODPMS.Pages
+namespace ODPMS.Dialogs
 {
 	public sealed partial class PayTicketContentDialog : ContentDialog
 	{

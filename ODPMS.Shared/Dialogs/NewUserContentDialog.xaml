@@ -1,8 +1,8 @@
 ﻿<ContentDialog
-    x:Class="ODPMS.Pages.NewUserContentDialog"
+    x:Class="ODPMS.Dialogs.NewUserContentDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ODPMS.Pages"
+    xmlns:local="using:ODPMS.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Add new user"
     PrimaryButtonText="Add"

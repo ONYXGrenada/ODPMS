@@ -15,7 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
 using ODPMS.Helpers;
 
-namespace ODPMS.Pages
+namespace ODPMS.Dialogs
 {
 	public sealed partial class NewTicketContentDialog : ContentDialog
 	{

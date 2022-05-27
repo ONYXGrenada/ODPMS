@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
 using ODPMS.Helpers;
+using ODPMS.Dialogs;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using Windows.Storage.Pickers;
@@ -30,6 +31,7 @@ namespace ODPMS.Pages
     public sealed partial class SettingsPage : Page
     {
         public ObservableCollection<UserViewModel> Users { get; set; }
+        public ObservableCollection<UserViewModel> TicketTypes { get; set; }
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -41,10 +43,14 @@ namespace ODPMS.Pages
             if (App.LoggedInUser.UserType == "admin")
             {
                 Users = DatabaseHelper.GetUsers();
+                TicketTypes = DatabaseHelper.GetUsers();
             }
             else
             {
-                userPanel_sp.Visibility = Visibility.Collapsed;
+                usersAdminPanel_sp.Visibility = Visibility.Collapsed;
+                companyAdminPanel_sp.Visibility = Visibility.Collapsed;
+                ticketsAdminPanel_sp.Visibility = Visibility.Collapsed;
+                receiptsAdminPanel_sp.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -73,6 +79,14 @@ namespace ODPMS.Pages
                 throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
             }
             return (TEnum)Enum.Parse(typeof(TEnum), text);
+        }
+
+        private async void ResetPassword_Clicked(object sender, RoutedEventArgs e)
+        {
+            // Display the reset password dialog
+            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog();
+            resetPasswordDialog.XamlRoot = this.XamlRoot;
+            await resetPasswordDialog.ShowAsync();
         }
 
         private async void UpdateUser_Clicked(object sender, RoutedEventArgs e)

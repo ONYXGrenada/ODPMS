@@ -10,120 +10,28 @@
     mc:Ignorable="d">
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">-->
 
-    <!--<Grid>
-        <Grid.RowDefinitions>
-            --><!--Theme Section--><!--
-            <RowDefinition Height="2*"/>
-            
-        </Grid.RowDefinitions>
-
-    </Grid>-->
-
-
-    <!--<ListView x:Name="SettingsItemListView"
-              Padding="24,12,24,36"
-              IsItemClickEnabled="True"
-              IsSwipeEnabled="False"
-              SelectionMode="None"
-              TabIndex="1">
-
-        <Grid x:Name="ExampleContainer"
-              x:FieldModifier="Public"
-              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-              BorderThickness="1"
-              CornerRadius="8,8,0,0"
-              Padding="12,12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="48"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"
-                       Text="Image Placeholder"/>
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="Settings Header"
-                           Style="{StaticResource SubtitleTextBlockStyle}"/>
-                <TextBlock Text="Long settings description with a lot of text"
-                           TextWrapping="Wrap"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="Example2Container"
-              x:FieldModifier="Public"
-              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-              BorderThickness="1"
-              CornerRadius="8,8,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"
-                       Text="Image Placeholder"/>
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="Settings Header"
-                           Style="{StaticResource SubtitleTextBlockStyle}"/>
-                <TextBlock Text="Long settings description with a lot of text"
-                           TextWrapping="Wrap"/>
-            </StackPanel>
-        </Grid>
-
-        <Grid x:Name="Example3Container"
-              x:FieldModifier="Public"
-              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-              BorderThickness="1"
-              CornerRadius="8,8,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"
-                       Text="Image Placeholder"/>
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="Settings Header"
-                           Style="{StaticResource SubtitleTextBlockStyle}"/>
-                <TextBlock Text="Long settings description with a lot of text"
-                           TextWrapping="Wrap"/>
-            </StackPanel>
-        </Grid>
-
-    </ListView>-->
     <Grid Padding="56,0,0,0"
           Margin="5">
         <Grid.RowDefinitions>
-            <!--Section 1: Theme Settings -->
+            <!--Section 1: User Settings -->
             <RowDefinition Height="Auto" />
-            <!--Section 2: User Settings -->
+            <!--Section 2: Users Administration -->
             <RowDefinition Height="Auto" />
-            <!--Section 3: User Administration -->
+            <!--Section 3: Company Administration -->
             <RowDefinition Height="Auto" />
             <!--Section 4: Ticket Administration -->
+            <RowDefinition Height="Auto" />
+            <!--Section 5: Receipt Administration -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <!--Section 1: User Settings -->
 
-        <!--Section 1: Theme Settings -->
-
-        <StackPanel Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="0,16,40,16"
-                    Padding="16"
-                    CornerRadius="8"
-                    Background="{ThemeResource LayerFillColorDefaultBrush}">
-            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
-                       Margin="0,12,0,0"
-                       Text="Theme Mode" />
-            <StackPanel x:Name="themePanel_sp" Margin="0,10,0,0">
-                <RadioButton Tag="Light" Checked="OnThemeRadioButtonChecked" Content="Light" KeyDown="OnThemeRadioButtonKeyDown" />
-                <RadioButton Tag="Dark" Checked="OnThemeRadioButtonChecked" Content="Dark" />
-                <RadioButton Tag="Default" Checked="OnThemeRadioButtonChecked" Content="Use system setting" />
-            </StackPanel>
-        </StackPanel>
-
-        <!--Section 2: User Settings -->
-
-        <StackPanel Grid.Row="1"
+        <StackPanel x:Name="userPanel_sp"
+                    Grid.Row="0"
                     Grid.Column="0"
                     Margin="0,16,40,16"
                     Padding="16"
@@ -135,34 +43,39 @@
                        Text="User Settings"/>
 
             <StackPanel Orientation="Horizontal" 
-                        Margin="5">
-                <TextBlock MinWidth="110"
-                           VerticalAlignment="Center"
+                        Margin="5"
+                        Spacing="10">
+                <TextBlock VerticalAlignment="Center"
                            Text="First Name:" />
                 <TextBox x:Name="firstName_txt"
-                         MinWidth="320"
-                         MaxWidth="320"/>
+                         MinWidth="180"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" 
-                                Margin="5">
-                <TextBlock MinWidth="110"
-                                   VerticalAlignment="Center"
-                                   Text="Last Name:" />
+                        Margin="5"
+                        Spacing="10">
+                <TextBlock VerticalAlignment="Center"
+                           Text="Last Name:" />
                 <TextBox x:Name="lastName_txt"
-                         MinWidth="320"
-                         MaxWidth="320"/>
+                         MinWidth="180"/>
             </StackPanel>
+            
+            <Button Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Content="Reset Password"
+                    Click="ResetPassword_Clicked"
+                    MinWidth="120"/>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Update User"
-                    Click="UpdateUser_Clicked" />
+                    Click="UpdateUser_Clicked"
+                    MinWidth="120"/>
         </StackPanel>
 
-        <!--Section 3: User Administration -->
+        <!--Section 2: Users Administration -->
 
-        <StackPanel x:Name="userPanel_sp"
-                    Grid.Row="2"
+        <StackPanel x:Name="usersAdminPanel_sp"
+                    Grid.Row="1"
                     Grid.Column="0"
                     Margin="0,16,40,16"
                     Padding="16"
@@ -178,35 +91,85 @@
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add User"
-                    Click="AddUser_Clicked" />
+                    Click="AddUser_Clicked"
+                    MinWidth="120"/>
         </StackPanel>
 
-        <!--Section 4: Ticket Administration -->
+        <!--Section 3: Company Administratioon -->
 
-        <StackPanel Grid.Row="3"
+        <StackPanel x:Name="companyAdminPanel_sp"
+                    Grid.Row="2"
                     Grid.Column="0"
                     Margin="0,16,40,16"
                     Padding="16"
+                    Spacing="8"
                     CornerRadius="8"
                     Background="{ThemeResource LayerFillColorDefaultBrush}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
-                       Text="Ticket Administration" />
-            <StackPanel Orientation="Horizontal"
-                        Margin="5">
-                <TextBlock MinWidth="110"
-                           VerticalAlignment="Center"
-                           Text="Subject:" />
-                <TextBox x:Name="emailSubject_txt" 
-                         MinWidth="240" />
+                       Text="Company Administration"/>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="5"
+                        Spacing="10">
+                <TextBlock VerticalAlignment="Center"
+                           Text="Company Logo:" />
+                <Image Source="Assets\Images\logo-placeholder.png"/>
             </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="5"
+                        Spacing="10">
+                <TextBlock VerticalAlignment="Center"
+                           Text="Company Name:" />
+                <TextBox x:Name="companyName_txt"
+                         MinWidth="180"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        <!--Section 4: Ticket Administration -->
+
+        <StackPanel x:Name="ticketsAdminPanel_sp"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="0,16,40,16"
+                    Padding="16"
+                    Spacing="8"
+                    CornerRadius="8"
+                    Background="{ThemeResource LayerFillColorDefaultBrush}">
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                       Margin="0,12,0,0"
+                       Text="Ticket Administration"/>
+            <controls:DataGrid x:Name="ticketTypes_dataGrid"
+                               AutoGenerateColumns="True"
+                               ItemsSource="{x:Bind TicketTypes}"/>
+            <Button Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Content="Add Ticket Type"
+                    Click="AddUser_Clicked"
+                    MinWidth="120"/>
+        </StackPanel>
+
+        <!--Section 5: Receipt Administration -->
+
+        <StackPanel x:Name="receiptsAdminPanel_sp"
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="0,16,40,16"
+                    Padding="16"
+                    Spacing="8"
+                    CornerRadius="8"
+                    Background="{ThemeResource LayerFillColorDefaultBrush}">
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                       Margin="0,12,0,0"
+                       Text="Receipt Administration" />
 
             <StackPanel Orientation="Horizontal"
                         Margin="5">
                 <TextBlock MinWidth="110"
-                           VerticalAlignment="Center"
-                           Text="Body:" />
-                <TextBox x:Name="emailBody_txt"
+                           Text="Receipt message:" />
+                <TextBox x:Name="receiptMessage_txt"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
                          MinHeight="100"

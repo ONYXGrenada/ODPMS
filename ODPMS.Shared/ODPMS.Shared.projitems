@@ -18,6 +18,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\ResetPasswordContentDialog.xaml.cs">
+      <DependentUpon>ResetPasswordContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DatabaseHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -30,13 +33,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\NewTicketContentDialog.xaml.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewTicketContentDialog.xaml.cs">
       <DependentUpon>NewTicketContentDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\NewUserContentDialog.xaml.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewUserContentDialog.xaml.cs">
       <DependentUpon>NewUserContentDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\PayTicketContentDialog.xaml.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\PayTicketContentDialog.xaml.cs">
       <DependentUpon>PayTicketContentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Pages\ReportsPage.xaml.cs">
@@ -59,15 +62,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Pages\NewTicketContentDialog.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\NewTicketContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Pages\NewUserContentDialog.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\NewUserContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Pages\PayTicketContentDialog.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\PayTicketContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -97,7 +100,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </_Globbled_Page>
-    <Page Include="@(_Globbled_Page)" />
+    <Page Include="@(_Globbled_Page)">
+      <SubType>Designer</SubType>
+    </Page>
     <_Globbed_Compile Include="$(MSBuildThisFileDirectory)**/*.xaml.cs" Exclude="@(Compile)">
       <DependentUpon>%(Filename)</DependentUpon>
     </_Globbed_Compile>
@@ -106,8 +111,5 @@
     <PRIResource Include="@(_Globbed_PRIResource)" />
     <_Globbed_Content Include="$(MSBuildThisFileDirectory)Assets/**/*.*" Exclude="@(Content)" />
     <Content Include="@(_Globbed_Content)" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Dialogs\" />
   </ItemGroup>
 </Project>
