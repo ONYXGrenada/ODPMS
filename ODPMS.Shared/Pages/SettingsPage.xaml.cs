@@ -30,8 +30,8 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        public ObservableCollection<UserViewModel> Users { get; set; }
-        public ObservableCollection<UserViewModel> TicketTypes { get; set; }
+        public ObservableCollection<UserViewModel> Users { get; } = new();
+        public ObservableCollection<UserViewModel> TicketTypes { get; } = new();
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -42,8 +42,22 @@ namespace ODPMS.Pages
         {
             if (App.LoggedInUser.UserType == "admin")
             {
-                Users = DatabaseHelper.GetUsers();
-                TicketTypes = DatabaseHelper.GetUsers();
+                var users = DatabaseHelper.GetUsers();
+
+                if (Users.Count != 0)
+                    Users.Clear();
+
+                foreach (var user in users)
+                    Users.Add(user);
+
+                var ticketTypes = DatabaseHelper.GetUsers();
+
+                if (TicketTypes.Count != 0)
+                    TicketTypes.Clear();
+
+                foreach (var ticketType in ticketTypes)
+                    TicketTypes.Add(ticketType);
+
             }
             else
             {

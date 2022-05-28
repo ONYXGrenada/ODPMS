@@ -26,7 +26,7 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        public ObservableCollection<TicketViewModel> TicketList { get; set; }
+        public ObservableCollection<TicketViewModel> TicketList { get; } = new();
         public HomePage()
         {
             this.InitializeComponent();
@@ -42,7 +42,14 @@ namespace ODPMS.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            TicketList = DatabaseHelper.GetTicketListViewData("Open");
+            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+            if (TicketList.Count != 0)
+                TicketList.Clear();
+
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
+
             welcomeMessage_txtBlock.Text = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
         }
 
@@ -52,8 +59,13 @@ namespace ODPMS.Pages
             ContentDialog ticketDialog = new NewTicketContentDialog();
             ticketDialog.XamlRoot = this.XamlRoot;
             await ticketDialog.ShowAsync();
-            TicketList = DatabaseHelper.GetTicketListViewData("Open");
-            ticketList_dataGrid.ItemsSource = TicketList;
+            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+            if (TicketList.Count != 0)
+                TicketList.Clear();
+
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
         }
          
         private async void PayTicket_Clicked(object sender, RoutedEventArgs e)
@@ -69,8 +81,15 @@ namespace ODPMS.Pages
                     ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
                     payDialog.XamlRoot = this.XamlRoot;
                     await payDialog.ShowAsync();
-                    TicketList = DatabaseHelper.GetTicketListViewData("Open");
-                    ticketList_dataGrid.ItemsSource = TicketList;
+                    
+                    var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+                    if (TicketList.Count != 0)
+                        TicketList.Clear();
+
+                    foreach (var ticket in tickets)
+                        TicketList.Add(ticket);
+
                     this.ticketNumber_txt.Text = "";
                 } 
                 else
