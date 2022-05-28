@@ -23,7 +23,7 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class ReportsPage : Page
     {
-        public ObservableCollection<Ticket> TicketList { get; set; }
+        public ObservableCollection<Ticket> TicketList { get; } = new();
         public ReportsPage()
         {
             this.InitializeComponent();
@@ -56,8 +56,13 @@ namespace ODPMS.Pages
             //Retrieves status for use with database query
             string selectedStatus = this.status_cbox.SelectionBoxItem.ToString();
 
-            TicketList = DatabaseHelper.GetTicketListRange(fromDate, toDate, selectedStatus);
-            this.ticketList_dataGrid.ItemsSource = TicketList;
+            var tickets = DatabaseHelper.GetTicketListRange(fromDate, toDate, selectedStatus);
+
+            if (TicketList.Count != 0)
+                TicketList.Clear();
+
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
         }
 
         private async void ReportExport_Clicked(object sender, RoutedEventArgs e)
