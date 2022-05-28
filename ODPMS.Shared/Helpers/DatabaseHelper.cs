@@ -23,7 +23,7 @@ namespace ODPMS.Helpers
         {
             await ApplicationData.Current.LocalFolder.CreateFileAsync("odpms_data.db", CreationCollisionOption.OpenIfExists);
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
-            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath},Cache=Shared"))
             {
                 dbconn.Open();
 
@@ -532,22 +532,22 @@ namespace ODPMS.Helpers
             {
                 dbconn.Open();
 
-                SqliteCommand insertCommand = new SqliteCommand();
-                insertCommand.Connection = dbconn;
+                SqliteCommand updateCommand = new SqliteCommand();
+                updateCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
-                insertCommand.CommandText = "UPDATE Users SET Username=@Username, Password=@Password, Salt=@Salt, FirstName=@FirstName, LastName=@LastName, UserType=@UserType, LastLogin=@LastLogin WHERE Id=@Id;";
-                insertCommand.Parameters.AddWithValue("@Username", updateUser.Username);
-                insertCommand.Parameters.AddWithValue("@Password", updateUser.Password);
-                insertCommand.Parameters.AddWithValue("@Salt", updateUser.Salt);
-                insertCommand.Parameters.AddWithValue("@FirstName", updateUser.FirstName);
-                insertCommand.Parameters.AddWithValue("@LastName", updateUser.LastName);
-                insertCommand.Parameters.AddWithValue("@UserType", updateUser.UserType);
-                insertCommand.Parameters.AddWithValue("@Status", updateUser.Status);
-                insertCommand.Parameters.AddWithValue("@LastLogin", updateUser.LastLogin);
-                insertCommand.Parameters.AddWithValue("@Id", updateUser.Id);
+                updateCommand.CommandText = "UPDATE Users SET Username=@Username, Password=@Password, Salt=@Salt, FirstName=@FirstName, LastName=@LastName, UserType=@UserType, LastLogin=@LastLogin WHERE Id=@Id;";
+                updateCommand.Parameters.AddWithValue("@Username", updateUser.Username);
+                updateCommand.Parameters.AddWithValue("@Password", updateUser.Password);
+                updateCommand.Parameters.AddWithValue("@Salt", updateUser.Salt);
+                updateCommand.Parameters.AddWithValue("@FirstName", updateUser.FirstName);
+                updateCommand.Parameters.AddWithValue("@LastName", updateUser.LastName);
+                updateCommand.Parameters.AddWithValue("@UserType", updateUser.UserType);
+                updateCommand.Parameters.AddWithValue("@Status", updateUser.Status);
+                updateCommand.Parameters.AddWithValue("@LastLogin", updateUser.LastLogin);
+                updateCommand.Parameters.AddWithValue("@Id", updateUser.Id);
 
-                insertCommand.ExecuteReader();
+                updateCommand.ExecuteReader();
 
                 dbconn.Close();
             }
@@ -614,6 +614,8 @@ namespace ODPMS.Helpers
             //if (users.Count > 0 && BCrypt.Net.BCrypt.Verify(BCrypt.Net.BCrypt.HashPassword(password, users[0].Salt), users[0].Password))
             if (users.Count > 0 && BCrypt.Net.BCrypt.HashPassword(password, users[0].Salt) == users[0].Password)
             {
+                users[0].LastLogin = DateTime.Now;
+                UpdateUser(users[0]);
                 return users;
             }
             else

@@ -66,6 +66,8 @@ namespace ODPMS.Pages
                 ticketsAdminPanel_sp.Visibility = Visibility.Collapsed;
                 receiptsAdminPanel_sp.Visibility = Visibility.Collapsed;
             }
+            this.firstName_txt.Text = App.LoggedInUser.FirstName;
+            this.lastName_txt.Text = App.LoggedInUser.LastName;
         }
 
         private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
@@ -103,8 +105,23 @@ namespace ODPMS.Pages
             await resetPasswordDialog.ShowAsync();
         }
 
-        private async void UpdateUser_Clicked(object sender, RoutedEventArgs e)
+        private void UpdateUser_Clicked(object sender, RoutedEventArgs e)
         {
+            if (this.firstName_txt.Text != App.LoggedInUser.FirstName || this.lastName_txt.Text != App.LoggedInUser.LastName)
+            {
+                App.LoggedInUser.FirstName = this.firstName_txt.Text;
+                App.LoggedInUser.LastName = this.lastName_txt.Text;
+                DatabaseHelper.UpdateUser(App.LoggedInUser);
+
+                var users = DatabaseHelper.GetUsers();
+
+                if (Users.Count != 0)
+                    Users.Clear();
+
+                foreach (var user in users)
+                    Users.Add(user);
+            }
+            
             // Example FileSavePicker as reference
             //FileSavePicker picker = new();
             //picker.SuggestedStartLocation = PickerLocationId.Downloads;

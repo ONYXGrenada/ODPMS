@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using ODPMS.Helpers;
+using Microsoft.UI;
 
 namespace ODPMS.Dialogs
 {
@@ -24,6 +26,13 @@ namespace ODPMS.Dialogs
 
 		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
+			if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, App.LoggedInUser.Salt) == App.LoggedInUser.Password && 
+				this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
+            {
+                App.LoggedInUser.Salt = BCrypt.Net.BCrypt.GenerateSalt();
+                App.LoggedInUser.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, App.LoggedInUser.Salt);
+				DatabaseHelper.UpdateUser(App.LoggedInUser);
+            }
 		}
 
 		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -32,6 +41,28 @@ namespace ODPMS.Dialogs
 
         private void Password_Changed(object sender, RoutedEventArgs e)
         {
+			if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, App.LoggedInUser.Salt) != App.LoggedInUser.Password)
+            {
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Your password in incorrect.";
+            } else
+            {
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
+                statusMessage_txtBlock.Text = "";
+            }
+        }
+
+        private void NewPassword_Changed(object sender, RoutedEventArgs e)
+        {
+            if (this.newPassword_txt.Password != this.newPasswordConfirmed_txt.Password)
+            {
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Passwords do not match. Please try again.";
+            } else
+            {
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
+                statusMessage_txtBlock.Text = "";
+            }
         }
     }
 }
