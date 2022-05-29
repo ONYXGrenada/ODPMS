@@ -75,6 +75,49 @@ namespace ODPMS.Helpers
                 createTable = new SqliteCommand(tableCommand, dbconn);
                 createTable.ExecuteReader();
 
+                //Prepaid Customers Table
+                tableCommand =
+                    "CREATE TABLE IF NOT EXISTS " +
+                    "Customers (NumberPlate NVARCHAR(7) PRIMARY KEY, " +
+                    "FirstName NVCARCHAR(50)," +
+                    "LastName NVCARCHAR(50)," +
+                    "Telephone NVARCHAR(15)," +
+                    "Email NVCARCHAR(50)," +
+                    "Created DATETIME," +
+                    "User NVARCHAR(10))";
+
+                createTable = new SqliteCommand(tableCommand, dbconn);
+                createTable.ExecuteReader();
+
+                //Prepaid Transactions Table
+                tableCommand =
+                    "CREATE TABLE IF NOT EXISTS " +
+                    "PrepaidTransactions (Id INTEGER PRIMARY KEY, " +
+                    "NumberPlate NVARCHAR(7)," +
+                    "Type NVCARCHAR(50)," +
+                    "Description NVARCHAR(50)," +
+                    "IssueDate DATETIME," +
+                    "ExpiryDate DATETIME," +
+                    "Status NVARCHAR(50)," +
+                    "Cost FLOAT," +
+                    "User NVARCHAR(10))";
+
+                createTable = new SqliteCommand(tableCommand, dbconn);
+                createTable.ExecuteReader();
+
+                //Float Table
+                tableCommand =
+                    "CREATE TABLE IF NOT EXISTS " +
+                    "Float (Id INTEGER PRIMARY KEY, " +
+                    "Amount FLOAT," +
+                    "User NVCARCHAR(10)," +
+                    "Date DATETIME," +
+                    "UpdatedBy NVCARCHAR(10)," +
+                    "UpdateDate DATETIME);";
+
+                createTable = new SqliteCommand(tableCommand, dbconn);
+                createTable.ExecuteReader();
+
                 dbconn.Close();
             }
 
