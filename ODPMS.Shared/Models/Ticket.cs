@@ -14,14 +14,14 @@ namespace ODPMS.Models
         public string Type { get; set; }
         public string Description { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Closed { get; set; }
+        public DateTime? Closed { get; set; }
         public string Status { get; set; }
         public double Rate { get; set; }
         public double Cost { get; set; }
         public double Balance { get; set; }
         public string User { get; set; }
 
-        public Ticket(int id, int number, string type, string description, DateTime created, DateTime closed, string status, double rate, double cost, double balance, string user)
+        public Ticket(int id, int number, string type, string description, DateTime created, DateTime? closed, string status, double rate, double cost, double balance, string user)
         {
             Id = id;
             Number = number;
@@ -78,14 +78,14 @@ namespace ODPMS.Models
         public string Type { get; set; }
         public string Description { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Closed { get; set; }
+        public DateTime? Closed { get; set; }
         public string Status { get; set; }
         public double Rate { get; set; }
         public double Cost { get; set; }
         public double Balance { get; set; }
         public string User { get; set; }
 
-        public TicketViewModel(int number, string type, string description, DateTime created, DateTime closed, string status, double rate, double cost, double balance, string user)
+        public TicketViewModel(int number, string type, string description, DateTime created, DateTime? closed, string status, double rate, double cost, double balance, string user)
         {
             Number = number;
             Type = type;

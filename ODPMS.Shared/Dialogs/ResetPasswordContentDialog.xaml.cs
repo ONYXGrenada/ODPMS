@@ -39,7 +39,7 @@ namespace ODPMS.Dialogs
 		{
 		}
 
-        private void Password_Changed(object sender, RoutedEventArgs e)
+        private void Password_LostFocus(object sender, RoutedEventArgs e)
         {
 			if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, App.LoggedInUser.Salt) != App.LoggedInUser.Password)
             {

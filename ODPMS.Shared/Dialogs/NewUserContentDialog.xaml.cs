@@ -14,6 +14,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
 using ODPMS.Helpers;
+using Microsoft.UI;
+using System.Collections.ObjectModel;
 
 namespace ODPMS.Dialogs
 {
@@ -23,7 +25,8 @@ namespace ODPMS.Dialogs
         public NewUserContentDialog()
 		{
 			this.InitializeComponent();
-		}
+            this.userType_cb.SelectedIndex = 1;
+        }
 
         private void NewUser_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
         {
@@ -40,12 +43,37 @@ namespace ODPMS.Dialogs
         private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Add the new ticket object to the database
+            string salt = BCrypt.Net.BCrypt.GenerateSalt();
+            string password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, salt);
+            string userType = ((ComboBoxItem)this.userType_cb.SelectedItem).Tag.ToString();
+            NewUser = new User(null, this.username_txt.Text, password, salt, this.firstName_txt.Text, 
+                this.lastName_txt.Text, userType, "Active", null);
             DatabaseHelper.AddUser(NewUser);
         }
 
         private void CloseButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Discard the new ticket object
+        }
+
+        private void Password_Changed(object sender, RoutedEventArgs e)
+        {
+            if (this.newPassword_txt.Password != this.newPasswordConfirmed_txt.Password)
+            {
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Passwords do not match. Please try again.";
+            }
+            else
+            {
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
+                statusMessage_txtBlock.Text = "";
+            }
+        }
+
+        private void LastName_TextChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.firstName_txt.Text != null && this.lastName_txt.Text != null)
+                this.username_txt.Text = this.firstName_txt.Text.Substring(0, 1).ToLower() + this.lastName_txt.Text.ToLower();
         }
     }
 }

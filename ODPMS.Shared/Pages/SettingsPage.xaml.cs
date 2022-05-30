@@ -144,6 +144,14 @@ namespace ODPMS.Pages
             ContentDialog newUserDialog = new NewUserContentDialog();
             newUserDialog.XamlRoot = this.XamlRoot;
             await newUserDialog.ShowAsync();
+
+            var users = DatabaseHelper.GetUsers();
+
+            if (Users.Count != 0)
+                Users.Clear();
+
+            foreach (var user in users)
+                Users.Add(user);
         }
     }
 }
