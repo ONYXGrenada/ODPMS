@@ -370,7 +370,7 @@ namespace ODPMS.Helpers
                 {
                     ticket = new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
                         query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
-                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10));
+                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), query.GetString(10));
 
                     ticket.Closed = DateTime.Now;
                     TimeSpan ts = ticket.Closed - ticket.Created;
@@ -453,7 +453,7 @@ namespace ODPMS.Helpers
                 {
                     tickets.Add(new TicketViewModel(Int32.Parse(query.GetString(1)), query.GetString(2), query.GetString(3), 
                         DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6), float.Parse(query.GetString(7)),
-                        float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                        float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), query.GetString(10)));
                     //tickets.Add(new Ticket(query.GetString(0)));
                 }
 
@@ -491,7 +491,7 @@ namespace ODPMS.Helpers
                 {
                     tickets.Add(new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
                         query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
-                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), query.GetString(10)));
                     //tickets.Add(new Ticket(query.GetString(0)));
                 }
 
