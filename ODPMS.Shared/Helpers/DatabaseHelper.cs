@@ -156,13 +156,15 @@ namespace ODPMS.Helpers
             DateTime lastLogin = DateTime.Now;
 
             //Ticket Type
-            int ttId = 1;
-            string ticketType = "Hour";
-            string ttDescription = "Hourly Ticket";
-            double unitCost = 2.50;
-            string ttStatus = "Active";
-            string ttUsername = "test";
-            DateTime activityDate = DateTime.Now;
+            int[] ttId = { 1, 2, 3 };
+            string[] ticketType = { "Hour", "Week", "Month" };
+            string[] ttDescription = { "Hourly Ticket", "Weekly Customer", "Monthly Customer" };
+            double [] unitCost = { 2.50, 50.00, 200.00 };
+            string [] ttStatus = { "Active", "Active", "Active" };
+            string [] ttUsername = { "test", "test", "test" };
+            DateTime [] activityDate = { DateTime.Now, DateTime.Now, DateTime.Now };
+
+            
 
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -206,24 +208,31 @@ namespace ODPMS.Helpers
                 insertUserCommand.Parameters.AddWithValue("@LastLogin", lastLogin);
 
                 insertUserCommand.ExecuteReader();
+              
 
                 //Ticket Type
                 SqliteCommand insertTypeCommand = new SqliteCommand();
                 insertTypeCommand.Connection = dbconn;
 
-                // Use parameterized query to prevent SQL injection attacks
-                insertTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @UnitCost, @Status, @Username, @ActivityDate);";
-                insertTypeCommand.Parameters.AddWithValue("@Id", ttId);
-                insertTypeCommand.Parameters.AddWithValue("@TicketType", ticketType);
-                insertTypeCommand.Parameters.AddWithValue("@Description", ttDescription);
-                insertTypeCommand.Parameters.AddWithValue("@UnitCost", unitCost);
-                insertTypeCommand.Parameters.AddWithValue("@Status", ttStatus);
-                insertTypeCommand.Parameters.AddWithValue("@Username", ttUsername);
-                insertTypeCommand.Parameters.AddWithValue("@ActivityDate", activityDate);
-
-                insertTypeCommand.ExecuteReader();
-
+                for (int i = 0; i < ttId.Length; i++)
+                {
+                    // Use parameterized query to prevent SQL injection attacks
+                    insertTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @UnitCost, @Status, @Username, @ActivityDate);";
+                    insertTypeCommand.Parameters.AddWithValue("@Id", ttId[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@TicketType", ticketType[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@Description", ttDescription[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@UnitCost", unitCost[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@Status", ttStatus[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@Username", ttUsername[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@ActivityDate", activityDate[i]);              
+                    insertTypeCommand.ExecuteReader();
+                    insertTypeCommand.Parameters.Clear();
+                    insertTypeCommand.Dispose();
+                              
+                }
+                
                 dbconn.Close();
+                
             }
 
         }

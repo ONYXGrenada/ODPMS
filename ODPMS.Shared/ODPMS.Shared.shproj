@@ -14,6 +14,7 @@
     <Content Remove="Assets\logo-placeholder.webp" />
   </ItemGroup>
   <ItemGroup>
+    <_Globbed_Compile Remove="Dialogs\ContentDialog1.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\ResetPasswordContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Helpers\Common.cs" />
     <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
