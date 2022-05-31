@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Helpers;
 using Microsoft.UI;
+using Windows.UI.Popups;
 
 namespace ODPMS.Dialogs
 {
@@ -32,25 +33,30 @@ namespace ODPMS.Dialogs
                 App.LoggedInUser.Salt = BCrypt.Net.BCrypt.GenerateSalt();
                 App.LoggedInUser.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, App.LoggedInUser.Salt);
 				DatabaseHelper.UpdateUser(App.LoggedInUser);
+            } else
+            {
+                args.Cancel = true;
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Please try again.";
             }
-		}
+        }
 
 		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 		}
 
-        private void Password_LostFocus(object sender, RoutedEventArgs e)
-        {
-			if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, App.LoggedInUser.Salt) != App.LoggedInUser.Password)
-            {
-                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
-                statusMessage_txtBlock.Text = "Your password in incorrect.";
-            } else
-            {
-                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
-                statusMessage_txtBlock.Text = "";
-            }
-        }
+   //     private void Password_LostFocus(object sender, RoutedEventArgs e)
+   //     {
+			//if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, App.LoggedInUser.Salt) != App.LoggedInUser.Password)
+   //         {
+   //             statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+   //             statusMessage_txtBlock.Text = "Your password in incorrect.";
+   //         } else
+   //         {
+   //             statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
+   //             statusMessage_txtBlock.Text = "";
+   //         }
+   //     }
 
         private void NewPassword_Changed(object sender, RoutedEventArgs e)
         {

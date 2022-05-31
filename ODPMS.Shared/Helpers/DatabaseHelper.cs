@@ -30,7 +30,7 @@ namespace ODPMS.Helpers
                 //Tickets Table
                 String tableCommand = 
                     "CREATE TABLE IF NOT EXISTS " +
-                    "Tickets (Id INTEGER PRIMARY KEY, " +
+                    "Tickets (Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "Number INTEGER," +
                     "Type NVCARCHAR(50)," +
                     "Description NVARCHAR(50)," +
@@ -39,6 +39,7 @@ namespace ODPMS.Helpers
                     "Status NVARCHAR(50)," +
                     "Rate FLOAT," +
                     "Cost FLOAT," +
+                    "PayAmount FLOAT," +
                     "Balance FLOAT," +
                     "User NVARCHAR(10))";
     
@@ -132,7 +133,7 @@ namespace ODPMS.Helpers
             var cultureInfo = new CultureInfo("en-US");
 
             //Default Ticket
-            int id = 1;
+            //int id = 1;
             int number = 1;
             string type = "Hour";
             string description = "Hourly Ticket";
@@ -141,6 +142,7 @@ namespace ODPMS.Helpers
             string status = "Paid";
             double rate = 3.50;
             double cost = 10.00;
+            double payAmount = 10.00;
             double balance = 0.0;
             string user = "test";
 
@@ -176,8 +178,9 @@ namespace ODPMS.Helpers
                 insertCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
-                insertCommand.CommandText = "INSERT INTO Tickets VALUES (@Id, @Number, @Type, @Description, @Created, NULL, @Status, @Rate, @Cost, @Balance, @User);";
-                insertCommand.Parameters.AddWithValue("@Id", id);
+                //insertCommand.CommandText = "INSERT INTO Tickets VALUES (@Id, @Number, @Type, @Description, @Created, NULL, @Status, @Rate, @Cost, @Balance, @User);";
+                insertCommand.CommandText = "INSERT INTO Tickets VALUES (NULL, @Number, @Type, @Description, @Created, NULL, @Status, @Rate, @Cost, @PayAmount, @Balance, @User);";
+                //insertCommand.Parameters.AddWithValue("@Id", id);
                 insertCommand.Parameters.AddWithValue("@Number", number);
                 insertCommand.Parameters.AddWithValue("@Type", type);
                 insertCommand.Parameters.AddWithValue("@Description", description);
@@ -186,6 +189,7 @@ namespace ODPMS.Helpers
                 insertCommand.Parameters.AddWithValue("@Status", status);
                 insertCommand.Parameters.AddWithValue("@Rate", rate);
                 insertCommand.Parameters.AddWithValue("@Cost", cost);
+                insertCommand.Parameters.AddWithValue("@PayAmount", payAmount);
                 insertCommand.Parameters.AddWithValue("@Balance", balance);
                 insertCommand.Parameters.AddWithValue("@User", user);
 
@@ -277,8 +281,8 @@ namespace ODPMS.Helpers
 
                 // Use parameterized query to prevent SQL injection attacks
                 //insertCommand.CommandText = "INSERT INTO Tickets VALUES (@Id, @Number, @Type, @Description, @Created, @Closed, @Status, @Rate, @Cost, @Balance, @User);";
-                insertCommand.CommandText = "INSERT INTO Tickets VALUES (@Id, @Number, @Type, @Description, @Created, NULL, @Status, @Rate, @Cost, @Balance, @User);";
-                insertCommand.Parameters.AddWithValue("@Id", ticket.Id);
+                insertCommand.CommandText = "INSERT INTO Tickets VALUES (NULL, @Number, @Type, @Description, @Created, NULL, @Status, @Rate, @Cost, @PayAmount, @Balance, @User);";
+                //insertCommand.Parameters.AddWithValue("@Id", ticket.Id);
                 insertCommand.Parameters.AddWithValue("@Number", ticket.Number);
                 insertCommand.Parameters.AddWithValue("@Type", ticket.Type);
                 insertCommand.Parameters.AddWithValue("@Description", ticket.Description);
@@ -287,6 +291,7 @@ namespace ODPMS.Helpers
                 insertCommand.Parameters.AddWithValue("@Status", ticket.Status);
                 insertCommand.Parameters.AddWithValue("@Rate", ticket.Rate);
                 insertCommand.Parameters.AddWithValue("@Cost", ticket.Cost);
+                insertCommand.Parameters.AddWithValue("@PayAmount", ticket.PayAmount);
                 insertCommand.Parameters.AddWithValue("@Balance", ticket.Balance);
                 insertCommand.Parameters.AddWithValue("@User", ticket.User);
 
@@ -314,7 +319,7 @@ namespace ODPMS.Helpers
                 query.Read();
                 int ticketNumber = Int32.Parse(query.GetString(0));
 
-                ticket = new Ticket(ticketNumber+1, ticketNumber+1, ticketType, "Hourly Ticket", DateTime.Now, null, "Open", float.Parse("2.5"), float.Parse("0.0"), float.Parse("0.0"), App.LoggedInUser.Username);
+                ticket = new Ticket(null, ticketNumber+1, ticketType, "Hourly Ticket", DateTime.Now, null, "Open", float.Parse("2.5"), float.Parse("0.0"), float.Parse("0.0"), float.Parse("0.0"), App.LoggedInUser.Username);
 
                 dbconn.Close();
             }
@@ -373,13 +378,14 @@ namespace ODPMS.Helpers
                     if (query[5].GetType() == typeof(DBNull))
                     {
                         ticket = new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
-                        query.GetString(3), DateTime.Parse(query.GetString(4)), null, query.GetString(6),
-                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10));
+                            query.GetString(3), DateTime.Parse(query.GetString(4)), null, query.GetString(6), float.Parse(query.GetString(7)), 
+                            float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), float.Parse(query.GetString(10)), query.GetString(11));
                     } else
                     {
                         ticket = new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
-                        query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
-                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10));
+                            query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
+                            float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), 
+                            float.Parse(query.GetString(10)), query.GetString(11));
                     }
 
                     ticket.Closed = DateTime.Now;
@@ -462,13 +468,15 @@ namespace ODPMS.Helpers
                     {
                         tickets.Add(new TicketViewModel(Int32.Parse(query.GetString(1)), query.GetString(2), query.GetString(3), 
                             DateTime.Parse(query.GetString(4)), null, query.GetString(6), float.Parse(query.GetString(7)), 
-                            float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                            float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), float.Parse(query.GetString(10)), 
+                            query.GetString(11)));
                     }
                     else
                     {
                         tickets.Add(new TicketViewModel(Int32.Parse(query.GetString(1)), query.GetString(2), query.GetString(3), 
                             DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
-                            float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                            float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), 
+                            float.Parse(query.GetString(10)), query.GetString(11)));
                     }
                 }
 
@@ -507,14 +515,15 @@ namespace ODPMS.Helpers
                     if (query[5].GetType() == typeof(DBNull))
                     {
                         tickets.Add(new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
-                        query.GetString(3), DateTime.Parse(query.GetString(4)), null, query.GetString(6),
-                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                            query.GetString(3), DateTime.Parse(query.GetString(4)), null, query.GetString(6), float.Parse(query.GetString(7)),
+                            float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), float.Parse(query.GetString(10)), query.GetString(11)));
                     }
                     else
                     {
                         tickets.Add(new Ticket(Int32.Parse(query.GetString(0)), Int32.Parse(query.GetString(1)), query.GetString(2),
-                        query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
-                        float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(8)), query.GetString(10)));
+                            query.GetString(3), DateTime.Parse(query.GetString(4)), DateTime.Parse(query.GetString(5)), query.GetString(6),
+                            float.Parse(query.GetString(7)), float.Parse(query.GetString(8)), float.Parse(query.GetString(9)), 
+                            float.Parse(query.GetString(10)), query.GetString(11)));
                     }
                 }
 

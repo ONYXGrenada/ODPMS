@@ -42,13 +42,36 @@ namespace ODPMS.Dialogs
 
         private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            // Add the new ticket object to the database
-            string salt = BCrypt.Net.BCrypt.GenerateSalt();
-            string password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, salt);
-            string userType = ((ComboBoxItem)this.userType_cb.SelectedItem).Tag.ToString();
-            NewUser = new User(null, this.username_txt.Text, password, salt, this.firstName_txt.Text, 
-                this.lastName_txt.Text, userType, "Active", null);
-            DatabaseHelper.AddUser(NewUser);
+            // Check for errors
+
+            if (string.IsNullOrEmpty(this.username_txt.Text))
+            {
+                args.Cancel = true;
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Username is required.";
+            }
+            else if (string.IsNullOrEmpty(this.newPassword_txt.Password) || string.IsNullOrEmpty(this.newPasswordConfirmed_txt.Password))
+            {
+                args.Cancel = true;
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Password is required.";
+            }
+            else if (string.IsNullOrEmpty(((ComboBoxItem)this.userType_cb.SelectedItem).Tag.ToString()))
+            {
+                args.Cancel = true;
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "User Type is required.";
+            } else
+            {
+                // Add the new ticket object to the database
+                string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                string password = BCrypt.Net.BCrypt.HashPassword(this.newPasswordConfirmed_txt.Password, salt);
+                string userType = ((ComboBoxItem)this.userType_cb.SelectedItem).Tag.ToString();
+
+                NewUser = new User(null, this.username_txt.Text, password, salt, this.firstName_txt.Text,
+                    this.lastName_txt.Text, userType, "Active", null);
+                DatabaseHelper.AddUser(NewUser);
+            }
         }
 
         private void CloseButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
