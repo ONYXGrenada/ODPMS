@@ -135,7 +135,7 @@ namespace ODPMS.Helpers
             //Default Ticket
             //int id = 1;
             int number = 1;
-            string type = "Hour";
+            string type = "Hourly";
             string description = "Hourly Ticket";
             var created = DateTime.Parse("05-12-2022 16:01:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault);
             //var closed = default(DateTime);
