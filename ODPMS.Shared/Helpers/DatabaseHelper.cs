@@ -109,7 +109,7 @@ namespace ODPMS.Helpers
                 //Float Table
                 tableCommand =
                     "CREATE TABLE IF NOT EXISTS " +
-                    "Float (Id INTEGER PRIMARY KEY, " +
+                    "Float (Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "Amount FLOAT," +
                     "User NVCARCHAR(10)," +
                     "Date DATETIME," +
