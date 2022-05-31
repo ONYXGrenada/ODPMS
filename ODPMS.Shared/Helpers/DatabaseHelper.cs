@@ -156,13 +156,13 @@ namespace ODPMS.Helpers
             //DateTime lastLogin = DateTime.Now;
 
             //Ticket Type
-            int[] ttId = { 1, 2, 3 };
-            string[] ticketType = { "Hour", "Week", "Month" };
-            string[] ttDescription = { "Hourly Ticket", "Weekly Customer", "Monthly Customer" };
-            double [] unitCost = { 2.50, 50.00, 200.00 };
-            string [] ttStatus = { "Active", "Active", "Active" };
-            string [] ttUsername = { "test", "test", "test" };
-            DateTime [] activityDate = { DateTime.Now, DateTime.Now, DateTime.Now };
+            int[] ttId = { 1, 2, 3, 4 };
+            string[] ticketType = { "Hourly", "Daily", "Weekly", "Monthly" };
+            string[] ttDescription = { "Hourly Ticket", "Daily Ticket", "Weekly Customer", "Monthly Customer" };
+            double[] unitCost = { 2.50, 10.00, 50.00, 200.00 };
+            string[] ttStatus = { "Active", "Active", "Active", "Active" };
+            string[] ttUsername = { "admin", "admin", "admin", "admin" };
+            DateTime[] activityDate = { DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now };
 
             
 
