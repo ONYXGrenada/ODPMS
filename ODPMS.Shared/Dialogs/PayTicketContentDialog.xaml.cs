@@ -42,7 +42,15 @@ namespace ODPMS.Dialogs
         private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Pay execute the pay function to display change and update ticket in the database
-            //NewTicket.Status = "Paid";
+            if (Double.TryParse(this.paymentAmount_txt.Text, out payAmount))
+            {
+                payAmount = double.Parse(this.paymentAmount_txt.Text);
+            }
+            else
+            {
+                payAmount = 0.0;
+            }
+            NewTicket.PayAmount = payAmount;
             DatabaseHelper.PayTicket(NewTicket);
         }
 

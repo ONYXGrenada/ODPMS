@@ -341,11 +341,12 @@ namespace ODPMS.Helpers
                 updateCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
-                updateCommand.CommandText = "UPDATE Tickets SET Closed = @Closed, Status = @Status, Cost = @Cost WHERE Number = @Number;";
+                updateCommand.CommandText = "UPDATE Tickets SET Closed = @Closed, Status = @Status, Cost = @Cost, PayAmount = @PayAmount WHERE Number = @Number;";
                 //updateCommand.Parameters.AddWithValue("@Id", ticket.Id);
                 updateCommand.Parameters.AddWithValue("@Closed", ticket.Closed);
                 updateCommand.Parameters.AddWithValue("@Status", ticket.Status);
                 updateCommand.Parameters.AddWithValue("@Cost", ticket.Cost);
+                updateCommand.Parameters.AddWithValue("@PayAmount", ticket.PayAmount);
                 updateCommand.Parameters.AddWithValue("@Number", ticket.Number);
 
                 updateCommand.ExecuteReader();
