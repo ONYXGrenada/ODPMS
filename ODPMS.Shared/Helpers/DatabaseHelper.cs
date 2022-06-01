@@ -357,7 +357,7 @@ namespace ODPMS.Helpers
 
         public static Ticket FindTicket(int number)
         {
-            Ticket ticket;
+            Ticket ticket = null;
             int gracePeriod = 5;
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
             using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
@@ -400,12 +400,13 @@ namespace ODPMS.Helpers
                     {
                         ticket.Cost = ticket.Rate * Math.Floor(ts.TotalHours);
                     }
-                    dbconn.Close();
-                    return ticket;
+                    //dbconn.Close();
+                    //return ticket;
                 }
                 dbconn.Close();
             }
-            return null;
+            //return null;
+            return ticket;
         }
 
         public static bool CheckTicket(int number)
