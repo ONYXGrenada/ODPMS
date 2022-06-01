@@ -676,7 +676,6 @@ namespace ODPMS.Helpers
 
                 selectCommand.CommandText = "SELECT * FROM Users WHERE Username=@Username AND Status=@Status;";
                 selectCommand.Parameters.AddWithValue("@Username", username);
-                //selectCommand.Parameters.AddWithValue("@Password", password);
                 selectCommand.Parameters.AddWithValue("@Status", "Active");
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
@@ -686,14 +685,14 @@ namespace ODPMS.Helpers
                     if (query[8].GetType() == typeof(DBNull))
                     {
                         users.Add(new User(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
-                        query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6), query.GetString(7),
-                        null));
+                            query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6), query.GetString(7),
+                            null));
                     }
                     else
                     {
                         users.Add(new User(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
-                        query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6),
-                        query.GetString(7), DateTime.Parse(query.GetString(8))));
+                            query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6),
+                            query.GetString(7), DateTime.Parse(query.GetString(8))));
                     }
                 }
 
@@ -731,14 +730,14 @@ namespace ODPMS.Helpers
                     if (query[8].GetType() == typeof(DBNull))
                     {
                         users.Add(new UserViewModel(Int32.Parse(query.GetString(0)), query.GetString(1),
-                        query.GetString(4), query.GetString(5), query.GetString(6),
-                        query.GetString(7), null));
+                            query.GetString(4), query.GetString(5), query.GetString(6),
+                            query.GetString(7), null));
                     }
                     else
                     {
                         users.Add(new UserViewModel(Int32.Parse(query.GetString(0)), query.GetString(1),
-                        query.GetString(4), query.GetString(5), query.GetString(6),
-                        query.GetString(7), DateTime.Parse(query.GetString(8))));
+                            query.GetString(4), query.GetString(5), query.GetString(6),
+                            query.GetString(7), DateTime.Parse(query.GetString(8))));
                     }
                 }
 
