@@ -1,0 +1,55 @@
+﻿<ContentDialog
+    x:Class="ODPMS.Dialogs.NewTicketTypeContentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ODPMS.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Add ticket type"
+    PrimaryButtonText="Add"
+    PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="PrimaryButton_Clicked"
+    SecondaryButtonClick="SecondaryButton_Clicked"
+    CornerRadius="8">
+
+    <Grid ColumnDefinitions ="Auto,*"
+          ColumnSpacing="10"
+          RowDefinitions ="*,*,*,*,*"
+          RowSpacing="10">
+        <TextBlock Text="Type:"/>
+        <ComboBox x:Name="ticketType_cb"
+                  Grid.Column="1">
+            <ComboBoxItem Name="Hourly" Content="Hourly" IsSelected="True"/>
+            <ComboBoxItem Name="Daily" Content="Daily"/>
+            <ComboBoxItem Name="Weekly" Content="Weekly"/>
+            <ComboBoxItem Name="Monthly" Content="Monthly"/>
+        </ComboBox>
+        <TextBlock Text="Description:"
+                   Grid.Row="1"/>
+        <TextBox x:Name="description_txt"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 PlaceholderText="description"/>
+        <TextBlock Text="Unit Cost:"
+                   Grid.Row="2"/>
+        <TextBox x:Name="unitCost_txt"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 PlaceholderText="unit cost"/>
+        <TextBlock Text="Status:"
+                   Grid.Row="3"/>
+        <ComboBox x:Name="typeStatus_cb"
+                  Grid.Row="3"
+                  Grid.Column="1">
+            <ComboBoxItem Name="Active" Content="Active" IsSelected="True"/>
+            <ComboBoxItem Name="Inactive" Content="Inactive"/>
+        </ComboBox>
+        <TextBlock x:Name="statusMessage_txtBlock"
+                   Grid.Row="4"
+                   Grid.ColumnSpan="2"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"/>
+    </Grid>
+</ContentDialog>

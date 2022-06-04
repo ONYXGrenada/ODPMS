@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <_Globbed_Compile Remove="Dialogs\ContentDialog1.xaml.cs" />
+    <_Globbed_Compile Remove="Dialogs\NewTicketTypeContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\ResetPasswordContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Helpers\Common.cs" />
     <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
@@ -25,6 +26,7 @@
     <_Globbed_Compile Remove="Models\DatabaseHandler.cs" />
     <_Globbed_Compile Remove="Models\SQLite.cs" />
     <_Globbed_Compile Remove="Models\Ticket.cs" />
+    <_Globbed_Compile Remove="Models\TicketType.cs" />
     <_Globbed_Compile Remove="Models\User.cs" />
     <_Globbed_Compile Remove="Pages\AppsPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\BlankPage1.xaml.cs" />
@@ -46,6 +48,7 @@
     <_Globbed_Content Remove="Assets\Tickets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <_Globbled_Page Remove="Dialogs\NewTicketTypeContentDialog.xaml" />
     <_Globbled_Page Remove="Pages\AppsPage.xaml" />
     <_Globbled_Page Remove="Pages\BlankPage1.xaml" />
     <_Globbled_Page Remove="Pages\GamesPage.xaml" />

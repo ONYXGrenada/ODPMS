@@ -747,5 +747,70 @@ namespace ODPMS.Helpers
 
             return users;
         }
+
+        public static ObservableCollection<TicketTypeViewModel> GetTicketTypeList(string status)
+        {
+            ObservableCollection<TicketTypeViewModel> ticketTypes = new ObservableCollection<TicketTypeViewModel>();
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                if (status == "All")
+                    selectCommand.CommandText = "SELECT * FROM TicketType;";
+                else
+                {
+                    selectCommand.CommandText = "SELECT * FROM TicketType WHERE Status = @Status;";
+                    selectCommand.Parameters.AddWithValue("@Status", status);
+                }
+
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    ticketTypes.Add(new TicketTypeViewModel(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
+                        float.Parse(query.GetString(3)), query.GetString(4), query.GetString(5), DateTime.Parse(query.GetString(6))));
+                }
+
+                dbconn.Close();
+            }
+
+            return ticketTypes;
+        }
+
+        public static void AddTicketType(TicketType ticketType)
+        {
+            //var cultureInfo = new CultureInfo("en-US");
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand insertCommand = new SqliteCommand();
+                insertCommand.Connection = dbconn;
+
+                // Use parameterized query to prevent SQL injection attacks
+                //insertCommand.CommandText = "INSERT INTO Tickets VALUES (@Id, @Number, @Type, @Description, @Created, @Closed, @Status, @Rate, @Cost, @Balance, @User);";
+                insertCommand.CommandText = "INSERT INTO TicketType VALUES (NULL, @Type, @Description, @UnitCost, @Status, @User, @ActivityDate);";
+                //insertCommand.Parameters.AddWithValue("@Id", ticket.Id);
+                insertCommand.Parameters.AddWithValue("@Type", ticketType.Type);
+                insertCommand.Parameters.AddWithValue("@Description", ticketType.Description);
+                insertCommand.Parameters.AddWithValue("@UnitCost", ticketType.UnitCost);
+                insertCommand.Parameters.AddWithValue("@Status", ticketType.Status);
+                insertCommand.Parameters.AddWithValue("@User", ticketType.User);
+                insertCommand.Parameters.AddWithValue("@ActivityDate", ticketType.ActivityDate);                
+
+                insertCommand.ExecuteReader();
+
+                dbconn.Close();
+            }
+
+        }
     }
 }

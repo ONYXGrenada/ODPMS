@@ -198,7 +198,7 @@
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add Ticket Type"
-                    Click="AddUser_Clicked"
+                    Click="AddTicketType_Clicked"
                     MinWidth="120"/>
         </StackPanel>
 

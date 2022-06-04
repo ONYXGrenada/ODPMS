@@ -32,7 +32,7 @@ namespace ODPMS.Pages
     public sealed partial class SettingsPage : Page
     {
         public ObservableCollection<UserViewModel> Users { get; } = new();
-        public ObservableCollection<UserViewModel> TicketTypes { get; } = new();
+        public ObservableCollection<TicketTypeViewModel> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         public static StorageFile CLogoFile { get; set; }
         
@@ -55,14 +55,13 @@ namespace ODPMS.Pages
                 foreach (var user in users)
                     Users.Add(user);
 
-                var ticketTypes = DatabaseHelper.GetUsers();
+                var ticketTypes = DatabaseHelper.GetTicketTypeList("All");
 
                 if (TicketTypes.Count != 0)
                     TicketTypes.Clear();
 
                 foreach (var ticketType in ticketTypes)
                     TicketTypes.Add(ticketType);
-
             }
             else
             {
@@ -98,12 +97,6 @@ namespace ODPMS.Pages
                     this.companyLogo_img.Source = new BitmapImage(resourceUri);
                 }
             }
-
-            
-                
-
-            //if (CLogoFile != null)
-            //    this.companyLogo_img.Source = new BitmapImage(new Uri(@"\myserver\folder1\Customer Data\sample.png"));
         }
 
         private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
@@ -229,6 +222,22 @@ namespace ODPMS.Pages
             {
                 //OutputTextBlock.Text = "Operation cancelled.";
             }
+        }
+
+        private async void AddTicketType_Clicked(object sender, RoutedEventArgs e)
+        {
+            // Display the new user dialog
+            ContentDialog newTicketType = new NewTicketTypeContentDialog();
+            newTicketType.XamlRoot = this.XamlRoot;
+            await newTicketType.ShowAsync();
+
+            var ticketTypes = DatabaseHelper.GetTicketTypeList("All");
+
+            if (TicketTypes.Count != 0)
+                TicketTypes.Clear();
+
+            foreach (var ticketType in ticketTypes)
+                TicketTypes.Add(ticketType);
         }
 
     }
