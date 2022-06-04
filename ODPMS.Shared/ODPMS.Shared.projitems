@@ -22,6 +22,7 @@
       <DependentUpon>ResetPasswordContentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DatabaseHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\SettingsHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

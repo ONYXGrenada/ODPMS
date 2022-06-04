@@ -20,6 +20,7 @@ using System.Reflection;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinRT.Interop;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,10 +33,14 @@ namespace ODPMS.Pages
     {
         public ObservableCollection<UserViewModel> Users { get; } = new();
         public ObservableCollection<UserViewModel> TicketTypes { get; } = new();
+        public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        public static StorageFile CLogoFile { get; set; }
+        
         public SettingsPage()
         {
             this.InitializeComponent();
             GetSettingsData();
+            GetCompanyData();
         }
 
         private void GetSettingsData()
@@ -68,6 +73,37 @@ namespace ODPMS.Pages
             }
             this.firstName_txt.Text = App.LoggedInUser.FirstName;
             this.lastName_txt.Text = App.LoggedInUser.LastName;
+        }
+
+        private void GetCompanyData()
+        {
+            if (LocalSettings.Values["CompanyName"] != null)
+                this.companyName_txt.Text = LocalSettings.Values["CompanyName"] as string;
+
+            if (LocalSettings.Values["CompanyAddress"] != null)
+                this.companyAddress_txt.Text = LocalSettings.Values["CompanyAddress"] as string;
+
+            if (LocalSettings.Values["CompanyEmail"] != null)
+                this.companyEmail_txt.Text = LocalSettings.Values["CompanyEmail"] as string;
+
+            if (LocalSettings.Values["CompanyPhone"] != null)
+                this.companyPhone_txt.Text = LocalSettings.Values["CompanyPhone"] as string;
+
+            if (LocalSettings.Values["CompanyLogo"] != null)
+            {
+                string clogo = LocalSettings.Values["CompanyLogo"] as string;
+                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                {
+                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
+                }
+            }
+
+            
+                
+
+            //if (CLogoFile != null)
+            //    this.companyLogo_img.Source = new BitmapImage(new Uri(@"\myserver\folder1\Customer Data\sample.png"));
         }
 
         private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
@@ -121,7 +157,7 @@ namespace ODPMS.Pages
                 foreach (var user in users)
                     Users.Add(user);
             }
-            
+
             // Example FileSavePicker as reference
             //FileSavePicker picker = new();
             //picker.SuggestedStartLocation = PickerLocationId.Downloads;
@@ -153,5 +189,47 @@ namespace ODPMS.Pages
             foreach (var user in users)
                 Users.Add(user);
         }
+
+        private void UpdateCompany_Clicked(object sender, RoutedEventArgs e)
+        {
+            LocalSettings.Values["CompanyName"] = this.companyName_txt.Text;
+            LocalSettings.Values["CompanyAddress"] = this.companyAddress_txt.Text;
+            LocalSettings.Values["CompanyEmail"] = this.companyEmail_txt.Text;
+            LocalSettings.Values["CompanyPhone"] = this.companyPhone_txt.Text;
+        }
+
+        private async void CompanyLogo_Clicked(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            openPicker.FileTypeFilter.Add(".jpg");
+            openPicker.FileTypeFilter.Add(".png");
+
+            Window window = (Application.Current as App)?.Window;
+            var hwnd = WindowNative.GetWindowHandle(window);
+            InitializeWithWindow.Initialize(openPicker, hwnd);
+
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                // Application now has read/write access to the picked file
+                //OutputTextBlock.Text = "Picked photo: " + file.Name;
+                //await ApplicationData.Current.LocalFolder. OpenStreamForWriteAsync(file.Name, CreationCollisionOption.ReplaceExisting);
+                //CLogoFile = file;
+                //this.TestDisplay_txt.Text = CLogoFile.Path;
+
+                File.Copy(file.Path, ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, true);
+                Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, UriKind.Relative);
+                this.companyLogo_img.Source = new BitmapImage(resourceUri);
+
+                LocalSettings.Values["CompanyLogo"] = "clogo" + file.FileType;
+            }
+            else
+            {
+                //OutputTextBlock.Text = "Operation cancelled.";
+            }
+        }
+
     }
 }
