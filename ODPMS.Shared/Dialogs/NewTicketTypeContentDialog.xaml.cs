@@ -36,6 +36,12 @@ namespace ODPMS.Dialogs
                 statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
                 statusMessage_txtBlock.Text = "Description is required.";
             }
+            if (string.IsNullOrEmpty(this.quantity_txt.Text))
+            {
+                args.Cancel = true;
+                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                statusMessage_txtBlock.Text = "Quantity is required.";
+            }
             if (string.IsNullOrEmpty(this.unitCost_txt.Text))
             {
                 args.Cancel = true;
@@ -49,11 +55,13 @@ namespace ODPMS.Dialogs
                 string description = this.description_txt.Text;
                 double unitCost;
                 Double.TryParse(this.unitCost_txt.Text, out unitCost);
+                int quantity;
+                Int32.TryParse(this.quantity_txt.Text, out quantity);
                 string selectedStatus = this.typeStatus_cb.SelectionBoxItem.ToString();
                 string user = App.LoggedInUser.Username;
                 DateTime activityDate = DateTime.Now;
 
-                TicketType NewTicketType = new TicketType(null, type, description, unitCost, selectedStatus, user, activityDate);
+                TicketType NewTicketType = new TicketType(null, type, description, quantity, unitCost, selectedStatus, user, activityDate);
                 DatabaseHelper.AddTicketType(NewTicketType);
             }
         }

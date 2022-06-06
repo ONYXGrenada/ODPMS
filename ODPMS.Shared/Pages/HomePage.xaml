@@ -31,11 +31,24 @@
 
             <StackPanel Grid.Column="0"
                         Spacing="10">
-                <Button x:Name="buttonNewTicket_btn" 
+                <!--<Button x:Name="buttonNewTicket_btn" 
                         Content="New Ticket"
                         Style="{StaticResource AccentButtonStyle}" 
                         Click="NewTicket_Clicked"
-                        HorizontalAlignment="Center"/>
+                        HorizontalAlignment="Center"/>-->
+
+                <SplitButton x:Name="buttonNewTicket_btn"
+                             Content="New Ticket"
+                             Style="{StaticResource AccentButtonStyle}"                             
+                             Click="NNewTicket_Clicked"
+                             HorizontalAlignment="Center">
+                    <SplitButton.Flyout>
+                        <Flyout Placement="Bottom">
+                            <MenuFlyoutItem Text="Special Ticket" Click="SpecialTicket_Clicked"/>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                </SplitButton>                
+                
                 <TextBlock x:Name="newTicketMessage_txtBlock"
                            TextWrapping="Wrap"/>
             </StackPanel>
@@ -45,8 +58,7 @@
                     <TextBox x:Name="ticketNumber_txt"/>
                     <Button x:Name="buttonPayTicket_btn"
                             Grid.Column="1"
-                            Content="Pay Ticket" 
-                            Style="{StaticResource AccentButtonStyle}" 
+                            Content="Pay Ticket"
                             Click="PayTicket_Clicked"
                             HorizontalAlignment="Center"/>
                 </StackPanel>

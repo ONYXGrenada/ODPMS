@@ -16,7 +16,7 @@
 
     <Grid ColumnDefinitions ="Auto,*"
           ColumnSpacing="10"
-          RowDefinitions ="*,*,*,*,*"
+          RowDefinitions ="*,*,*,*,*,*"
           RowSpacing="10">
         <TextBlock Text="Type:"/>
         <ComboBox x:Name="ticketType_cb"
@@ -31,23 +31,29 @@
         <TextBox x:Name="description_txt"
                  Grid.Row="1"
                  Grid.Column="1"
-                 PlaceholderText="description"/>
-        <TextBlock Text="Unit Cost:"
+                 PlaceholderText="Description"/>
+        <TextBlock Text="Quantity:"
                    Grid.Row="2"/>
-        <TextBox x:Name="unitCost_txt"
+        <TextBox x:Name="quantity_txt"
                  Grid.Row="2"
                  Grid.Column="1"
-                 PlaceholderText="unit cost"/>
-        <TextBlock Text="Status:"
+                 PlaceholderText="Quantity"/>
+        <TextBlock Text="Unit Cost:"
                    Grid.Row="3"/>
+        <TextBox x:Name="unitCost_txt"
+                 Grid.Row="3"
+                 Grid.Column="1"
+                 PlaceholderText="Unit Cost"/>
+        <TextBlock Text="Status:"
+                   Grid.Row="4"/>
         <ComboBox x:Name="typeStatus_cb"
-                  Grid.Row="3"
+                  Grid.Row="4"
                   Grid.Column="1">
             <ComboBoxItem Name="Active" Content="Active" IsSelected="True"/>
             <ComboBoxItem Name="Inactive" Content="Inactive"/>
         </ComboBox>
         <TextBlock x:Name="statusMessage_txtBlock"
-                   Grid.Row="4"
+                   Grid.Row="5"
                    Grid.ColumnSpan="2"
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center"/>
