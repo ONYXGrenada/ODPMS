@@ -11,31 +11,58 @@
   <Import Project="ODPMS.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
   <ItemGroup>
+    <Content Remove="Assets\logo-placeholder.webp" />
+  </ItemGroup>
+  <ItemGroup>
+    <_Globbed_Compile Remove="Dialogs\ContentDialog1.xaml.cs" />
+    <_Globbed_Compile Remove="Dialogs\NewSpecialTicketContentDialog.xaml.cs" />
+    <_Globbed_Compile Remove="Dialogs\NewTicketTypeContentDialog.xaml.cs" />
+    <_Globbed_Compile Remove="Dialogs\ResetPasswordContentDialog.xaml.cs" />
+    <_Globbed_Compile Remove="Helpers\Common.cs" />
     <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\LoginHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\SecurityHelper.cs" />
+    <_Globbed_Compile Remove="Helpers\SettingsHelper.cs" />
     <_Globbed_Compile Remove="Models\DatabaseConn.cs" />
     <_Globbed_Compile Remove="Models\DatabaseHandler.cs" />
     <_Globbed_Compile Remove="Models\SQLite.cs" />
     <_Globbed_Compile Remove="Models\Ticket.cs" />
+    <_Globbed_Compile Remove="Models\TicketType.cs" />
+    <_Globbed_Compile Remove="Models\User.cs" />
     <_Globbed_Compile Remove="Pages\AppsPage.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\BlankPage1.xaml.cs" />
     <_Globbed_Compile Remove="Pages\GamesPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\HomePage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\LoginPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\MusicPage.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\NewTicketContentDialog.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\NewUserContentDialog.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\PayTicketContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Pages\ReportsPage.xaml.cs" />
     <_Globbed_Compile Remove="Pages\SettingsPage.xaml.cs" />
+    <_Globbed_Compile Remove="Pages\TitleBar.cs" />
+    <_Globbed_Compile Remove="Pages\TitleBarPage.xaml.cs" />
     <_Globbed_Compile Remove="TitleBarPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
+    <_Globbed_Content Remove="Assets\Images\logo-placeholder.png" />
     <_Globbed_Content Remove="Assets\Tickets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <_Globbled_Page Remove="Dialogs\NewSpecialTicketContentDialog.xaml" />
+    <_Globbled_Page Remove="Dialogs\NewTicketTypeContentDialog.xaml" />
     <_Globbled_Page Remove="Pages\AppsPage.xaml" />
+    <_Globbled_Page Remove="Pages\BlankPage1.xaml" />
     <_Globbled_Page Remove="Pages\GamesPage.xaml" />
     <_Globbled_Page Remove="Pages\HomePage.xaml" />
     <_Globbled_Page Remove="Pages\LoginPage.xaml" />
     <_Globbled_Page Remove="Pages\MusicPage.xaml" />
+    <_Globbled_Page Remove="Pages\NewTicketContentDialog.xaml" />
+    <_Globbled_Page Remove="Pages\NewUserContentDialog.xaml" />
+    <_Globbled_Page Remove="Pages\PayTicketContentDialog.xaml" />
     <_Globbled_Page Remove="Pages\ReportsPage.xaml" />
     <_Globbled_Page Remove="Pages\SettingsPage.xaml" />
+    <_Globbled_Page Remove="Pages\TitleBarPage.xaml" />
     <_Globbled_Page Remove="TitleBarPage.xaml" />
   </ItemGroup>
 </Project>

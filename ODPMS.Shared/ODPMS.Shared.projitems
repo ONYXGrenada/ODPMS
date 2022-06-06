@@ -18,25 +18,37 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewSpecialTicketContentDialog.xaml.cs">
+      <DependentUpon>NewSpecialTicketContentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewTicketTypeContentDialog.xaml.cs">
+      <DependentUpon>NewTicketTypeContentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\ResetPasswordContentDialog.xaml.cs">
+      <DependentUpon>ResetPasswordContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DatabaseHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\SettingsHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Models\Ticket.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\AppsPage.xaml.cs">
-      <DependentUpon>AppsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\GamesPage.xaml.cs">
-      <DependentUpon>GamesPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TicketType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Pages\MusicPage.xaml.cs">
-      <DependentUpon>MusicPage.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewTicketContentDialog.xaml.cs">
+      <DependentUpon>NewTicketContentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewUserContentDialog.xaml.cs">
+      <DependentUpon>NewUserContentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\PayTicketContentDialog.xaml.cs">
+      <DependentUpon>PayTicketContentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Pages\ReportsPage.xaml.cs">
       <DependentUpon>ReportsPage.xaml</DependentUpon>
@@ -46,15 +58,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\NewSpecialTicketContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\NewTicketTypeContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Pages\AppsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Pages\GamesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -66,7 +78,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Pages\MusicPage.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\NewTicketContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\NewUserContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\PayTicketContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,12 +111,14 @@
 		 explicitly included in the projitem, so files can be added from vscode
 		 without manipulating the projitem file.
 	-->
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Tickets.txt" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Images\logo-placeholder.png" />
     <_Globbled_Page Include="$(MSBuildThisFileDirectory)**/*.xaml" Exclude="@(Page);@(ApplicationDefinition)">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </_Globbled_Page>
-    <Page Include="@(_Globbled_Page)" />
+    <Page Include="@(_Globbled_Page)">
+      <SubType>Designer</SubType>
+    </Page>
     <_Globbed_Compile Include="$(MSBuildThisFileDirectory)**/*.xaml.cs" Exclude="@(Compile)">
       <DependentUpon>%(Filename)</DependentUpon>
     </_Globbed_Compile>

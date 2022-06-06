@@ -6,9 +6,55 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    KeyDown="Key_Pressed">
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
+
+        <Grid x:Name="appTitleBar_grid">
+            <Image Source="Images/WindowIcon.png"
+               HorizontalAlignment="Left" 
+               Width="16" Height="16" 
+               Margin="8,0"/>
+            <TextBlock x:Name="appTitle_txtBlock" 
+                       Text="Onyx Parking Management Solution"
+                       TextWrapping="NoWrap"
+                       Style="{StaticResource CaptionTextBlockStyle}" 
+                       VerticalAlignment="Center"
+                       Margin="28,0,0,0"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Vertical" 
+                        VerticalAlignment="Center"
+                        Padding="20"
+                        Spacing="10"
+                        MaxWidth="320">
+                <TextBlock Text="Username:"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" />
+                <TextBox x:Name="username_txt" 
+                         PlaceholderText="Enter your username"/>
+                <TextBlock Text="Password:"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"/>
+                <PasswordBox x:Name="password_txt"
+                             PasswordChanged="Password_Changed" 
+                             PlaceholderText="Enter your password"/>
+                <TextBlock x:Name="statusMessage_txtBlock" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"/>
+                <Button x:Name="loginButton_btn" 
+                        Content="Login" 
+                        Click="Login_Clicked"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
