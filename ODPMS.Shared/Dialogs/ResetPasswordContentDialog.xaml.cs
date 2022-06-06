@@ -15,24 +15,36 @@ using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Helpers;
 using Microsoft.UI;
 using Windows.UI.Popups;
+using ODPMS.Models;
 
 namespace ODPMS.Dialogs
 {
 	public sealed partial class ResetPasswordContentDialog : ContentDialog
 	{
-		public ResetPasswordContentDialog()
+        User User { get; set; }
+        int? userId { get; set; }
+		public ResetPasswordContentDialog(int? userId)
 		{
-			this.InitializeComponent();
+            this.InitializeComponent();
+            this.userId = userId;
 		}
 
 		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
-			if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, App.LoggedInUser.Salt) == App.LoggedInUser.Password && 
+            if(userId == null)
+            {
+                User = App.LoggedInUser;
+            } else
+            {
+                User = DatabaseHelper.GetUser((int)this.userId);
+            }
+
+			if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, User.Salt) == User.Password && 
 				this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
             {
-                App.LoggedInUser.Salt = BCrypt.Net.BCrypt.GenerateSalt();
-                App.LoggedInUser.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, App.LoggedInUser.Salt);
-				DatabaseHelper.UpdateUser(App.LoggedInUser);
+                User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
+                User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
+				DatabaseHelper.UpdateUser(User);
             } else
             {
                 args.Cancel = true;

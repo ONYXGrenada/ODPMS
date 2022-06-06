@@ -712,6 +712,48 @@ namespace ODPMS.Helpers
             }
             //return users;
         }
+
+        public static User GetUser(int userId)
+        {
+            User user;
+
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                selectCommand.CommandText = "SELECT * from Users WHERE Id=@Id";
+                selectCommand.Parameters.AddWithValue("@Id", userId);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    if (query[8].GetType() == typeof(DBNull))
+                    {
+                        user = new User(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
+                            query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6),
+                            query.GetString(7), null);
+                        dbconn.Close();
+                        return user;
+                    }
+                    else
+                    {
+                        user = new User(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
+                            query.GetString(3), query.GetString(4), query.GetString(5), query.GetString(6),
+                            query.GetString(7), DateTime.Parse(query.GetString(8)));
+                        dbconn.Close();
+                        return user;
+                    }
+                }
+                dbconn.Close();
+            }
+            return null;
+        }
+
         public static ObservableCollection<UserViewModel> GetUsers()
         {
             ObservableCollection<UserViewModel> users = new ObservableCollection<UserViewModel>();

@@ -21,6 +21,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinRT.Interop;
 using Microsoft.UI.Xaml.Media.Imaging;
+using CommunityToolkit.WinUI.UI.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -35,9 +36,12 @@ namespace ODPMS.Pages
         public ObservableCollection<TicketTypeViewModel> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         public static StorageFile CLogoFile { get; set; }
-        
+
+        public bool IsUserSelected;
+
         public SettingsPage()
         {
+            IsUserSelected = false;
             this.InitializeComponent();
             GetSettingsData();
             GetCompanyData();
@@ -129,7 +133,15 @@ namespace ODPMS.Pages
         private async void ResetPassword_Clicked(object sender, RoutedEventArgs e)
         {
             // Display the reset password dialog
-            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog();
+            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog(null);
+            resetPasswordDialog.XamlRoot = this.XamlRoot;
+            await resetPasswordDialog.ShowAsync();
+        }
+
+        private async void ResetUserPassword_Clicked(object sender, RoutedEventArgs e)
+        {
+            // Display the reset password dialog
+            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog((user_dataGrid.SelectedItem as UserViewModel).Id);
             resetPasswordDialog.XamlRoot = this.XamlRoot;
             await resetPasswordDialog.ShowAsync();
         }
@@ -240,5 +252,29 @@ namespace ODPMS.Pages
                 TicketTypes.Add(ticketType);
         }
 
+        private void UserDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.Column.Header.ToString() == "FirstName")
+            {
+                e.Column.Header = "First Name";
+            }
+            if (e.Column.Header.ToString() == "LastName")
+            {
+                e.Column.Header = "Last Name";
+            }
+            if (e.Column.Header.ToString() == "UserType")
+            {
+                e.Column.Header = "Type";
+            }
+            if (e.Column.Header.ToString() == "LastLogin")
+            {
+                e.Column.Header = "Last Login";
+            }
+        }
+
+        private void UserDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IsUserSelected = true;
+        }
     }
 }

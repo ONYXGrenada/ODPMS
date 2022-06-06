@@ -87,11 +87,25 @@
                        Text="User Administration"/>
             <controls:DataGrid x:Name="user_dataGrid"
                                AutoGenerateColumns="True"
-                               ItemsSource="{x:Bind Users}"/>
+                               AutoGeneratingColumn="UserDataGrid_AutoGeneratingColumn"
+                               SelectionMode="Single"
+                               SelectionChanged="UserDataGrid_SelectionChanged"
+                               ItemsSource="{x:Bind Users}">
+                <!--<controls:DataGrid.Columns>
+                    <controls:DataGridCheckBoxColumn Width="40"
+                                                     Binding="{Binding IsSelected}"/>
+                </controls:DataGrid.Columns>-->
+            </controls:DataGrid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add User"
                     Click="AddUser_Clicked"
+                    MinWidth="120"/>
+            <Button Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Content="Reset Password"
+                    Click="ResetUserPassword_Clicked"
+                    IsEnabled="{Binding IsUserSelected}"
                     MinWidth="120"/>
         </StackPanel>
 
