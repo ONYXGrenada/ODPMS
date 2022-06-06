@@ -27,48 +27,65 @@ namespace ODPMS.Dialogs
 		{
             this.InitializeComponent();
             this.userId = userId;
+            if (userId != null && userId != App.LoggedInUser.Id)
+            {
+                this.currentPassword_txtBlock.Visibility = Visibility.Collapsed;
+                this.currentPassword_txt.Visibility = Visibility.Collapsed;
+            }
 		}
 
 		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
-            if(userId == null)
-            {
-                User = App.LoggedInUser;
-            } else
+            if(userId != null && userId != App.LoggedInUser.Id)
             {
                 User = DatabaseHelper.GetUser((int)this.userId);
-            }
-
-			if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, User.Salt) == User.Password && 
-				this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
-            {
-                User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
-                User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
-				DatabaseHelper.UpdateUser(User);
+                if (this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
+                {
+                    User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
+                    User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
+                    DatabaseHelper.UpdateUser(User);
+                }
+                else
+                {
+                    args.Cancel = true;
+                    statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    statusMessage_txtBlock.Text = "Please try again.";
+                }
             } else
             {
-                args.Cancel = true;
-                statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
-                statusMessage_txtBlock.Text = "Please try again.";
+                User = App.LoggedInUser;
+                if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, User.Salt) == User.Password &&
+                this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
+                {
+                    User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
+                    User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
+                    DatabaseHelper.UpdateUser(User);
+                }
+                else
+                {
+                    args.Cancel = true;
+                    statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    statusMessage_txtBlock.Text = "Please try again.";
+                }
+                //User = DatabaseHelper.GetUser((int)this.userId);
+                //if (this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
+                //{
+                //    User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
+                //    User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
+                //    DatabaseHelper.UpdateUser(User);
+                //}
+                //else
+                //{
+                //    args.Cancel = true;
+                //    statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                //    statusMessage_txtBlock.Text = "Please try again.";
+                //}
             }
         }
 
 		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 		}
-
-   //     private void Password_LostFocus(object sender, RoutedEventArgs e)
-   //     {
-			//if (BCrypt.Net.BCrypt.HashPassword(currentPassword_txt.Password, App.LoggedInUser.Salt) != App.LoggedInUser.Password)
-   //         {
-   //             statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
-   //             statusMessage_txtBlock.Text = "Your password in incorrect.";
-   //         } else
-   //         {
-   //             statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
-   //             statusMessage_txtBlock.Text = "";
-   //         }
-   //     }
 
         private void NewPassword_Changed(object sender, RoutedEventArgs e)
         {
