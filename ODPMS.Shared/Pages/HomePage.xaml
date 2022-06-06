@@ -40,15 +40,16 @@
                 <SplitButton x:Name="buttonNewTicket_btn"
                              Content="New Ticket"
                              Style="{StaticResource AccentButtonStyle}"                             
-                             Click="NNewTicket_Clicked"
+                             Click="NewTicket_SplitClicked"
                              HorizontalAlignment="Center">
                     <SplitButton.Flyout>
-                        <Flyout Placement="Bottom">
-                            <MenuFlyoutItem Text="Special Ticket" Click="SpecialTicket_Clicked"/>
-                        </Flyout>
+                        <MenuFlyout Placement="BottomEdgeAlignedRight">
+                            <MenuFlyoutItem Text="Special Ticket" 
+                                            Click="SpecialTicket_Clicked"/>
+                        </MenuFlyout>
                     </SplitButton.Flyout>
-                </SplitButton>                
-                
+                </SplitButton>
+
                 <TextBlock x:Name="newTicketMessage_txtBlock"
                            TextWrapping="Wrap"/>
             </StackPanel>
@@ -67,15 +68,10 @@
             </StackPanel>
         </Grid>
 
-        <!--<ListView x:Name="TicketList"
-                  Grid.Row="1"
-                  ItemTemplate="{StaticResource TicketListViewTemplate}"
-                  Margin="0"
-                  HorizontalAlignment="Left"/>-->
-
         <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="2"
                            AutoGenerateColumns="True"
+                           SelectionMode="Single"
                            ItemsSource="{x:Bind TicketList}"/>
     </Grid>
 </Page>

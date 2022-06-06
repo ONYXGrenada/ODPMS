@@ -103,7 +103,7 @@ namespace ODPMS.Pages
             }
         }
 
-        private async void NNewTicket_Clicked(SplitButton sender, SplitButtonClickEventArgs args)
+        private async void NewTicket_SplitClicked(SplitButton sender, SplitButtonClickEventArgs args)
         {
             // Display the new ticket dialog
             ContentDialog ticketDialog = new NewTicketContentDialog();
