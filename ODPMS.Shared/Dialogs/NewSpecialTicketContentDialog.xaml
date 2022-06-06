@@ -21,13 +21,11 @@
 
         <TextBlock Text="Period:" />
         <TextBlock x:Name="typePeriod"
-                   Text="2022/06/05 - 2022/07/04" 
                    Grid.Column="1"/>
         
         <TextBlock Text="Cost:" 
                    Grid.Row="1"/>
         <TextBlock x:Name="typeCost_txt"
-                   Text="$200.00"
                    Grid.Row="1"
                    Grid.Column="1"/>
 
@@ -44,10 +42,6 @@
                   Grid.Row="3"
                   Grid.Column="1"
                   SelectionChanged="ticketType_cb_SelectionChanged">
-            <!--<ComboBoxItem Name="Hourly" Content="Hourly" IsSelected="True"/>
-            <ComboBoxItem Name="Daily" Content="Daily"/>
-            <ComboBoxItem Name="Weekly" Content="Weekly"/>
-            <ComboBoxItem Name="Monthly" Content="Monthly"/>-->
         </ComboBox>
 
         <TextBlock Text="Payment Amount:"

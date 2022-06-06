@@ -25,13 +25,14 @@ namespace ODPMS.Dialogs
     public sealed partial class NewSpecialTicketContentDialog : ContentDialog
     {
         ObservableCollection<TicketTypeViewModel> ticketTypes = new ObservableCollection<TicketTypeViewModel>();
-        private Ticket NewTicket;
+        private TicketTypeViewModel NewTicket;
         private double payAmount;
         private int PayTicketNumber { get; set; }
 
         public NewSpecialTicketContentDialog()
         {
             this.InitializeComponent();
+            this.ticketType_cb.SelectedIndex = 0;
             ticketTypes = DatabaseHelper.GetTicketTypeList("Active");
 
             foreach (var ticketType in ticketTypes)
@@ -48,23 +49,36 @@ namespace ODPMS.Dialogs
 
         private void PayAmount_Changed(object sender, RoutedEventArgs e)
         {
-            if (Double.TryParse(this.paymentAmount_txt.Text, out payAmount))
+            string selectedItem = this.ticketType_cb.Items[this.ticketType_cb.SelectedIndex].ToString();
+            foreach (var ticketType in ticketTypes)
+                if (ticketType.Description == selectedItem)
+                    NewTicket = ticketType;
+
+            if (NewTicket.Description == "Hourly")
             {
-                payAmount = double.Parse(this.paymentAmount_txt.Text);
+                this.changeReturned_txtBlock.Text = "";
             }
             else
             {
-                payAmount = 0.0;
+                if (Double.TryParse(this.paymentAmount_txt.Text, out payAmount))
+                {
+                    payAmount = double.Parse(this.paymentAmount_txt.Text);
+                }
+                else
+                {
+                    payAmount = 0.0;
+                }
+                double change = NewTicket.UnitCost - payAmount;
+                if (change > 0)
+                {
+                    this.changeReturned_txtBlock.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
+                }
+                else
+                {
+                    this.changeReturned_txtBlock.Text = string.Format("Please return {0} to the customer", (change * -1).ToString("C", CultureInfo.CurrentCulture));
+                }
             }
-            double change = NewTicket.Cost - payAmount;
-            if (change > 0)
-            {
-                this.changeReturned_txtBlock.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
-            }
-            else
-            {
-                this.changeReturned_txtBlock.Text = string.Format("Please return {0} to the customer", (change * -1).ToString("C", CultureInfo.CurrentCulture));
-            }
+            
         }
 
         private void ticketType_cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -76,8 +90,24 @@ namespace ODPMS.Dialogs
                 if (ticketType.Description == selectedItem)
                 {
                     string fromDate = DateTime.Now.ToString("d MMMM, yyyy");
-                    string toDate = DateTime.Now.AddDays(ticketType.Quantity).ToString("d MMMM, yyyy");
-                    this.typeCost_txt.Text = ticketType.UnitCost.ToString();
+                    string toDate = ticketType.GetEndDate().ToString("d MMMM, yyyy");
+
+                    if (ticketType.Type == "Hourly")
+                    {
+                        this.typeCost_txt.Text = "To be determined";
+                        this.vehicleNum_txt.IsReadOnly = true;
+                        this.vehicleNum_txt.Text = "";
+                        this.paymentAmount_txt.IsReadOnly = true;
+                        this.paymentAmount_txt.Text = "";
+                        this.changeReturned_txtBlock.Text = "";
+                    }
+                    else
+                    {
+                        this.typeCost_txt.Text = ticketType.UnitCost.ToString();
+                        this.vehicleNum_txt.IsReadOnly = false;
+                        this.paymentAmount_txt.IsReadOnly = false;
+                    }                        
+
                     this.typePeriod.Text = fromDate + " - " + toDate;
                     break;
                 }

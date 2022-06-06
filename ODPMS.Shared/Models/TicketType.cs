@@ -27,6 +27,24 @@ namespace ODPMS.Models
             ActivityDate = activityDate;
         }
 
+        public DateTime GetEndDate()
+        {
+            DateTime endDate = DateTime.Now;
+            if (Type == "Hourly")
+                endDate = endDate.AddDays(1).Subtract(new TimeSpan(0, 0, 0, 0, 1));
+
+            else if (Type == "Daily")
+                endDate = endDate.AddDays(Quantity);
+
+            else if (Type == "Weekly")
+                endDate = endDate.AddDays(Quantity * 7);
+
+            else if (Type == "Monthly")
+                endDate = endDate.AddDays(Quantity * 30);
+
+            return endDate;
+        }
+
     }
 
     public class TicketTypeViewModel
@@ -50,6 +68,24 @@ namespace ODPMS.Models
             Status = status;
             User = user;
             ActivityDate = activityDate;
+        }
+
+        public DateTime GetEndDate()
+        {
+            DateTime endDate = DateTime.Now;
+            if (Type == "Hourly")
+                endDate = endDate.AddDays(1).Subtract(new TimeSpan(0, 0, 0, 0, 1));
+
+            else if (Type == "Daily")
+                endDate = endDate.AddDays(Quantity);
+
+            else if (Type == "Weekly")
+                endDate = endDate.AddDays(Quantity * 7);
+
+            else if (Type == "Monthly")
+                endDate = endDate.AddDays(Quantity * 30);
+
+            return endDate;
         }
 
     }
