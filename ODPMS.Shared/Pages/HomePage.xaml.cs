@@ -67,7 +67,7 @@ namespace ODPMS.Pages
             foreach (var ticket in tickets)
                 TicketList.Add(ticket);
         }
-         
+
         private async void PayTicket_Clicked(object sender, RoutedEventArgs e)
         {
             // Display the pay ticket dialog
@@ -103,5 +103,34 @@ namespace ODPMS.Pages
             }
         }
 
+        private async void NNewTicket_Clicked(SplitButton sender, SplitButtonClickEventArgs args)
+        {
+            // Display the new ticket dialog
+            ContentDialog ticketDialog = new NewTicketContentDialog();
+            ticketDialog.XamlRoot = this.XamlRoot;
+            await ticketDialog.ShowAsync();
+            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+            if (TicketList.Count != 0)
+                TicketList.Clear();
+
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
+        }
+
+        private async void SpecialTicket_Clicked(object sender, RoutedEventArgs e)
+        {
+            // Display the new ticket dialog
+            ContentDialog ticketDialog = new NewSpecialTicketContentDialog();
+            ticketDialog.XamlRoot = this.XamlRoot;
+            await ticketDialog.ShowAsync();
+            //var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+            //if (TicketList.Count != 0)
+            //    TicketList.Clear();
+
+            //foreach (var ticket in tickets)
+            //    TicketList.Add(ticket);
+        }
     }
 }

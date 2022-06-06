@@ -68,6 +68,7 @@ namespace ODPMS.Helpers
                     "TicketType (Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "TicketType NVARCHAR(25) NOT NULL, " +
                     "Description NVARCHAR(25), " +
+                    "Quantity INTEGER, " +
                     "UnitCost REAL, " +
                     "Status NVARCHAR(25), " +
                     "Username NVARCHAR(25), " +
@@ -161,6 +162,7 @@ namespace ODPMS.Helpers
             int[] ttId = { 1, 2, 3, 4 };
             string[] ticketType = { "Hourly", "Daily", "Weekly", "Monthly" };
             string[] ttDescription = { "Hourly Ticket", "Daily Ticket", "Weekly Customer", "Monthly Customer" };
+            int[] ttQuantity = { 1, 2, 1, 1 };
             double[] unitCost = { 2.50, 10.00, 50.00, 200.00 };
             string[] ttStatus = { "Active", "Active", "Active", "Active" };
             string[] ttUsername = { "admin", "admin", "admin", "admin" };
@@ -222,10 +224,11 @@ namespace ODPMS.Helpers
                 for (int i = 0; i < ttId.Length; i++)
                 {
                     // Use parameterized query to prevent SQL injection attacks
-                    insertTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @UnitCost, @Status, @Username, @ActivityDate);";
+                    insertTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @Quantity, @UnitCost, @Status, @Username, @ActivityDate);";
                     insertTypeCommand.Parameters.AddWithValue("@Id", ttId[i]);
                     insertTypeCommand.Parameters.AddWithValue("@TicketType", ticketType[i]);
                     insertTypeCommand.Parameters.AddWithValue("@Description", ttDescription[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@Quantity", ttQuantity[i]);
                     insertTypeCommand.Parameters.AddWithValue("@UnitCost", unitCost[i]);
                     insertTypeCommand.Parameters.AddWithValue("@Status", ttStatus[i]);
                     insertTypeCommand.Parameters.AddWithValue("@Username", ttUsername[i]);
@@ -774,7 +777,7 @@ namespace ODPMS.Helpers
                 while (query.Read())
                 {
                     ticketTypes.Add(new TicketTypeViewModel(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2),
-                        float.Parse(query.GetString(3)), query.GetString(4), query.GetString(5), DateTime.Parse(query.GetString(6))));
+                        Int32.Parse(query.GetString(3)), float.Parse(query.GetString(4)), query.GetString(5), query.GetString(6), DateTime.Parse(query.GetString(7))));
                 }
 
                 dbconn.Close();
@@ -797,10 +800,11 @@ namespace ODPMS.Helpers
 
                 // Use parameterized query to prevent SQL injection attacks
                 //insertCommand.CommandText = "INSERT INTO Tickets VALUES (@Id, @Number, @Type, @Description, @Created, @Closed, @Status, @Rate, @Cost, @Balance, @User);";
-                insertCommand.CommandText = "INSERT INTO TicketType VALUES (NULL, @Type, @Description, @UnitCost, @Status, @User, @ActivityDate);";
+                insertCommand.CommandText = "INSERT INTO TicketType VALUES (NULL, @Type, @Description, @Quantity, @UnitCost, @Status, @User, @ActivityDate);";
                 //insertCommand.Parameters.AddWithValue("@Id", ticket.Id);
                 insertCommand.Parameters.AddWithValue("@Type", ticketType.Type);
                 insertCommand.Parameters.AddWithValue("@Description", ticketType.Description);
+                insertCommand.Parameters.AddWithValue("@Quantity", ticketType.Quantity);
                 insertCommand.Parameters.AddWithValue("@UnitCost", ticketType.UnitCost);
                 insertCommand.Parameters.AddWithValue("@Status", ticketType.Status);
                 insertCommand.Parameters.AddWithValue("@User", ticketType.User);
