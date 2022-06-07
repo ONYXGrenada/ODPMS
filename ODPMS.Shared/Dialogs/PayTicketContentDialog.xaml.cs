@@ -31,6 +31,7 @@ namespace ODPMS.Dialogs
         {
             // Get ticket object from database
             NewTicket = DatabaseHelper.FindTicket(this.PayTicketNumber);
+            NewTicket.UpdateCost();
 
             this.ticketNumber_txtBlock.Text = "Ticket Number: " + NewTicket.Number;
             this.ticketStatus_txtBlock.Text = "Status: " + NewTicket.Status;
@@ -50,7 +51,7 @@ namespace ODPMS.Dialogs
             {
                 payAmount = 0.0;
             }
-            NewTicket.PayAmount = payAmount;
+            NewTicket.PayTicket(payAmount);
             DatabaseHelper.PayTicket(NewTicket);
         }
 
