@@ -18,6 +18,7 @@
     <_Globbed_Compile Remove="Dialogs\NewSpecialTicketContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\NewTicketTypeContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\ResetPasswordContentDialog.xaml.cs" />
+    <_Globbed_Compile Remove="GlobalUsings.cs" />
     <_Globbed_Compile Remove="Helpers\Common.cs" />
     <_Globbed_Compile Remove="Helpers\DatabaseHelper.cs" />
     <_Globbed_Compile Remove="Helpers\LoginHelper.cs" />
@@ -43,6 +44,8 @@
     <_Globbed_Compile Remove="Pages\TitleBar.cs" />
     <_Globbed_Compile Remove="Pages\TitleBarPage.xaml.cs" />
     <_Globbed_Compile Remove="TitleBarPage.xaml.cs" />
+    <_Globbed_Compile Remove="ViewModel\BaseViewModel.cs" />
+    <_Globbed_Compile Remove="ViewModel\SettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <_Globbed_Content Remove="Assets\Images\logo-placeholder.png" />

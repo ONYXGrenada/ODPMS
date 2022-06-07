@@ -36,14 +36,13 @@ namespace ODPMS.Pages
         public ObservableCollection<TicketTypeViewModel> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         public static StorageFile CLogoFile { get; set; }
-
-        public bool IsUserSelected { get; set; }
+        SettingsViewModel viewModel = null;
 
         public SettingsPage()
         {
             this.InitializeComponent();
-            DataContext = this.IsUserSelected;
-            IsUserSelected = false;
+            viewModel = new SettingsViewModel();
+            DataContext = viewModel;
             GetSettingsData();
             GetCompanyData();
         }
@@ -278,7 +277,8 @@ namespace ODPMS.Pages
 
         private void UserDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IsUserSelected = true;
+            //IsUserSelected = true;
+            viewModel.IsUserSelected = true;
         }
     }
 }

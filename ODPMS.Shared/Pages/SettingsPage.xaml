@@ -5,8 +5,9 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="clr-namespace:ODPMS.Models"
+    xmlns:viewmodel="using:ODPMS.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d">
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">-->
 
@@ -91,6 +92,12 @@
                                SelectionMode="Single"
                                SelectionChanged="UserDataGrid_SelectionChanged"
                                ItemsSource="{x:Bind Users}">
+                <controls:DataGrid.Resources>
+                    <Style TargetType="controls:DataGridRow">
+                        <Setter Property="IsFocusEngaged"
+                                Value="{Binding IsUserSelected}"/>
+                    </Style>
+                </controls:DataGrid.Resources>
                 <!--<controls:DataGrid.Columns>
                     <controls:DataGridCheckBoxColumn Width="40"
                                                      Binding="{Binding IsSelected}"/>
