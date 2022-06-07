@@ -37,12 +37,13 @@ namespace ODPMS.Pages
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         public static StorageFile CLogoFile { get; set; }
 
-        public bool IsUserSelected;
+        public bool IsUserSelected { get; set; }
 
         public SettingsPage()
         {
-            IsUserSelected = false;
             this.InitializeComponent();
+            DataContext = this.IsUserSelected;
+            IsUserSelected = false;
             GetSettingsData();
             GetCompanyData();
         }
@@ -141,9 +142,12 @@ namespace ODPMS.Pages
         private async void ResetUserPassword_Clicked(object sender, RoutedEventArgs e)
         {
             // Display the reset password dialog
-            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog((user_dataGrid.SelectedItem as UserViewModel).Id);
-            resetPasswordDialog.XamlRoot = this.XamlRoot;
-            await resetPasswordDialog.ShowAsync();
+            if (user_dataGrid.SelectedItem != null)
+            {
+                ContentDialog resetPasswordDialog = new ResetPasswordContentDialog((user_dataGrid.SelectedItem as UserViewModel).Id);
+                resetPasswordDialog.XamlRoot = this.XamlRoot;
+                await resetPasswordDialog.ShowAsync();
+            }
         }
 
         private void UpdateUser_Clicked(object sender, RoutedEventArgs e)
