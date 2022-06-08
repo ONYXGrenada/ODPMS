@@ -12,9 +12,6 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using ODPMS.Models;
-using ODPMS.Helpers;
-using ODPMS.Dialogs;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using Windows.Storage.Pickers;
@@ -43,92 +40,6 @@ namespace ODPMS.Pages
             this.InitializeComponent();
             viewModel = new SettingsViewModel();
             DataContext = viewModel;
-            //Init();
-        }
-
-        private void Init()
-        {
-            //if (App.LoggedInUser.UserType == "admin")
-            //{
-            //    var users = DatabaseHelper.GetUsers();
-
-            //    if (Users.Count != 0)
-            //        Users.Clear();
-
-            //    foreach (var user in users)
-            //        Users.Add(user);
-
-            //    var ticketTypes = DatabaseHelper.GetTicketTypeList("All");
-
-            //    if (TicketTypes.Count != 0)
-            //        TicketTypes.Clear();
-
-            //    foreach (var ticketType in ticketTypes)
-            //        TicketTypes.Add(ticketType);
-            //}
-            //else
-            //{
-            //    usersAdminPanel_sp.Visibility = Visibility.Collapsed;
-            //    companyAdminPanel_sp.Visibility = Visibility.Collapsed;
-            //    ticketsAdminPanel_sp.Visibility = Visibility.Collapsed;
-            //    receiptsAdminPanel_sp.Visibility = Visibility.Collapsed;
-            //}
-            //this.firstName_txt.Text = App.LoggedInUser.FirstName;
-            //this.lastName_txt.Text = App.LoggedInUser.LastName;
-
-            //GetCompanyData();
-        }
-
-        //private void GetCompanyData()
-        //{
-        //    if (LocalSettings.Values["CompanyName"] != null)
-        //        this.companyName_txt.Text = LocalSettings.Values["CompanyName"] as string;
-
-        //    if (LocalSettings.Values["CompanyAddress"] != null)
-        //        this.companyAddress_txt.Text = LocalSettings.Values["CompanyAddress"] as string;
-
-        //    if (LocalSettings.Values["CompanyEmail"] != null)
-        //        this.companyEmail_txt.Text = LocalSettings.Values["CompanyEmail"] as string;
-
-        //    if (LocalSettings.Values["CompanyPhone"] != null)
-        //        this.companyPhone_txt.Text = LocalSettings.Values["CompanyPhone"] as string;
-
-        //    if (LocalSettings.Values["CompanyLogo"] != null)
-        //    {
-        //        string clogo = LocalSettings.Values["CompanyLogo"] as string;
-        //        if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
-        //        {
-        //            Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
-        //            this.companyLogo_img.Source = new BitmapImage(resourceUri);
-        //        }
-        //    }
-        //}
-
-        private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
-        {
-            var selectedTheme = ((RadioButton)sender)?.Tag?.ToString();
-            if (selectedTheme != null)
-            {
-                ((sender as RadioButton).XamlRoot.Content as Frame).RequestedTheme = GetEnum<ElementTheme>(selectedTheme);
-            }
-        }
-
-        private void OnThemeRadioButtonKeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            var selectedTheme = ((RadioButton)sender)?.Tag?.ToString();
-            if (selectedTheme != null)
-            {
-                ((sender as RadioButton).XamlRoot.Content as Frame).RequestedTheme = GetEnum<ElementTheme>(selectedTheme);
-            }
-        }
-
-        private TEnum GetEnum<TEnum>(string text) where TEnum : struct
-        {
-            if (!typeof(TEnum).GetTypeInfo().IsEnum)
-            {
-                throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
-            }
-            return (TEnum)Enum.Parse(typeof(TEnum), text);
         }
 
         private async void ResetPassword_Clicked(object sender, RoutedEventArgs e)
