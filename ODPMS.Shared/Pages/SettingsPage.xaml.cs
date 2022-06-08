@@ -34,7 +34,7 @@ namespace ODPMS.Pages
     {
         //public ObservableCollection<UserViewModel> Users { get; } = new();
         //public ObservableCollection<TicketTypeViewModel> TicketTypes { get; } = new();
-        //public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         //public static StorageFile CLogoFile { get; set; }
         SettingsViewModel viewModel = null;
 
@@ -152,36 +152,36 @@ namespace ODPMS.Pages
 
         private void UpdateUser_Clicked(object sender, RoutedEventArgs e)
         {
-            //if (this.firstName_txt.Text != App.LoggedInUser.FirstName || this.lastName_txt.Text != App.LoggedInUser.LastName)
-            //{
-            //    App.LoggedInUser.FirstName = this.firstName_txt.Text;
-            //    App.LoggedInUser.LastName = this.lastName_txt.Text;
-            //    DatabaseHelper.UpdateUser(App.LoggedInUser);
+            if (this.firstName_txt.Text != App.LoggedInUser.FirstName || this.lastName_txt.Text != App.LoggedInUser.LastName)
+            {
+                App.LoggedInUser.FirstName = this.firstName_txt.Text;
+                App.LoggedInUser.LastName = this.lastName_txt.Text;
+                DatabaseHelper.UpdateUser(App.LoggedInUser);
 
-            //    var users = DatabaseHelper.GetUsers();
+                var users = DatabaseHelper.GetUsers();
 
-            //    if (Users.Count != 0)
-            //        Users.Clear();
+                if (viewModel.Users.Count != 0)
+                    viewModel.Users.Clear();
 
-            //    foreach (var user in users)
-            //        Users.Add(user);
-            //}
+                foreach (var user in users)
+                    viewModel.Users.Add(user);
+            }
         }
 
         private async void AddUser_Clicked(object sender, RoutedEventArgs e)
         {
-            //// Display the new user dialog
-            //ContentDialog newUserDialog = new NewUserContentDialog();
-            //newUserDialog.XamlRoot = this.XamlRoot;
-            //await newUserDialog.ShowAsync();
+            // Display the new user dialog
+            ContentDialog newUserDialog = new NewUserContentDialog();
+            newUserDialog.XamlRoot = this.XamlRoot;
+            await newUserDialog.ShowAsync();
 
-            //var users = DatabaseHelper.GetUsers();
+            var users = DatabaseHelper.GetUsers();
 
-            //if (Users.Count != 0)
-            //    Users.Clear();
+            if (viewModel.Users.Count != 0)
+                viewModel.Users.Clear();
 
-            //foreach (var user in users)
-            //    Users.Add(user);
+            foreach (var user in users)
+                viewModel.Users.Add(user);
         }
 
         private void UpdateCompany_Clicked(object sender, RoutedEventArgs e)
@@ -190,55 +190,56 @@ namespace ODPMS.Pages
             //LocalSettings.Values["CompanyAddress"] = this.companyAddress_txt.Text;
             //LocalSettings.Values["CompanyEmail"] = this.companyEmail_txt.Text;
             //LocalSettings.Values["CompanyPhone"] = this.companyPhone_txt.Text;
+            viewModel.UpdateCompany();
         }
 
         private async void CompanyLogo_Clicked(object sender, RoutedEventArgs e)
         {
-            //FileOpenPicker openPicker = new FileOpenPicker();
-            //openPicker.ViewMode = PickerViewMode.Thumbnail;
-            //openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
-            //openPicker.FileTypeFilter.Add(".jpg");
-            //openPicker.FileTypeFilter.Add(".png");
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            openPicker.FileTypeFilter.Add(".jpg");
+            openPicker.FileTypeFilter.Add(".png");
 
-            //Window window = (Application.Current as App)?.Window;
-            //var hwnd = WindowNative.GetWindowHandle(window);
-            //InitializeWithWindow.Initialize(openPicker, hwnd);
+            Window window = (Application.Current as App)?.Window;
+            var hwnd = WindowNative.GetWindowHandle(window);
+            InitializeWithWindow.Initialize(openPicker, hwnd);
 
-            //StorageFile file = await openPicker.PickSingleFileAsync();
-            //if (file != null)
-            //{
-            //    // Application now has read/write access to the picked file
-            //    //OutputTextBlock.Text = "Picked photo: " + file.Name;
-            //    //await ApplicationData.Current.LocalFolder. OpenStreamForWriteAsync(file.Name, CreationCollisionOption.ReplaceExisting);
-            //    //CLogoFile = file;
-            //    //this.TestDisplay_txt.Text = CLogoFile.Path;
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                // Application now has read/write access to the picked file
+                //OutputTextBlock.Text = "Picked photo: " + file.Name;
+                //await ApplicationData.Current.LocalFolder. OpenStreamForWriteAsync(file.Name, CreationCollisionOption.ReplaceExisting);
+                //CLogoFile = file;
+                //this.TestDisplay_txt.Text = CLogoFile.Path;
 
-            //    File.Copy(file.Path, ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, true);
-            //    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, UriKind.Relative);
-            //    this.companyLogo_img.Source = new BitmapImage(resourceUri);
+                File.Copy(file.Path, ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, true);
+                Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, UriKind.Relative);
+                this.companyLogo_img.Source = new BitmapImage(resourceUri);
 
-            //    LocalSettings.Values["CompanyLogo"] = "clogo" + file.FileType;
-            //}
-            //else
-            //{
-            //    //OutputTextBlock.Text = "Operation cancelled.";
-            //}
+                LocalSettings.Values["CompanyLogo"] = "clogo" + file.FileType;
+            }
+            else
+            {
+                //OutputTextBlock.Text = "Operation cancelled.";
+            }
         }
 
         private async void AddTicketType_Clicked(object sender, RoutedEventArgs e)
         {
-            //// Display the new user dialog
-            //ContentDialog newTicketType = new NewTicketTypeContentDialog();
-            //newTicketType.XamlRoot = this.XamlRoot;
-            //await newTicketType.ShowAsync();
+            // Display the new user dialog
+            ContentDialog newTicketType = new NewTicketTypeContentDialog();
+            newTicketType.XamlRoot = this.XamlRoot;
+            await newTicketType.ShowAsync();
 
-            //var ticketTypes = DatabaseHelper.GetTicketTypeList("All");
+            var ticketTypes = DatabaseHelper.GetTicketTypeList("All");
 
-            //if (TicketTypes.Count != 0)
-            //    TicketTypes.Clear();
+            if (viewModel.TicketTypes.Count != 0)
+                viewModel.TicketTypes.Clear();
 
-            //foreach (var ticketType in ticketTypes)
-            //    TicketTypes.Add(ticketType);
+            foreach (var ticketType in ticketTypes)
+                viewModel.TicketTypes.Add(ticketType);
         }
 
         private void UserDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -263,7 +264,6 @@ namespace ODPMS.Pages
 
         private void UserDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //IsUserSelected = true;
             viewModel.IsUserSelected = true;
         }
     }

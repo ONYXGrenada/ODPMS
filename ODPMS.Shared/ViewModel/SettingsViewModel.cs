@@ -104,5 +104,12 @@ namespace ODPMS.ViewModel
                 }
             }
         }
+        public void UpdateCompany()
+        {
+            LocalSettings.Values["CompanyName"] = CompanyName;
+            LocalSettings.Values["CompanyAddress"] = CompanyAddress;
+            LocalSettings.Values["CompanyEmail"] = CompanyEmail;
+            LocalSettings.Values["CompanyPhone"] = CompanyPhone;
+        }
     }
 }

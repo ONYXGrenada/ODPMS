@@ -172,7 +172,7 @@
                          Grid.Row="1"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding CompanyName}"/>
+                         Text="{Binding Path=CompanyName, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="2"
                            VerticalAlignment="Center"
@@ -181,7 +181,7 @@
                          Grid.Row="2"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding CompanyAddress}"/>
+                         Text="{Binding Path=CompanyAddress, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="3"
                            VerticalAlignment="Center"
@@ -190,7 +190,7 @@
                          Grid.Row="3"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding CompanyEmail}"/>
+                         Text="{Binding Path=CompanyEmail, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="4"
                            VerticalAlignment="Center"
@@ -199,7 +199,7 @@
                          Grid.Row="4"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding CompanyPhone}"/>
+                         Text="{Binding Path=CompanyPhone, Mode=TwoWay}"/>
             </Grid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
