@@ -1,4 +1,6 @@
-﻿global using CommunityToolkit.Mvvm.ComponentModel;
+﻿global using Microsoft.UI.Xaml;
+global using Microsoft.UI.Xaml.Controls;
+global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 global using ODPMS.Models;
 global using ODPMS.ViewModel;
