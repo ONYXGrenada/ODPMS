@@ -8,7 +8,7 @@ global using Microsoft.UI.Xaml.Navigation;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 global using ODPMS.Models;
-global using ODPMS.ViewModel;
+global using ODPMS.ViewModels;
 global using ODPMS.Helpers;
 global using ODPMS.Dialogs;
 global using System.Collections.ObjectModel;

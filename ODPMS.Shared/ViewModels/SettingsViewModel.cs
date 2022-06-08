@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using Windows.Storage;
 
-namespace ODPMS.ViewModel
+namespace ODPMS.ViewModels
 {
     public partial class SettingsViewModel : BaseViewModel
     {

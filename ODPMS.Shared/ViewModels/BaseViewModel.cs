@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ODPMS.ViewModel
+namespace ODPMS.ViewModels
 {
     public partial class BaseViewModel : ObservableObject
     {
