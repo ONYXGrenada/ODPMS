@@ -49,7 +49,8 @@
                 <TextBlock VerticalAlignment="Center"
                            Text="First Name:" />
                 <TextBox x:Name="firstName_txt"
-                         MinWidth="180"/>
+                         MinWidth="180"
+                         Text="{Binding FirstName}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" 
@@ -58,7 +59,8 @@
                 <TextBlock VerticalAlignment="Center"
                            Text="Last Name:" />
                 <TextBox x:Name="lastName_txt"
-                         MinWidth="180"/>
+                         MinWidth="180"
+                         Text="{Binding LastName}"/>
             </StackPanel>
             
             <Button Style="{StaticResource AccentButtonStyle}"
@@ -82,7 +84,8 @@
                     Padding="16"
                     Spacing="8"
                     CornerRadius="8"
-                    Background="{ThemeResource LayerFillColorDefaultBrush}">
+                    Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    Visibility="{Binding VisibleState}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="User Administration"/>
@@ -91,7 +94,7 @@
                                AutoGeneratingColumn="UserDataGrid_AutoGeneratingColumn"
                                SelectionMode="Single"
                                SelectionChanged="UserDataGrid_SelectionChanged"
-                               ItemsSource="{x:Bind Users}">
+                               ItemsSource="{Binding Users}">
                 <controls:DataGrid.Resources>
                     <Style TargetType="controls:DataGridRow">
                         <Setter Property="IsFocusEngaged"
@@ -125,7 +128,8 @@
                     Padding="16"
                     Spacing="8"
                     CornerRadius="8"
-                    Background="{ThemeResource LayerFillColorDefaultBrush}">
+                    Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    Visibility="{Binding VisibleState}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="Company Administration"/>
@@ -151,7 +155,7 @@
                     <Image x:Name="companyLogo_img"
                         Width="300"
                         Height="200"
-                        Source="\Assets\Images\logo-placeholder.png"/>
+                        Source="{Binding CompanyLogo}"/>
                     <Button Style="{StaticResource AccentButtonStyle}"
                         Grid.Column="2"
                         Content="Browse"
@@ -167,7 +171,8 @@
                 <TextBox x:Name="companyName_txt"
                          Grid.Row="1"
                          Grid.Column="1"
-                         MinWidth="200"/>
+                         MinWidth="200"
+                         Text="{Binding CompanyName}"/>
 
                 <TextBlock Grid.Row="2"
                            VerticalAlignment="Center"
@@ -175,7 +180,8 @@
                 <TextBox x:Name="companyAddress_txt"
                          Grid.Row="2"
                          Grid.Column="1"
-                         MinWidth="200"/>
+                         MinWidth="200"
+                         Text="{Binding CompanyAddress}"/>
 
                 <TextBlock Grid.Row="3"
                            VerticalAlignment="Center"
@@ -183,7 +189,8 @@
                 <TextBox x:Name="companyEmail_txt"
                          Grid.Row="3"
                          Grid.Column="1"
-                         MinWidth="200"/>
+                         MinWidth="200"
+                         Text="{Binding CompanyEmail}"/>
 
                 <TextBlock Grid.Row="4"
                            VerticalAlignment="Center"
@@ -191,7 +198,8 @@
                 <TextBox x:Name="companyPhone_txt"
                          Grid.Row="4"
                          Grid.Column="1"
-                         MinWidth="200"/>
+                         MinWidth="200"
+                         Text="{Binding CompanyPhone}"/>
             </Grid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
@@ -209,13 +217,14 @@
                     Padding="16"
                     Spacing="8"
                     CornerRadius="8"
-                    Background="{ThemeResource LayerFillColorDefaultBrush}">
+                    Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    Visibility="{Binding VisibleState}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="Ticket Administration"/>
             <controls:DataGrid x:Name="ticketTypes_dataGrid"
                                AutoGenerateColumns="True"
-                               ItemsSource="{x:Bind TicketTypes}"/>
+                               ItemsSource="{Binding TicketTypes}"/>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add Ticket Type"
@@ -232,7 +241,8 @@
                     Padding="16"
                     Spacing="8"
                     CornerRadius="8"
-                    Background="{ThemeResource LayerFillColorDefaultBrush}">
+                    Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    Visibility="{Binding VisibleState}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="Receipt Administration" />
