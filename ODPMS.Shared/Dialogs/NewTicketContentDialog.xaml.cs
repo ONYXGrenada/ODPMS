@@ -14,6 +14,10 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
 using ODPMS.Helpers;
+using BarcodeLib;
+using Windows.Storage;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Streams;
 
 namespace ODPMS.Dialogs
 {
@@ -36,7 +40,10 @@ namespace ODPMS.Dialogs
 			this.ticketTime_txtBlock.Text = NewTicket.Created.ToString("T");
 			this.ticketGreeting_txtBlock.Text = "Thank you for your business!";
 			this.ticketTerms_txtBlock.Text = String.Format("The hourly rate is {0}. Lost tickets will result in a full date charge of $18.00", NewTicket.Rate.ToString());
-		}
+			generateBarCode(NewTicket.Number.ToString());
+			
+
+        }
 
 		private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
@@ -48,5 +55,31 @@ namespace ODPMS.Dialogs
 		{
 			// Discard the new ticket object
 		}
-	}
+
+        public async void generateBarCode(String ticketNumber)
+        {
+            //Create barcode
+			Barcode barcode = new Barcode();
+            await ApplicationData.Current.LocalFolder.CreateFileAsync("ticket" + ticketNumber + ".jpg", CreationCollisionOption.OpenIfExists);
+            string filePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "ticket" + ticketNumber + ".jpg");
+            //barcode.IncludeLabel = true;
+            barcode.Encode(TYPE.CODE93, ticketNumber, 200, 100);
+            barcode.SaveImage(filePath, SaveTypes.JPG);
+
+
+			//Place barcode on ticket
+			
+            var barcodePath = await ApplicationData.Current.LocalFolder.GetFileAsync("ticket" + ticketNumber + ".jpg");
+            using (IRandomAccessStream fileStream = await barcodePath.OpenAsync(Windows.Storage.FileAccessMode.Read))
+            {
+                BitmapImage image = new BitmapImage();
+                image.SetSource(fileStream);
+				
+                this.ticketBarCode_img.Source = image;
+            }
+
+
+
+        }
+    }
 }
