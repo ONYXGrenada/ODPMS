@@ -55,5 +55,16 @@
                  PlaceholderText="Pay Amount"/>
         <TextBlock Grid.Row="6" Grid.ColumnSpan="2" x:Name="changeReturned_txtBlock" />
 
+        <!--<Grid>
+            <Expander IsExpanded="False"
+                  ExpandDirection="Down"
+                  VerticalAlignment="Top"
+                  Header="Customer Data">
+                <TextBlock Text="Test"/>
+            </Expander>
+        </Grid>-->
+
     </Grid>
+
+    
 </ContentDialog>

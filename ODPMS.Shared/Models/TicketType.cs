@@ -33,7 +33,7 @@ namespace ODPMS.Models
             if (Type == "Hourly")
                 endDate = endDate.AddDays(1).Subtract(new TimeSpan(0, 0, 0, 0, 1));
 
-            else if (Type == "Daily")
+            if (Type == "Daily")
                 endDate = endDate.AddDays(Quantity);
 
             else if (Type == "Weekly")
@@ -44,7 +44,6 @@ namespace ODPMS.Models
 
             return endDate;
         }
-
     }
 
     public class TicketTypeViewModel
@@ -76,7 +75,7 @@ namespace ODPMS.Models
             if (Type == "Hourly")
                 endDate = endDate.AddDays(1).Subtract(new TimeSpan(0, 0, 0, 0, 1));
 
-            else if (Type == "Daily")
+            if (Type == "Daily")
                 endDate = endDate.AddDays(Quantity);
 
             else if (Type == "Weekly")
@@ -87,6 +86,5 @@ namespace ODPMS.Models
 
             return endDate;
         }
-
     }
 }

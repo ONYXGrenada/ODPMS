@@ -124,13 +124,13 @@ namespace ODPMS.Pages
             ContentDialog ticketDialog = new NewSpecialTicketContentDialog();
             ticketDialog.XamlRoot = this.XamlRoot;
             await ticketDialog.ShowAsync();
-            //var tickets = DatabaseHelper.GetTicketListViewData("Open");
+            var tickets = DatabaseHelper.GetTicketListViewData("Open");
 
-            //if (TicketList.Count != 0)
-            //    TicketList.Clear();
+            if (TicketList.Count != 0)
+                TicketList.Clear();
 
-            //foreach (var ticket in tickets)
-            //    TicketList.Add(ticket);
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
         }
     }
 }

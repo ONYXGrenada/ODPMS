@@ -33,7 +33,7 @@ namespace ODPMS.Dialogs
             NewTicket = DatabaseHelper.FindTicket(this.PayTicketNumber);
             NewTicket.UpdateCost();
 
-            this.ticketNumber_txtBlock.Text = "Ticket Number: " + NewTicket.Number;
+            this.ticketNumber_txtBlock.Text = "Ticket Number: " + NewTicket.Id;
             this.ticketStatus_txtBlock.Text = "Status: " + NewTicket.Status;
             this.ticketStartTime_txtBlock.Text = "Start Time: " + NewTicket.Created;
             this.ticketEndTime_txtBlock.Text = "End Time: " + NewTicket.Closed;

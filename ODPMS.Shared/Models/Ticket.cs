@@ -9,8 +9,7 @@ namespace ODPMS.Models
 {
     public class Ticket
     {
-        public int? Id { get; set; }
-        public int Number { get; set; }
+        public int? Id { get; set; }        
         public string Type { get; set; }
         public string Description { get; set; }
         public DateTime Created { get; set; }
@@ -18,16 +17,16 @@ namespace ODPMS.Models
         public string Status { get; set; }
         public int? CustomerId { get; set; }
         public string? Registration { get; set; }
+        public int Quantity { get; set; }
         public double Rate { get; set; }
         public double Cost { get; set; }
         public double PayAmount { get; set; }
         public double Balance { get; set; }
         public string User { get; set; }
 
-        public Ticket(int? id, int number, string type, string description, DateTime created, DateTime? closed, string status, int customerId, string registration, double rate, double cost, double payAmount, double balance, string user)
+        public Ticket(int? id, string type, string description, DateTime created, DateTime? closed, string status, int customerId, string registration, int quantity, double rate, double cost, double payAmount, double balance, string user)
         {
-            Id = id;
-            Number = number;
+            Id = id;            
             Type = type;
             Description = description;
             Created = created;
@@ -35,11 +34,17 @@ namespace ODPMS.Models
             Status = status;
             CustomerId = customerId;
             Registration = registration;
+            Quantity = quantity;
             Rate = rate;
             Cost = cost;
             PayAmount = payAmount;
             Balance = balance;
             User = user;
+
+            if (type == "Hourly")
+                UpdateCost();
+            else
+                UpdateClosed();
         }
 
         //public static async Task<ObservableCollection<Ticket>> GetTicketsAsync()
@@ -74,12 +79,12 @@ namespace ODPMS.Models
 
         public string ToCsv()
         {
-            return Id.ToString() + "," + Number.ToString() + "," + Type + "," + Description + "," + Created + "," + Closed.ToString() + "," + Status +
-                "," + CustomerId.ToString() + "," + Registration + "," + Rate.ToString() + "," + Cost.ToString() + "," + PayAmount.ToString() + "," + 
+            return Id.ToString() + "," + Type + "," + Description + "," + Created + "," + Closed.ToString() + "," + Status +
+                "," + CustomerId.ToString() + "," + Registration + Quantity.ToString() + "," + "," + Rate.ToString() + "," + Cost.ToString() + "," + PayAmount.ToString() + "," + 
                 Balance.ToString() + "," + User;
         }
 
-        public double UpdateCost()
+        public void UpdateCost()
         {
             int gracePeriod = 5;
             Closed = DateTime.Now;
@@ -94,7 +99,7 @@ namespace ODPMS.Models
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
 
-            return Cost;
+            //return Cost;
         }
 
         public void PayTicket(double payAmount)
@@ -115,39 +120,50 @@ namespace ODPMS.Models
 
             Balance = Cost - PayAmount;
         }
+
+        public void UpdateClosed()
+        {
+            //DateTime endDate = DateTime.Now;
+            //if (Type == "Hourly")
+            //    return
+                //endDate = endDate.AddDays(1).Subtract(new TimeSpan(0, 0, 0, 0, 1));
+
+            if (Type == "Daily")
+                Closed = Created.AddDays(Quantity);
+
+            else if (Type == "Weekly")
+                Closed = Created.AddDays(Quantity * 7);
+
+            else if (Type == "Monthly")
+                Closed = Created.AddDays(Quantity * 30);
+
+            //return endDate;
+        }
     }
 
     public class TicketViewModel
     {
         public int? Id { get; set; }
-        public int? Number { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Closed { get; set; }
         public string Status { get; set; }
-        public int CustomerId { get; set; }
         public string Registration { get; set; }
-        public double Rate { get; set; }
         public double Cost { get; set; }
-        public double PayAmount { get; set; }
         public double Balance { get; set; }
         public string User { get; set; }
 
-        public TicketViewModel(int? id, int? number, string type, string description, DateTime created, DateTime? closed, string status, int customerId, string registration, double rate, double cost, double payAmount, double balance, string user)
+        public TicketViewModel(int? id, string type, string description, DateTime created, DateTime? closed, string status, string registration, double cost, double balance, string user)
         {
             Id = id;
-            Number = number;
             Type = type;
             Description = description;
             Created = created;
             Closed = closed;
             Status = status;
-            CustomerId = customerId;
             Registration = registration;
-            Rate = rate;
             Cost = cost;
-            PayAmount = payAmount;
             Balance = balance;
             User = user;
         }
