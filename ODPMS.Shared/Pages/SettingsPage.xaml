@@ -5,7 +5,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="clr-namespace:ODPMS.Models"
-    xmlns:viewmodel="using:ODPMS.ViewModel"
+    xmlns:viewmodels="using:ODPMS.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d">
@@ -50,7 +50,7 @@
                            Text="First Name:" />
                 <TextBox x:Name="firstName_txt"
                          MinWidth="180"
-                         Text="{Binding FirstName}"/>
+                         Text="{Binding FirstName, Mode=TwoWay}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" 
@@ -60,18 +60,18 @@
                            Text="Last Name:" />
                 <TextBox x:Name="lastName_txt"
                          MinWidth="180"
-                         Text="{Binding LastName}"/>
+                         Text="{Binding LastName, Mode=TwoWay}"/>
             </StackPanel>
             
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Reset Password"
-                    Click="ResetPassword_Clicked"
+                    Command="{Binding ResetPasswordCommand}"
                     MinWidth="120"/>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Update User"
-                    Click="UpdateUser_Clicked"
+                    Command="{Binding UpdateUserCommand}"
                     MinWidth="120"/>
         </StackPanel>
 
@@ -94,13 +94,14 @@
                                AutoGeneratingColumn="UserDataGrid_AutoGeneratingColumn"
                                SelectionMode="Single"
                                SelectionChanged="UserDataGrid_SelectionChanged"
+                               SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                                ItemsSource="{Binding Users}">
-                <controls:DataGrid.Resources>
+                <!--<controls:DataGrid.Resources>
                     <Style TargetType="controls:DataGridRow">
                         <Setter Property="IsFocusEngaged"
                                 Value="{Binding IsUserSelected}"/>
                     </Style>
-                </controls:DataGrid.Resources>
+                </controls:DataGrid.Resources>-->
                 <!--<controls:DataGrid.Columns>
                     <controls:DataGridCheckBoxColumn Width="40"
                                                      Binding="{Binding IsSelected}"/>
@@ -109,12 +110,12 @@
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add User"
-                    Click="AddUser_Clicked"
+                    Command="{Binding AddUserCommand}"
                     MinWidth="120"/>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Reset Password"
-                    Click="ResetUserPassword_Clicked"
+                    Command="{Binding ResetUserPasswordCommand}"
                     IsEnabled="{Binding IsUserSelected}"
                     MinWidth="120"/>
         </StackPanel>
@@ -153,14 +154,14 @@
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal">
                     <Image x:Name="companyLogo_img"
-                        Width="300"
-                        Height="200"
-                        Source="{Binding CompanyLogo}"/>
+                           Width="300"
+                           Height="200"
+                           Source="{Binding CompanyLogo}"/>
                     <Button Style="{StaticResource AccentButtonStyle}"
-                        Grid.Column="2"
-                        Content="Browse"
-                        Click="CompanyLogo_Clicked"
-                        MinWidth="120"/>
+                            Grid.Column="2"
+                            Content="Browse"
+                            Command="{Binding GetCompanyLogoCommand}"
+                            MinWidth="120"/>
                     <TextBlock x:Name="TestDisplay_txt" />
                 </StackPanel>
 
@@ -172,7 +173,7 @@
                          Grid.Row="1"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding Path=CompanyName, Mode=TwoWay}"/>
+                         Text="{Binding CompanyName, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="2"
                            VerticalAlignment="Center"
@@ -181,7 +182,7 @@
                          Grid.Row="2"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding Path=CompanyAddress, Mode=TwoWay}"/>
+                         Text="{Binding CompanyAddress, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="3"
                            VerticalAlignment="Center"
@@ -190,7 +191,7 @@
                          Grid.Row="3"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding Path=CompanyEmail, Mode=TwoWay}"/>
+                         Text="{Binding CompanyEmail, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="4"
                            VerticalAlignment="Center"
@@ -199,12 +200,12 @@
                          Grid.Row="4"
                          Grid.Column="1"
                          MinWidth="200"
-                         Text="{Binding Path=CompanyPhone, Mode=TwoWay}"/>
+                         Text="{Binding CompanyPhone, Mode=TwoWay}"/>
             </Grid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Update Company"
-                    Click="UpdateCompany_Clicked"
+                    Command="{Binding UpdateCompanyCommand}"
                     MinWidth="120"/>
         </StackPanel>
 
@@ -228,7 +229,7 @@
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add Ticket Type"
-                    Click="AddTicketType_Clicked"
+                    Command="{Binding AddTicketTypeCommand}"
                     MinWidth="120"/>
         </StackPanel>
 

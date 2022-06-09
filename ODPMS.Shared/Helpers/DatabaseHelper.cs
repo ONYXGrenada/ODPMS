@@ -8,16 +8,48 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using ODPMS.Models;
+using SQLite;
 using Windows.Storage;
 
 namespace ODPMS.Helpers
 {
-    class DatabaseHelper
+    public class DatabaseHelper
     {
+        //private SQLiteAsyncConnection conn;
+        //private string _dbPath;
+        //public string StatusMessage { get; set; }
+
+        //private string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "opms.db3");
+
         public DatabaseHelper()
         {
             InitializeDatabase();
+            //_ = Init();
         }
+
+        //private async Task Init()
+        //{
+        //    _dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "opms.db3");
+        //    List<Ticket> ticketList = new();
+        //    var cultureInfo = new CultureInfo("en-US");
+        //    if (conn != null)
+        //        return;
+
+        //    conn = new SQLiteAsyncConnection(_dbPath);
+
+        //    await conn.CreateTableAsync<Ticket>();
+
+        //    //using var stream = await FileSystem.OpenAppPackageFileAsync("ticketdata.json");
+        //    //using var reader = new StreamReader(stream);
+        //    //var contents = await reader.ReadToEndAsync();
+        //    //ticketList = JsonSerializer.Deserialize<List<Ticket>>(contents);
+
+        //    ticketList.Add(new Ticket(null, 1, "Hourly", "Hourly Ticket", DateTime.Parse("05-12-2022 16:01:01", cultureInfo, System.Globalization.DateTimeStyles.NoCurrentDateDefault),
+        //        null, "Open", 0.00, 0.00, 0.00, 0.00, "admin"));
+
+        //    //foreach (Ticket ticket in ticketList)
+        //    //    await AddNewTicket(ticket);
+        //}
 
         public async static void InitializeDatabase()
         {

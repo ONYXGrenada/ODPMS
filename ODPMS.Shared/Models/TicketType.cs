@@ -1,11 +1,14 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ODPMS.Models
 {
-    class TicketType
+    [Table("ticketType")]
+    public class TicketType
     {
+        [PrimaryKey, AutoIncrement]
         public int? Id { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
@@ -26,6 +29,8 @@ namespace ODPMS.Models
             User = user;
             ActivityDate = activityDate;
         }
+
+        public TicketType() { }
 
         public DateTime GetEndDate()
         {

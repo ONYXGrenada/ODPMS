@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -7,8 +8,10 @@ using Windows.Storage;
 
 namespace ODPMS.Models
 {
+    [Table("users")]
     public class User
     {
+        [PrimaryKey, AutoIncrement]
         public int? Id { get; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -31,6 +34,8 @@ namespace ODPMS.Models
             Status = status;
             LastLogin = lastLogin;
         }
+
+        public User() { }
 
         public User(string username, string password, string salt, string firstName, string lastName, string userType, string status)
         {

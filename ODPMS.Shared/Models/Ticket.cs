@@ -4,11 +4,14 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using SQLite;
 
 namespace ODPMS.Models
 {
+    [Table("tickets")]
     public class Ticket
     {
+        [PrimaryKey, AutoIncrement]
         public int? Id { get; set; }
         public int Number { get; set; }
         public string Type { get; set; }
@@ -37,6 +40,8 @@ namespace ODPMS.Models
             Balance = balance;
             User = user;
         }
+
+        public Ticket() {}
 
         public static async Task<ObservableCollection<Ticket>> GetTicketsAsync()
         {
