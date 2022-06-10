@@ -28,10 +28,12 @@
 
             <StackPanel Orientation="Horizontal"
                         Spacing="10">
-                <CalendarDatePicker x:Name="fromDate_pkr" 
+                <CalendarDatePicker x:Name="fromDate_pkr"
+                                    Date="{Binding FromDate, Mode=TwoWay}"
                                     Header="From Date:"
                                     VerticalAlignment="Bottom"/>
-                <TimePicker x:Name="fromTime_pkr" 
+                <TimePicker x:Name="fromTime_pkr"
+                            Time="{Binding FromTime, Mode=TwoWay}"
                             VerticalAlignment="Bottom"/>
             </StackPanel>
 
@@ -39,16 +41,20 @@
                         Orientation="Horizontal"
                         Spacing="10">
                 <CalendarDatePicker x:Name="toDate_pkr" 
+                                    Date="{Binding ToDate, Mode=TwoWay}"
                                     Header="To Date:"
                                     VerticalAlignment="Bottom"/>
                 <TimePicker x:Name="toTime_pkr"
-                            VerticalAlignment="Bottom"/>
+                            Time="{Binding ToTime, Mode=TwoWay}"
+                            VerticalAlignment="Bottom">
+                </TimePicker>
             </StackPanel>
 
             <StackPanel Grid.Column="2" 
                         Orientation="Horizontal"
                         Spacing="10">
-                <ComboBox x:Name="status_cbox" 
+                <ComboBox x:Name="status_cbox"
+                          SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
                           Header="Status:">
                     <ComboBoxItem Name="All" Content="All" IsSelected="True"/>
                     <ComboBoxItem Name="Closed" Content="Closed"/>
@@ -56,7 +62,7 @@
                     <ComboBoxItem Name="Paid" Content="Paid"/>
                 </ComboBox>
                 <Button Content="Submit"
-                        Click="ReportSubmit_Clicked" 
+                        Command="{Binding ReportSubmitCommand}"
                         Style="{StaticResource AccentButtonStyle}"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Right"/>
@@ -66,14 +72,14 @@
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
                 Content="Export"
-                Click="ReportExport_Clicked"
+                Command="{Binding ReportExportCommand}"
                 Style="{StaticResource AccentButtonStyle}"/>
         </Grid>
 
         <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="3"
                            AutoGenerateColumns="True"
-                           ItemsSource="{x:Bind TicketList}"/>
+                           ItemsSource="{Binding TicketList}"/>
 
     </Grid>
 </Page>
