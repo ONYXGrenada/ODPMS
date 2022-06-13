@@ -15,6 +15,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="welcomeMessage_txtBlock"
@@ -73,5 +74,12 @@
                            AutoGenerateColumns="True"
                            SelectionMode="Single"
                            ItemsSource="{x:Bind TicketList}"/>
+
+        <controls:DataGrid x:Name="otherTicketList_dataGrid"
+                           Grid.Row="3"
+                           AutoGenerateColumns="True"
+                           SelectionMode="Single"
+                           ItemsSource="{x:Bind OtherTicketList}"/>
+
     </Grid>
 </Page>

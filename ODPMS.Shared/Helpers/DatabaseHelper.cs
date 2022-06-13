@@ -563,6 +563,46 @@ namespace ODPMS.Helpers
             return tickets;
         }
 
+        public static Ticket GetTicketByReg(string registration)
+        {
+            Ticket ticket = null;
+            //int gracePeriod = 5;
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
+            using (SqliteConnection dbconn = new SqliteConnection($"Filename={dbpath}"))
+            {
+                dbconn.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand();
+                selectCommand.Connection = dbconn;
+
+                // Use parameterized query to prevent SQL injection attacks
+                selectCommand.CommandText = "SELECT * FROM Tickets WHERE Registration = @registration LIMIT 1;";
+                selectCommand.Parameters.AddWithValue("@Registration", registration);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                query.Read();
+                if (query.HasRows)
+                {
+                    if (query[4].GetType() == typeof(DBNull))
+                    {
+                        ticket = new Ticket(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2), DateTime.Parse(query.GetString(3)), null, query.GetString(5),
+                            Int32.Parse(query.GetString(6)), query.GetString(7), Int32.Parse(query.GetString(8)), float.Parse(query.GetString(9)), float.Parse(query.GetString(10)),
+                            float.Parse(query.GetString(11)), float.Parse(query.GetString(12)), query.GetString(13));
+                    }
+                    else
+                    {
+                        ticket = new Ticket(Int32.Parse(query.GetString(0)), query.GetString(1), query.GetString(2), DateTime.Parse(query.GetString(3)), DateTime.Parse(query.GetString(4)),
+                            query.GetString(5), Int32.Parse(query.GetString(6)), query.GetString(7), Int32.Parse(query.GetString(8)), float.Parse(query.GetString(9)),
+                            float.Parse(query.GetString(10)), float.Parse(query.GetString(11)), float.Parse(query.GetString(12)), query.GetString(13));
+                    }
+                }
+                dbconn.Close();
+            }
+            return ticket;
+        }
+    
+
         public static void AddUser(User newUser)
         {
             string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "odpms_data.db");
@@ -851,7 +891,7 @@ namespace ODPMS.Helpers
             }
 
             return ticketTypes;
-        }
+        }        
 
         public static void AddTicketType(TicketType ticketType)
         {

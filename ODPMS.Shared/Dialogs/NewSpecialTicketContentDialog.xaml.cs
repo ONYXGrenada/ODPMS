@@ -29,7 +29,6 @@ namespace ODPMS.Dialogs
         private TicketTypeViewModel NewTicketType;
         private double payAmount;
         private int PayTicketNumber { get; set; }
-
         public NewSpecialTicketContentDialog()
         {
             this.InitializeComponent();
@@ -55,7 +54,7 @@ namespace ODPMS.Dialogs
             int customerId = 0;
 
             NewTicket = DatabaseHelper.CreateTicket(ticketDescription, customerId, registration);
-            //NewTicket.PayTicket(payAmount);
+            NewTicket.PayTicket(payAmount);
             DatabaseHelper.AddTicket(NewTicket);
         }
 
@@ -127,6 +126,11 @@ namespace ODPMS.Dialogs
                     break;
                 }
             }                
+        }
+
+        private async void vehicleNum_txt_LostFocus(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
