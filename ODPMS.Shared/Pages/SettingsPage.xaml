@@ -3,6 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="clr-namespace:ODPMS.Models"
     xmlns:viewmodels="using:ODPMS.ViewModels"
@@ -93,9 +95,13 @@
                                AutoGenerateColumns="True"
                                AutoGeneratingColumn="UserDataGrid_AutoGeneratingColumn"
                                SelectionMode="Single"
-                               SelectionChanged="UserDataGrid_SelectionChanged"
                                SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                                ItemsSource="{Binding Users}">
+                <i:Interaction.Behaviors>
+                    <ic:EventTriggerBehavior EventName="SelectionChanged">
+                        <ic:InvokeCommandAction Command="{Binding UserSelectedCommand}"/>
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
                 <!--<controls:DataGrid.Resources>
                     <Style TargetType="controls:DataGridRow">
                         <Setter Property="IsFocusEngaged"

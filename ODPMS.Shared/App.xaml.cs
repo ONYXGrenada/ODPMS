@@ -23,6 +23,26 @@ namespace ODPMS
         public Window Window => _window;
         public static bool IsUserLoggedIn { get; set; }
         public static User LoggedInUser { get; set; }
+
+        private static string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            "Onyx Digital", "OPMS", "Data");
+
+        private static DatabaseHelper database;
+        public static DatabaseHelper Database
+        {
+            get
+            {
+                if (!Directory.Exists(Path.Combine(dbPath)))
+                {
+                    Directory.CreateDirectory(dbPath);
+                }
+                if (database == null)
+                {
+                    database = new DatabaseHelper(Path.Combine(dbPath, "odpms_data.db3"));
+                }
+                return database;
+            }
+        }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -32,6 +52,7 @@ namespace ODPMS
             InitializeLogging();
 
             this.InitializeComponent();
+            _ = Database.Init();
             DatabaseHelper.InitializeDatabase();
 
 #if HAS_UNO || NETFX_CORE

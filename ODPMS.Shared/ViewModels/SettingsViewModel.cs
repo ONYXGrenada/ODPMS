@@ -46,7 +46,8 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         object selectedUser;
 
-        public ObservableCollection<UserViewModel> Users { get; } = new();
+        public ObservableCollection<UserViewModel> Userss { get; } = new();
+        public ObservableCollection<User> Users { get; } = new();
         public ObservableCollection<TicketTypeViewModel> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
 
@@ -56,12 +57,13 @@ namespace ODPMS.ViewModels
             Init();
         }
 
-        private void Init()
+        private async void Init()
         {
-            if (App.LoggedInUser.UserType == "admin")
+            if (App.LoggedInUser.Type == "admin")
             {
                 VisibleState = Visibility.Visible;
-                var users = DatabaseHelper.GetUsers();
+                var userss = DatabaseHelper.GetUsers();
+                var users = await App.Database.GetAllUsers();
 
                 if (Users.Count != 0)
                     Users.Clear();
@@ -85,6 +87,12 @@ namespace ODPMS.ViewModels
             LastName = App.LoggedInUser.LastName;
 
             GetCompanyData();
+        }
+
+        [ICommand]
+        private async void GetUsers()
+        {
+            await App.Database.GetAllUsers();
         }
 
         private void GetCompanyData()
@@ -122,7 +130,7 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        private void UpdateUser()
+        private async void UpdateUser()
         {
             if (FirstName != App.LoggedInUser.FirstName || LastName != App.LoggedInUser.LastName)
             {
@@ -130,7 +138,8 @@ namespace ODPMS.ViewModels
                 App.LoggedInUser.LastName = LastName;
                 DatabaseHelper.UpdateUser(App.LoggedInUser);
 
-                var users = DatabaseHelper.GetUsers();
+                //var users = DatabaseHelper.GetUsers();
+                var users = await App.Database.GetAllUsers();
 
                 if (Users.Count != 0)
                     Users.Clear();
@@ -166,7 +175,8 @@ namespace ODPMS.ViewModels
             newUserDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await newUserDialog.ShowAsync();
 
-            var users = DatabaseHelper.GetUsers();
+            //var users = DatabaseHelper.GetUsers();
+            var users = await App.Database.GetAllUsers();
 
             if (Users.Count != 0)
                 Users.Clear();
@@ -219,5 +229,12 @@ namespace ODPMS.ViewModels
                 //OutputTextBlock.Text = "Operation cancelled.";
             }
         }
+
+        [ICommand]
+        void UserSelected()
+        {
+            IsUserSelected = true;
+        }
+
     }
 }

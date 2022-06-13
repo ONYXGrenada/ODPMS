@@ -58,9 +58,5 @@ namespace ODPMS.Pages
             }
         }
 
-        private void UserDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            viewModel.IsUserSelected = true;
-        }
     }
 }

@@ -18,11 +18,12 @@ namespace ODPMS.Models
         public string Salt { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string UserType { get; set; }
+        public string Type { get; set; }
         public string Status { get; set; }
         public DateTime? LastLogin { get; set; }
+        public bool IsReset { get; set; }
 
-        public User(int? id, string username, string password, string salt, string firstName, string lastName, string userType, string status, DateTime? lastLogin)
+        public User(int? id, string username, string password, string salt, string firstName, string lastName, string type, string status, DateTime? lastLogin)
         {
             Id = id;
             Username = username;
@@ -30,21 +31,21 @@ namespace ODPMS.Models
             Salt = salt;
             FirstName = firstName;
             LastName = lastName;
-            UserType = userType;
+            Type = type;
             Status = status;
             LastLogin = lastLogin;
         }
 
         public User() { }
 
-        public User(string username, string password, string salt, string firstName, string lastName, string userType, string status)
+        public User(string username, string password, string salt, string firstName, string lastName, string type, string status)
         {
             Username = username;
             Password = password;
             Salt = salt;
             FirstName = firstName;
             LastName = lastName;
-            UserType = userType;
+            Type = type;
             Status = status;
         }
 
@@ -60,17 +61,17 @@ namespace ODPMS.Models
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string UserType { get; set; }
+        public string Type { get; set; }
         public string Status { get; set; }
         public DateTime? LastLogin { get; set; }
 
-        public UserViewModel(int? id, string username, string firstName, string lastName, string userType, string status, DateTime? lastLogin)
+        public UserViewModel(int? id, string username, string firstName, string lastName, string type, string status, DateTime? lastLogin)
         {
             Id = id;
             Username = username;
             FirstName = firstName;
             LastName = lastName;
-            UserType = userType;
+            Type = type;
             Status = status;
             LastLogin = lastLogin;
         }

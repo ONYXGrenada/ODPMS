@@ -7,6 +7,7 @@ global using Microsoft.UI.Xaml.Media;
 global using Microsoft.UI.Xaml.Navigation;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
+global using SQLite;
 global using ODPMS.Models;
 global using ODPMS.ViewModels;
 global using ODPMS.Helpers;

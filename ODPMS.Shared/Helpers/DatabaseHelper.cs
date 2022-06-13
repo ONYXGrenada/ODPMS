@@ -15,6 +15,8 @@ namespace ODPMS.Helpers
 {
     public class DatabaseHelper
     {
+        private readonly string _databasePath;
+        private SQLiteAsyncConnection _database;
         //private SQLiteAsyncConnection conn;
         //private string _dbPath;
         //public string StatusMessage { get; set; }
@@ -25,6 +27,85 @@ namespace ODPMS.Helpers
         {
             InitializeDatabase();
             //_ = Init();
+        }
+
+        public DatabaseHelper(string dbPath)
+        {
+            _databasePath = dbPath;
+        }
+
+        public async Task Init()
+        {
+            Type[] tables = { 
+                typeof(Ticket),
+                typeof(User),
+                typeof(TicketType),
+                typeof(Receipt)
+            };
+            if (_database != null)
+            {
+                return;
+            }
+            _database = new SQLiteAsyncConnection(_databasePath);
+            //await _database.CreateTableAsync<Ticket>();
+            //await _database.CreateTableAsync<User>();
+            //await _database.CreateTableAsync<TicketType>();
+            //await _database.CreateTableAsync<Receipt>();
+            await _database.CreateTablesAsync(CreateFlags.None, tables);
+            User admin = new();
+            admin.Username = "admin";
+            admin.Salt = BCrypt.Net.BCrypt.GenerateSalt();
+            admin.Password = BCrypt.Net.BCrypt.HashPassword("Password1", admin.Salt);
+            admin.FirstName = "Admin";
+            admin.LastName = "User";
+            admin.Type = "admin";
+            admin.Status = "Active";
+
+            var query = _database.Table<User>().Where(v => v.Username == "admin");
+            if (await query.CountAsync() == 0)
+                await _database.InsertAsync(admin);
+        }
+
+        public async Task CreateTicketN()
+        {
+            int result = 0;
+            try
+            {
+                await Init();
+
+                var cultureInfo = new CultureInfo("en-US");
+
+                Ticket ticket = new();
+                ticket.Type = "Hourly";
+                ticket.Description = "Hourly Ticket";
+                ticket.Created = DateTime.Now;
+                ticket.Status = "Open";
+                ticket.User = App.LoggedInUser.Username;
+
+                result = await _database.InsertAsync(ticket);
+
+                //StatusMessage = string.Format("{0} record(s) added [Ticket: {1})", result, ticket.Id);
+            }
+            catch (Exception ex)
+            {
+                //StatusMessage = string.Format("Failed to add {0}. Error: {1}", ticket.Id, ex.Message);
+            }
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            try
+            {
+                await Init();
+                //return await conn.Table<Ticket>().ToListAsync();
+                return await _database.Table<User>().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                //StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+
+            return new List<User>();
         }
 
         //private async Task Init()
@@ -87,7 +168,7 @@ namespace ODPMS.Helpers
                     "Salt NVARCHAR(25), " + 
                     "FirstName NVARCHAR(25), " +
                     "LastName NVARCHAR(25), " +
-                    "UserType NVARCHAR(25), " +
+                    "Type NVARCHAR(25), " +
                     "Status NVARCHAR(25), " +
                     "LastLogin DATETIME DEFAULT NULL);";
 
@@ -235,14 +316,14 @@ namespace ODPMS.Helpers
 
                 // Use parameterized query to prevent SQL injection attacks
                 //insertUserCommand.CommandText = "INSERT INTO Users VALUES (@Id, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @Status, @LastLogin);";
-                insertUserCommand.CommandText = "INSERT INTO Users VALUES (NULL, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @Status, NULL);";
+                insertUserCommand.CommandText = "INSERT INTO Users VALUES (NULL, @Username, @Password, @Salt, @FirstName, @LastName, @Type, @Status, NULL);";
                 //insertUserCommand.Parameters.AddWithValue("@Id", userId);
                 insertUserCommand.Parameters.AddWithValue("@Username", username);
                 insertUserCommand.Parameters.AddWithValue("@Password", password);
                 insertUserCommand.Parameters.AddWithValue("@Salt", salt);
                 insertUserCommand.Parameters.AddWithValue("@FirstName", firstName);
                 insertUserCommand.Parameters.AddWithValue("@LastName", lastName);
-                insertUserCommand.Parameters.AddWithValue("@UserType", userType);
+                insertUserCommand.Parameters.AddWithValue("@Type", userType);
                 insertUserCommand.Parameters.AddWithValue("@Status", userStatus);
                 //insertUserCommand.Parameters.AddWithValue("@LastLogin", lastLogin);
 
@@ -582,14 +663,14 @@ namespace ODPMS.Helpers
 
                 // Use parameterized query to prevent SQL injection attacks
                 //insertCommand.CommandText = "INSERT INTO Users VALUES (@Id, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @Status, @LastLogin);";
-                insertCommand.CommandText = "INSERT INTO Users VALUES (NULL, @Username, @Password, @Salt, @FirstName, @LastName, @UserType, @Status, NULL);";
+                insertCommand.CommandText = "INSERT INTO Users VALUES (NULL, @Username, @Password, @Salt, @FirstName, @LastName, @Type, @Status, NULL);";
                 //insertCommand.Parameters.AddWithValue("@Id", newUser.Id);
                 insertCommand.Parameters.AddWithValue("@Username", newUser.Username);
                 insertCommand.Parameters.AddWithValue("@Password", newUser.Password);
                 insertCommand.Parameters.AddWithValue("@Salt", newUser.Salt);
                 insertCommand.Parameters.AddWithValue("@FirstName", newUser.FirstName);
                 insertCommand.Parameters.AddWithValue("@LastName", newUser.LastName);
-                insertCommand.Parameters.AddWithValue("@UserType", newUser.UserType);
+                insertCommand.Parameters.AddWithValue("@Type", newUser.Type);
                 insertCommand.Parameters.AddWithValue("@Status", newUser.Status);
                 //insertCommand.Parameters.AddWithValue("@LastLogin", newUser.LastLogin);
 
@@ -657,13 +738,13 @@ namespace ODPMS.Helpers
                 updateCommand.Connection = dbconn;
 
                 // Use parameterized query to prevent SQL injection attacks
-                updateCommand.CommandText = "UPDATE Users SET Username=@Username, Password=@Password, Salt=@Salt, FirstName=@FirstName, LastName=@LastName, UserType=@UserType, LastLogin=@LastLogin WHERE Id=@Id;";
+                updateCommand.CommandText = "UPDATE Users SET Username=@Username, Password=@Password, Salt=@Salt, FirstName=@FirstName, LastName=@LastName, Type=@Type, LastLogin=@LastLogin WHERE Id=@Id;";
                 updateCommand.Parameters.AddWithValue("@Username", updateUser.Username);
                 updateCommand.Parameters.AddWithValue("@Password", updateUser.Password);
                 updateCommand.Parameters.AddWithValue("@Salt", updateUser.Salt);
                 updateCommand.Parameters.AddWithValue("@FirstName", updateUser.FirstName);
                 updateCommand.Parameters.AddWithValue("@LastName", updateUser.LastName);
-                updateCommand.Parameters.AddWithValue("@UserType", updateUser.UserType);
+                updateCommand.Parameters.AddWithValue("@Type", updateUser.Type);
                 updateCommand.Parameters.AddWithValue("@Status", updateUser.Status);
                 updateCommand.Parameters.AddWithValue("@LastLogin", updateUser.LastLogin);
                 updateCommand.Parameters.AddWithValue("@Id", updateUser.Id);
