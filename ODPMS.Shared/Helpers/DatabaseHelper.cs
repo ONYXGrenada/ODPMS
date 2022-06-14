@@ -47,10 +47,6 @@ namespace ODPMS.Helpers
                 return;
             }
             _database = new SQLiteAsyncConnection(_databasePath);
-            //await _database.CreateTableAsync<Ticket>();
-            //await _database.CreateTableAsync<User>();
-            //await _database.CreateTableAsync<TicketType>();
-            //await _database.CreateTableAsync<Receipt>();
             await _database.CreateTablesAsync(CreateFlags.None, tables);
             User admin = new();
             admin.Username = "admin";
