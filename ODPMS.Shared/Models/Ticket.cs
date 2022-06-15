@@ -49,6 +49,8 @@ namespace ODPMS.Models
                 UpdateClosed();
         }
 
+        public Ticket() { }
+
         //public static async Task<ObservableCollection<Ticket>> GetTicketsAsync()
         //{
         //    StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Tickets.txt"));
