@@ -147,6 +147,17 @@
                            Foreground="Black"
                            HorizontalAlignment="Right"
                            Margin="0,0,0,0"/>
+                
+            </Grid>
+            <Grid x:Name="ticketBarcode_grid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image x:Name="ticketBarCode_img"
+                        Width="300"
+                        Height="200"
+                       />
             </Grid>
             <Grid x:Name="ticketFooter_grid">
                 <Grid.RowDefinitions>
