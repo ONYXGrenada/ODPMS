@@ -27,6 +27,8 @@ namespace ODPMS.Pages
     public sealed partial class HomePage : Page
     {
         public ObservableCollection<TicketViewModel> TicketList { get; } = new();
+        public ObservableCollection<TicketViewModel> OtherTicketList { get; } = new();
+
         public HomePage()
         {
             this.InitializeComponent();
@@ -42,13 +44,20 @@ namespace ODPMS.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+            var tickets = DatabaseHelper.GetTicketListViewData(null);
 
             if (TicketList.Count != 0)
                 TicketList.Clear();
+            if (OtherTicketList.Count != 0)
+                OtherTicketList.Clear();
 
             foreach (var ticket in tickets)
-                TicketList.Add(ticket);
+            {
+                if (ticket.Type == "Hourly" && ticket.Status == "Open")
+                    TicketList.Add(ticket);
+                else if (ticket.Type != "Hourly" && ticket.Closed >= DateTime.Now)
+                    OtherTicketList.Add(ticket);
+            }
 
             welcomeMessage_txtBlock.Text = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
         }
@@ -124,13 +133,13 @@ namespace ODPMS.Pages
             ContentDialog ticketDialog = new NewSpecialTicketContentDialog();
             ticketDialog.XamlRoot = this.XamlRoot;
             await ticketDialog.ShowAsync();
-            //var tickets = DatabaseHelper.GetTicketListViewData("Open");
+            var tickets = DatabaseHelper.GetTicketListViewData("Open");
 
-            //if (TicketList.Count != 0)
-            //    TicketList.Clear();
+            if (TicketList.Count != 0)
+                TicketList.Clear();
 
-            //foreach (var ticket in tickets)
-            //    TicketList.Add(ticket);
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
         }
     }
 }

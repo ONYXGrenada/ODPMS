@@ -29,9 +29,9 @@ namespace ODPMS.Dialogs
 		{
 			// Create a new ticket object and display on content dialog
 
-			NewTicket = DatabaseHelper.CreateTicket("Hourly");
+			NewTicket = DatabaseHelper.CreateTicket("Hourly Ticket", 0, "0");
 
-			this.ticketNumber_txtBlock.Text = NewTicket.Number.ToString();
+			this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
 			this.ticketDate_txtBlock.Text = NewTicket.Created.ToString("MM/dd/yyyy");
 			this.ticketTime_txtBlock.Text = NewTicket.Created.ToString("T");
 			this.ticketGreeting_txtBlock.Text = "Thank you for your business!";
