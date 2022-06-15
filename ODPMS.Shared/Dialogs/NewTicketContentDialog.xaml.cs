@@ -40,7 +40,7 @@ namespace ODPMS.Dialogs
 			this.ticketTime_txtBlock.Text = NewTicket.Created.ToString("T");
 			this.ticketGreeting_txtBlock.Text = "Thank you for your business!";
 			this.ticketTerms_txtBlock.Text = String.Format("The hourly rate is {0}. Lost tickets will result in a full date charge of $18.00", NewTicket.Rate.ToString());
-			generateBarCode(NewTicket.Number.ToString());
+			generateBarCode(NewTicket.Id.ToString());
 			
 
         }
