@@ -7,8 +7,10 @@ using Windows.Storage;
 
 namespace ODPMS.Models
 {
+    [Table("tickets")]
     public class Ticket
     {
+        [PrimaryKey, AutoIncrement]
         public int? Id { get; set; }        
         public string Type { get; set; }
         public string Description { get; set; }
