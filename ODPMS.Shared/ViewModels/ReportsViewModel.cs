@@ -10,6 +10,9 @@ namespace ODPMS.ViewModels
 {
     public partial class ReportsViewModel : BaseViewModel
     {
+        [ObservableProperty]
+        bool isNotEmpty;
+
         public ObservableCollection<Ticket> TicketList { get; } = new();
 
         [ObservableProperty]
@@ -45,6 +48,7 @@ namespace ODPMS.ViewModels
         [ICommand]
         private void ReportSubmit()
         {
+            IsNotEmpty = false;
             var cultureInfo = new CultureInfo("en-US");
             // Create from date and time for use with database query
             string fromDateStr = FromDate.ToString();
@@ -68,6 +72,9 @@ namespace ODPMS.ViewModels
 
             foreach (var ticket in tickets)
                 TicketList.Add(ticket);
+
+            if (TicketList.Count > 0)
+                IsNotEmpty = true;
         }
 
         [ICommand]

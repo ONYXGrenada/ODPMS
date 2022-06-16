@@ -69,11 +69,12 @@
             </StackPanel>
 
             <Button Grid.Column="3"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Content="Export"
-                Command="{Binding ReportExportCommand}"
-                Style="{StaticResource AccentButtonStyle}"/>
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    Content="Export"
+                    Command="{Binding ReportExportCommand}"
+                    IsEnabled="{Binding IsNotEmpty}"
+                    Style="{StaticResource AccentButtonStyle}"/>
         </Grid>
 
         <controls:DataGrid x:Name="ticketList_dataGrid"
