@@ -46,6 +46,9 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         object selectedUser;
 
+        [ObservableProperty]
+        DataGrid userDataGrid;
+
         public ObservableCollection<UserViewModel> Userss { get; } = new();
         public ObservableCollection<UserViewModel> Users { get; } = new();
         public ObservableCollection<TicketTypeViewModel> TicketTypes { get; } = new();
@@ -235,6 +238,27 @@ namespace ODPMS.ViewModels
         {
             IsUserSelected = true;
         }
+
+        //[ICommand]
+        //private void UpdateUserDataColumns()
+        //{
+        //    if (e.Comlumn.Header.ToString() == "FirstName")
+        //    {
+        //        e.Column.Header = "First Name";
+        //    }
+        //    if (e.Column.Header.ToString() == "LastName")
+        //    {
+        //        e.Column.Header = "Last Name";
+        //    }
+        //    if (e.Column.Header.ToString() == "UserType")
+        //    {
+        //        e.Column.Header = "Type";
+        //    }
+        //    if (e.Column.Header.ToString() == "LastLogin")
+        //    {
+        //        e.Column.Header = "Last Login";
+        //    }
+        //}
 
     }
 }

@@ -37,26 +37,5 @@ namespace ODPMS.Pages
             viewModel = new SettingsViewModel();
             DataContext = viewModel;
         }
-
-        private void UserDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-            if (e.Column.Header.ToString() == "FirstName")
-            {
-                e.Column.Header = "First Name";
-            }
-            if (e.Column.Header.ToString() == "LastName")
-            {
-                e.Column.Header = "Last Name";
-            }
-            if (e.Column.Header.ToString() == "UserType")
-            {
-                e.Column.Header = "Type";
-            }
-            if (e.Column.Header.ToString() == "LastLogin")
-            {
-                e.Column.Header = "Last Login";
-            }
-        }
-
     }
 }

@@ -3,6 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="using:ODPMS.Models"
     xmlns:viewmodels="using:ODPMS.ViewModels"
@@ -54,7 +56,8 @@
             <StackPanel Grid.Column="1"
                         Spacing="10">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="ticketNumber_txt"/>
+                    <TextBox x:Name="ticketNumber_txt"
+                             Text="{Binding TicketNumber, Mode=TwoWay}"/>
                     <Button x:Name="buttonPayTicket_btn"
                             Grid.Column="1"
                             Content="Pay Ticket"
@@ -71,7 +74,14 @@
                            Grid.Row="2"
                            AutoGenerateColumns="True"
                            SelectionMode="Single"
-                           ItemsSource="{Binding TicketList}"/>
+                           SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
+                           ItemsSource="{Binding TicketList}">
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="SelectionChanged">
+                    <ic:InvokeCommandAction Command="{Binding SelectTicketCommand}"/>
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </controls:DataGrid>
 
         <controls:DataGrid x:Name="otherTicketList_dataGrid"
                            Grid.Row="3"

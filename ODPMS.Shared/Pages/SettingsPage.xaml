@@ -92,8 +92,7 @@
                        Margin="0,12,0,0"
                        Text="User Administration"/>
             <controls:DataGrid x:Name="user_dataGrid"
-                               AutoGenerateColumns="True"
-                               AutoGeneratingColumn="UserDataGrid_AutoGeneratingColumn"
+                               AutoGenerateColumns="False"
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                                ItemsSource="{Binding Users}">
@@ -102,16 +101,15 @@
                         <ic:InvokeCommandAction Command="{Binding UserSelectedCommand}"/>
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
-                <!--<controls:DataGrid.Resources>
-                    <Style TargetType="controls:DataGridRow">
-                        <Setter Property="IsFocusEngaged"
-                                Value="{Binding IsUserSelected}"/>
-                    </Style>
-                </controls:DataGrid.Resources>-->
-                <!--<controls:DataGrid.Columns>
-                    <controls:DataGridCheckBoxColumn Width="40"
-                                                     Binding="{Binding IsSelected}"/>
-                </controls:DataGrid.Columns>-->
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                    <controls:DataGridTextColumn Header="Username" Binding="{Binding Username}" />
+                    <controls:DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
+                    <controls:DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
+                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" />
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" />
+                    <controls:DataGridTextColumn Header="Last Login" Binding="{Binding LastLogin}" />
+                </controls:DataGrid.Columns>
             </controls:DataGrid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"

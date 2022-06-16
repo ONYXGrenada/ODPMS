@@ -18,6 +18,8 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         string ticketNumber;
 
+        [ObservableProperty]
+        TicketViewModel selectedTicket;
 
         public HomeViewModel()
         {
@@ -101,6 +103,7 @@ namespace ODPMS.ViewModels
                         TicketList.Add(ticket);
 
                     TicketNumber = "";
+                    SelectedTicket = null;
                 }
                 else
                 {
@@ -110,6 +113,33 @@ namespace ODPMS.ViewModels
             else
             {
                 ValidTicketMessage = string.Format("That was not a valid ticket number.");
+            }
+        }
+
+        [ICommand]
+        void SelectTicket()
+        {
+            if (IsBusy)
+                return;
+
+            if (SelectedTicket == null)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                int ticketNumber = (int)SelectedTicket.Id;
+                TicketNumber = ticketNumber.ToString();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Unable to select the ticket: {ex.Message}");
+                //await Shell.Current.DisplayAlert("Error", $"Unable to select the ticket: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+                //IsRefreshing = false;
             }
         }
     }
