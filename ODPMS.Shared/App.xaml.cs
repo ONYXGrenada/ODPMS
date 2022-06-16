@@ -27,7 +27,7 @@ namespace ODPMS
         private static string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
             "Onyx Digital", "OPMS", "Data");
 
-        private static DatabaseHelper database;
+        private static DatabaseHelper _database;
         public static DatabaseHelper Database
         {
             get
@@ -36,11 +36,11 @@ namespace ODPMS
                 {
                     Directory.CreateDirectory(dbPath);
                 }
-                if (database == null)
+                if (_database == null)
                 {
-                    database = new DatabaseHelper(Path.Combine(dbPath, "odpms_data.db3"));
+                    _database = new DatabaseHelper(Path.Combine(dbPath, "odpms_data.db3"));
                 }
-                return database;
+                return _database;
             }
         }
         /// <summary>

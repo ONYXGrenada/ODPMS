@@ -22,14 +22,14 @@ using System.Globalization;
 
 namespace ODPMS.Dialogs
 {
-    public sealed partial class NewSpecialTicketContentDialog : ContentDialog
+    public sealed partial class OtherTicketsContentDialog : ContentDialog
     {
         ObservableCollection<TicketTypeViewModel> ticketTypes = new ObservableCollection<TicketTypeViewModel>();
         private Ticket NewTicket;
         private TicketTypeViewModel NewTicketType;
         private double payAmount;
         private int PayTicketNumber { get; set; }
-        public NewSpecialTicketContentDialog()
+        public OtherTicketsContentDialog()
         {
             this.InitializeComponent();
             this.ticketType_cb.SelectedIndex = 0;

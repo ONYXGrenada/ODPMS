@@ -6,9 +6,111 @@ namespace ODPMS.ViewModels
 {
     public partial class HomeViewModel : BaseViewModel
     {
+        public ObservableCollection<TicketViewModel> TicketList { get; } = new();
+        public ObservableCollection<TicketViewModel> OtherTicketList { get; } = new();
+
+        [ObservableProperty]
+        string welcomeMessage;
+
+        [ObservableProperty]
+        string validTicketMessage;
+
+        [ObservableProperty]
+        string ticketNumber;
+
+
         public HomeViewModel()
         {
             Title = "Home";
+            Init();
+        }
+
+        void Init()
+        {
+            var tickets = DatabaseHelper.GetTicketListViewData(null);
+
+            if (TicketList.Count != 0)
+                TicketList.Clear();
+            if (OtherTicketList.Count != 0)
+                OtherTicketList.Clear();
+
+            foreach (var ticket in tickets)
+            {
+                if (ticket.Type == "Hourly" && ticket.Status == "Open")
+                    TicketList.Add(ticket);
+                else if (ticket.Type != "Hourly" && ticket.Closed >= DateTime.Now)
+                    OtherTicketList.Add(ticket);
+            }
+
+            WelcomeMessage = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
+        }
+
+        [ICommand]
+        async void NewTicket()
+        {
+            // Display the new ticket dialog
+            ContentDialog ticketDialog = new NewTicketContentDialog();
+            ticketDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+            await ticketDialog.ShowAsync();
+            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+            if (TicketList.Count != 0)
+                TicketList.Clear();
+
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
+        }
+
+        [ICommand]
+        async void OtherTickets()
+        {
+            // Display the new ticket dialog
+            ContentDialog ticketDialog = new OtherTicketsContentDialog();
+            ticketDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+            await ticketDialog.ShowAsync();
+            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+            if (TicketList.Count != 0)
+                TicketList.Clear();
+
+            foreach (var ticket in tickets)
+                TicketList.Add(ticket);
+        }
+
+        [ICommand]
+        async void PayTicket()
+        {
+            // Display the pay ticket dialog
+            ValidTicketMessage = "";
+            int ticketNumber;
+            if (Int32.TryParse(TicketNumber, out ticketNumber))
+            {
+                ticketNumber = Int32.Parse(TicketNumber);
+                if (DatabaseHelper.CheckTicket(ticketNumber))
+                {
+                    ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
+                    payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                    await payDialog.ShowAsync();
+
+                    var tickets = DatabaseHelper.GetTicketListViewData("Open");
+
+                    if (TicketList.Count != 0)
+                        TicketList.Clear();
+
+                    foreach (var ticket in tickets)
+                        TicketList.Add(ticket);
+
+                    TicketNumber = "";
+                }
+                else
+                {
+                    ValidTicketMessage = string.Format("The ticket number you entered does not exist or is not open.");
+                }
+            }
+            else
+            {
+                ValidTicketMessage = string.Format("That was not a valid ticket number.");
+            }
         }
     }
 }

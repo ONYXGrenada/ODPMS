@@ -18,8 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewSpecialTicketContentDialog.xaml.cs">
-      <DependentUpon>NewSpecialTicketContentDialog.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\OtherTicketsContentDialog.xaml.cs">
+      <DependentUpon>OtherTicketsContentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Dialogs\NewTicketTypeContentDialog.xaml.cs">
       <DependentUpon>NewTicketTypeContentDialog.xaml</DependentUpon>
@@ -64,7 +64,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)Dialogs\NewSpecialTicketContentDialog.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\OtherTicketsContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

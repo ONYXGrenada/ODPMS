@@ -54,7 +54,6 @@
     <_Globbed_Content Remove="Assets\Tickets.txt" />
   </ItemGroup>
   <ItemGroup>
-    <_Globbled_Page Remove="Dialogs\NewSpecialTicketContentDialog.xaml" />
     <_Globbled_Page Remove="Dialogs\NewTicketTypeContentDialog.xaml" />
     <_Globbled_Page Remove="Pages\AppsPage.xaml" />
     <_Globbled_Page Remove="Pages\BlankPage1.xaml" />

@@ -5,6 +5,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="using:ODPMS.Models"
+    xmlns:viewmodels="using:ODPMS.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -19,6 +20,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="welcomeMessage_txtBlock"
+                   Text="{Binding WelcomeMessage}"
                    FontSize="16"
                    HorizontalAlignment="Center"/>
 
@@ -32,21 +34,16 @@
 
             <StackPanel Grid.Column="0"
                         Spacing="10">
-                <!--<Button x:Name="buttonNewTicket_btn" 
-                        Content="New Ticket"
-                        Style="{StaticResource AccentButtonStyle}" 
-                        Click="NewTicket_Clicked"
-                        HorizontalAlignment="Center"/>-->
 
                 <SplitButton x:Name="buttonNewTicket_btn"
                              Content="New Ticket"
                              Style="{StaticResource AccentButtonStyle}"                             
-                             Click="NewTicket_SplitClicked"
+                             Command="{Binding NewTicketCommand}"
                              HorizontalAlignment="Center">
                     <SplitButton.Flyout>
                         <MenuFlyout Placement="BottomEdgeAlignedRight">
-                            <MenuFlyoutItem Text="Special Ticket" 
-                                            Click="SpecialTicket_Clicked"/>
+                            <MenuFlyoutItem Text="Other Tickets" 
+                                            Command="{Binding OtherTicketsCommand}"/>
                         </MenuFlyout>
                     </SplitButton.Flyout>
                 </SplitButton>
@@ -61,10 +58,11 @@
                     <Button x:Name="buttonPayTicket_btn"
                             Grid.Column="1"
                             Content="Pay Ticket"
-                            Click="PayTicket_Clicked"
+                            Command="{Binding PayTicketCommand}"
                             HorizontalAlignment="Center"/>
                 </StackPanel>
                 <TextBlock x:Name="validTicketMessage_txtBlock"
+                           Text="{Binding ValidTicketMessage}"
                            TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>
@@ -73,13 +71,13 @@
                            Grid.Row="2"
                            AutoGenerateColumns="True"
                            SelectionMode="Single"
-                           ItemsSource="{x:Bind TicketList}"/>
+                           ItemsSource="{Binding TicketList}"/>
 
         <controls:DataGrid x:Name="otherTicketList_dataGrid"
                            Grid.Row="3"
                            AutoGenerateColumns="True"
                            SelectionMode="Single"
-                           ItemsSource="{x:Bind OtherTicketList}"/>
+                           ItemsSource="{Binding OtherTicketList}"/>
 
     </Grid>
 </Page>
