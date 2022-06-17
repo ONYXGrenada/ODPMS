@@ -143,7 +143,7 @@ namespace ODPMS.ViewModels
             {
                 App.LoggedInUser.FirstName = FirstName;
                 App.LoggedInUser.LastName = LastName;
-                DatabaseHelper.UpdateUser(App.LoggedInUser);
+                await User.UpdateUser(App.LoggedInUser);
 
                 var users = await User.GetAllUsers();
 
