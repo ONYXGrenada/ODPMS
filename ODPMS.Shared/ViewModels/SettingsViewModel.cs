@@ -252,7 +252,10 @@ namespace ODPMS.ViewModels
         [ICommand]
         void UserSelected()
         {
-            IsUserSelected = true;
+            if (SelectedUser != null)
+                IsUserSelected = true;
+            else
+                IsUserSelected = false;
         }
 
         [ICommand]
