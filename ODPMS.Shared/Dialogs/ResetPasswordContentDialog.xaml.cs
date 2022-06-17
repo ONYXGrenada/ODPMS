@@ -38,7 +38,7 @@ namespace ODPMS.Dialogs
 		{
             if(userId != null && userId != App.LoggedInUser.Id)
             {
-                User = DatabaseHelper.GetUser((int)this.userId);
+                User = await User.GetUser((int)this.userId);
                 if (this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
                 {
                     User.Salt = BCrypt.Net.BCrypt.GenerateSalt();

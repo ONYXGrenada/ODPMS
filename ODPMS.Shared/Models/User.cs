@@ -66,6 +66,22 @@ namespace ODPMS.Models
             return new List<User>();
         }
 
+        public static async Task<User> GetUser(int id)
+        {
+            try
+            {
+                var query = await App.Database.Current.GetAsync<User>(id);
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
+
+                return query;
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new User();
+        }
+
         public static async Task UpdateUser(User user)
         {
             int result = 0;
