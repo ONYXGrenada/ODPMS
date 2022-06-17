@@ -52,8 +52,8 @@ namespace ODPMS
             InitializeLogging();
 
             this.InitializeComponent();
-            _ = Database.Init();
-            DatabaseHelper.InitializeDatabase();
+            Database.Init();
+            //DatabaseHelper.InitializeDatabase();
 
 #if HAS_UNO || NETFX_CORE
             this.Suspending += OnSuspending;

@@ -26,18 +26,18 @@ namespace ODPMS.Helpers
 
         //private string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "opms.db3");
 
-        public DatabaseHelper()
-        {
-            InitializeDatabase();
-            //_ = Init();
-        }
+        //public DatabaseHelper()
+        //{
+        //    //InitializeDatabase();
+        //    Init();
+        //}
 
         public DatabaseHelper(string dbPath)
         {
             _databasePath = dbPath;
         }
 
-        public async Task Init()
+        public async void Init()
         {
             Type[] tables = {
                 typeof(Ticket),
