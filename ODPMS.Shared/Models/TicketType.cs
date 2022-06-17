@@ -59,7 +59,6 @@ namespace ODPMS.Models
             {
                 StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
-
             return new List<TicketType>();
         }
 
@@ -76,7 +75,6 @@ namespace ODPMS.Models
             {
                 StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
-
             return new List<TicketType>();
         }
 
@@ -95,7 +93,6 @@ namespace ODPMS.Models
             {
                 StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
-
             return new TicketType();
         }
 
