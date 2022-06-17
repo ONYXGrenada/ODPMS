@@ -15,14 +15,14 @@ namespace ODPMS.Models
     public class Ticket
     {
         [PrimaryKey, AutoIncrement]
-        public int? Id { get; set; }        
+        public int Id { get; set; }        
         public string Type { get; set; }
         public string Description { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Closed { get; set; }
         public string Status { get; set; }
         public int? CustomerId { get; set; }
-        public string? Registration { get; set; }
+        public string Registration { get; set; }
         public int Quantity { get; set; }
         public double Rate { get; set; }
         public double Cost { get; set; }
@@ -32,31 +32,6 @@ namespace ODPMS.Models
 
         [Ignore]
         public static string StatusMessage { get; set; }
-
-        public Ticket(int? id, string type, string description, DateTime created, DateTime? closed, string status, int customerId, string registration, int quantity, double rate, double cost, double payAmount, double balance, string user)
-        {
-            Id = id;            
-            Type = type;
-            Description = description;
-            Created = created;
-            Closed = closed;
-            Status = status;
-            CustomerId = customerId;
-            Registration = registration;
-            Quantity = quantity;
-            Rate = rate;
-            Cost = cost;
-            PayAmount = payAmount;
-            Balance = balance;
-            User = user;
-
-            if (type == "Hourly")
-                UpdateCost();
-            else
-                UpdateClosed();
-        }
-
-        public Ticket() { }
 
         public override string ToString()
         {
@@ -249,35 +224,5 @@ namespace ODPMS.Models
         }
 
         #endregion
-    }
-
-
-
-    public class TicketViewModel
-    {
-        public int? Id { get; set; }
-        public string Type { get; set; }
-        public string Description { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime? Closed { get; set; }
-        public string Status { get; set; }
-        public string Registration { get; set; }
-        public double Cost { get; set; }
-        public double Balance { get; set; }
-        public string User { get; set; }
-
-        public TicketViewModel(int? id, string type, string description, DateTime created, DateTime? closed, string status, string registration, double cost, double balance, string user)
-        {
-            Id = id;
-            Type = type;
-            Description = description;
-            Created = created;
-            Closed = closed;
-            Status = status;
-            Registration = registration;
-            Cost = cost;
-            Balance = balance;
-            User = user;
-        }
     }
 }

@@ -91,7 +91,8 @@ namespace ODPMS.ViewModels
             if (Int32.TryParse(TicketNumber, out ticketNumber))
             {
                 ticketNumber = Int32.Parse(TicketNumber);
-                if (DatabaseHelper.CheckTicket(ticketNumber))
+                Ticket checkTicket = await Ticket.GetTicket(ticketNumber);
+                if (checkTicket.Id > 0)
                 {
                     ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
                     payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;

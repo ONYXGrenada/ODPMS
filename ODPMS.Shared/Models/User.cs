@@ -27,21 +27,6 @@ namespace ODPMS.Models
         [Ignore]
         public static string StatusMessage { get; set; }
 
-        public User(int id, string username, string password, string salt, string firstName, string lastName, string type, string status, DateTime? lastLogin)
-        {
-            Id = id;
-            Username = username;
-            Password = password;
-            Salt = salt;
-            FirstName = firstName;
-            LastName = lastName;
-            Type = type;
-            Status = status;
-            LastLogin = lastLogin;
-        }
-
-        public User() { }
-
         public override string ToString()
         {
             return Status;
@@ -139,27 +124,5 @@ namespace ODPMS.Models
             }
         }
         #endregion
-    }
-
-    public class UserViewModel
-    {
-        public int? Id { get; set; }
-        public string Username { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Type { get; set; }
-        public string Status { get; set; }
-        public DateTime? LastLogin { get; set; }
-
-        public UserViewModel(int? id, string username, string firstName, string lastName, string type, string status, DateTime? lastLogin)
-        {
-            Id = id;
-            Username = username;
-            FirstName = firstName;
-            LastName = lastName;
-            Type = type;
-            Status = status;
-            LastLogin = lastLogin;
-        }
     }
 }
