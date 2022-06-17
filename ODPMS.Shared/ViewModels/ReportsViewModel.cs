@@ -46,7 +46,7 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        private void ReportSubmit()
+        private async void ReportSubmit()
         {
             IsNotEmpty = false;
             var cultureInfo = new CultureInfo("en-US");
@@ -65,7 +65,8 @@ namespace ODPMS.ViewModels
             //Retrieves status for use with database query
             string status = SelectedStatus.Name.ToString();
 
-            var tickets = DatabaseHelper.GetTicketListRange(fromDate, toDate, status);
+            //var tickets = DatabaseHelper.GetTicketListRange(fromDate, toDate, status);
+            var tickets = await Ticket.GetTicketsByReportFilter(fromDate, toDate, status);
 
             if (TicketList.Count != 0)
                 TicketList.Clear();

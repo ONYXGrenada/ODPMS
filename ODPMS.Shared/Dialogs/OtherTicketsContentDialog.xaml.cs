@@ -17,6 +17,8 @@ using ODPMS.Helpers;
 using Microsoft.UI;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Threading.Tasks;
+using System.Net.Sockets;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -24,28 +26,41 @@ namespace ODPMS.Dialogs
 {
     public sealed partial class OtherTicketsContentDialog : ContentDialog
     {
-        ObservableCollection<TicketTypeViewModel> ticketTypes = new ObservableCollection<TicketTypeViewModel>();
+        ObservableCollection<TicketType> TicketTypesList = new ObservableCollection<TicketType>();
         private Ticket NewTicket;
-        private TicketTypeViewModel NewTicketType;
+        private TicketType NewTicketType;
         private double payAmount;
         private int PayTicketNumber { get; set; }
+        
         public OtherTicketsContentDialog()
         {
             this.InitializeComponent();
             this.ticketType_cb.SelectedIndex = 0;
-            ticketTypes = DatabaseHelper.GetTicketTypeList("Active");
+            _ = Init();
+        }
+
+        async Task Init()
+        {
+            var ticketTypes = await TicketType.GetTicketTypesByStatus("Active");
+
+            if (TicketTypesList.Count != 0)
+                TicketTypesList.Clear();
 
             foreach (var ticketType in ticketTypes)
                 if (ticketType.Type != "Hourly")
+                {
                     this.ticketType_cb.Items.Add(ticketType.Description);
+                    TicketTypesList.Add(ticketType);
+                }
+
         }
 
-        private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             string registration = this.vehicleNum_txt.Text;
             string ticketDescription = this.ticketType_cb.Items[this.ticketType_cb.SelectedIndex].ToString();
 
-            foreach (var ticketType in ticketTypes)
+            foreach (var ticketType in TicketTypesList)
                 if (ticketType.Description == ticketDescription)
                     NewTicketType = ticketType;
 
@@ -53,9 +68,23 @@ namespace ODPMS.Dialogs
             Double.TryParse(this.paymentAmount_txt.Text, out payAmount);
             int customerId = 0;
 
-            NewTicket = DatabaseHelper.CreateTicket(ticketDescription, customerId, registration);
+            var tickets = await Ticket.GetAllTickets();
+
+            //NewTicket = DatabaseHelper.CreateTicket(ticketDescription, customerId, registration);
+            NewTicket = new();
+            NewTicket.Id = tickets.Count + 1;
+            NewTicket.Type = NewTicketType.Type;
+            NewTicket.Description = NewTicketType.Description;
+            NewTicket.Created = DateTime.Now;
+            NewTicket.Status = "Open";
+            NewTicket.Rate = NewTicketType.Rate;
+            NewTicket.User = App.LoggedInUser.Username;
+            NewTicket.CustomerId = customerId;
+            NewTicket.Registration = registration;
+
             NewTicket.PayTicket(payAmount);
-            DatabaseHelper.AddTicket(NewTicket);
+            await Ticket.CreateTicket(NewTicket);
+            //DatabaseHelper.AddTicket(NewTicket);
         }
 
         private void SecondaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -65,7 +94,7 @@ namespace ODPMS.Dialogs
         private void PayAmount_Changed(object sender, RoutedEventArgs e)
         {
             string selectedItem = this.ticketType_cb.Items[this.ticketType_cb.SelectedIndex].ToString();
-            foreach (var ticketType in ticketTypes)
+            foreach (var ticketType in TicketTypesList)
                 if (ticketType.Description == selectedItem)
                     NewTicketType = ticketType;
 
@@ -100,7 +129,7 @@ namespace ODPMS.Dialogs
         {
             string selectedItem = this.ticketType_cb.Items[this.ticketType_cb.SelectedIndex].ToString();
 
-            foreach (var ticketType in ticketTypes)
+            foreach (var ticketType in TicketTypesList)
             {
                 if (ticketType.Description == selectedItem)
                 {
@@ -128,7 +157,7 @@ namespace ODPMS.Dialogs
             }                
         }
 
-        private async void vehicleNum_txt_LostFocus(object sender, RoutedEventArgs e)
+        private void vehicleNum_txt_LostFocus(object sender, RoutedEventArgs e)
         {
 
         }

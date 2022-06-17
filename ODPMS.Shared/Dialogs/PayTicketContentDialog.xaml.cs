@@ -18,7 +18,7 @@ namespace ODPMS.Dialogs
 {
 	public sealed partial class PayTicketContentDialog : ContentDialog
 	{
-        private Ticket NewTicket;
+        private Ticket ticket;
         private double payAmount;
         private int PayTicketNumber { get; set; }
         public PayTicketContentDialog(int PayTicketNumber)
@@ -27,20 +27,22 @@ namespace ODPMS.Dialogs
             this.PayTicketNumber = PayTicketNumber;
 		}
 
-        private void PayTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+        private async void PayTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
         {
             // Get ticket object from database
-            NewTicket = DatabaseHelper.FindTicket(this.PayTicketNumber);
-            NewTicket.UpdateCost();
+            //ticket = DatabaseHelper.FindTicket(this.PayTicketNumber);
+            ticket = await Ticket.GetTicket(this.PayTicketNumber);
 
-            this.ticketNumber_txtBlock.Text = "Ticket Number: " + NewTicket.Id;
-            this.ticketStatus_txtBlock.Text = "Status: " + NewTicket.Status;
-            this.ticketStartTime_txtBlock.Text = "Start Time: " + NewTicket.Created;
-            this.ticketEndTime_txtBlock.Text = "End Time: " + NewTicket.Closed;
-            this.ticketDuration_txtBlock.Text = "Duration: " + NewTicket.Cost / NewTicket.Rate + " Hours";
-            this.ticketCost_txtBlock.Text = "Cost: " + NewTicket.Cost.ToString("C", CultureInfo.CurrentCulture);
+            ticket.UpdateCost();
+
+            this.ticketNumber_txtBlock.Text = "Ticket Number: " + ticket.Id;
+            this.ticketStatus_txtBlock.Text = "Status: " + ticket.Status;
+            this.ticketStartTime_txtBlock.Text = "Start Time: " + ticket.Created;
+            this.ticketEndTime_txtBlock.Text = "End Time: " + ticket.Closed;
+            this.ticketDuration_txtBlock.Text = "Duration: " + ticket.Cost / ticket.Rate + " Hours";
+            this.ticketCost_txtBlock.Text = "Cost: " + ticket.Cost.ToString("C", CultureInfo.CurrentCulture);
         }
-        private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Pay execute the pay function to display change and update ticket in the database
             if (Double.TryParse(this.paymentAmount_txt.Text, out payAmount))
@@ -51,8 +53,9 @@ namespace ODPMS.Dialogs
             {
                 payAmount = 0.0;
             }
-            NewTicket.PayTicket(payAmount);
-            DatabaseHelper.PayTicket(NewTicket);
+            ticket.PayTicket(payAmount);
+            await Ticket.UpdateTicket(ticket);
+            //DatabaseHelper.PayTicket(ticket);
         }
 
         private void CloseButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -70,7 +73,7 @@ namespace ODPMS.Dialogs
             {
                 payAmount = 0.0;
             }
-            double change = NewTicket.Cost - payAmount;
+            double change = ticket.Cost - payAmount;
             if (change > 0)
             {
                 this.changeReturned_txtBlock.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));

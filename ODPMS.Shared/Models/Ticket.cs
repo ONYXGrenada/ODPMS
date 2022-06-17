@@ -177,6 +177,30 @@ namespace ODPMS.Models
             return new List<Ticket>();
         }
 
+        public static async Task<List<Ticket>> GetTicketsByReportFilter(DateTime fromDate, DateTime toDate, string status)
+        {
+            try
+            {
+                AsyncTableQuery<Ticket> query;
+                if (status == "All")
+                    query = App.Database.Current.Table<Ticket>().Where(v => v.Created >= fromDate &&
+                        v.Created <= toDate);
+                else
+                    query = App.Database.Current.Table<Ticket>().Where(v => v.Created >= fromDate &&
+                        v.Created <= toDate &&
+                        v.Status.Equals(status));
+
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new List<Ticket>();
+        }
+
         public static async Task<Ticket> GetTicket(int id)
         {
             try
@@ -192,6 +216,20 @@ namespace ODPMS.Models
                 StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
             return new Ticket();
+        }
+
+        public static async Task UpdateTicket(Ticket ticket)
+        {
+            int result = 0;
+            try
+            {
+                result = await App.Database.Current.UpdateAsync(ticket);
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", result);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
         }
 
         public static async Task CreateTicket(Ticket ticket)

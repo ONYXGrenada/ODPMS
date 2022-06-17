@@ -81,6 +81,5 @@
                            Grid.Row="3"
                            AutoGenerateColumns="True"
                            ItemsSource="{Binding TicketList}"/>
-
     </Grid>
 </Page>
