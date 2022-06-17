@@ -6,8 +6,8 @@ namespace ODPMS.ViewModels
 {
     public partial class HomeViewModel : BaseViewModel
     {
-        public ObservableCollection<TicketViewModel> TicketList { get; } = new();
-        public ObservableCollection<TicketViewModel> OtherTicketList { get; } = new();
+        public ObservableCollection<Ticket> TicketList { get; } = new();
+        public ObservableCollection<Ticket> OtherTicketList { get; } = new();
 
         [ObservableProperty]
         string welcomeMessage;
@@ -19,7 +19,7 @@ namespace ODPMS.ViewModels
         string ticketNumber;
 
         [ObservableProperty]
-        TicketViewModel selectedTicket;
+        Ticket selectedTicket;
 
         public HomeViewModel()
         {
@@ -27,9 +27,10 @@ namespace ODPMS.ViewModels
             Init();
         }
 
-        void Init()
+        async void Init()
         {
-            var tickets = DatabaseHelper.GetTicketListViewData(null);
+            //var tickets = DatabaseHelper.GetTicketListViewData(null);
+            var tickets = await Ticket.GetAllTickets();
 
             if (TicketList.Count != 0)
                 TicketList.Clear();
@@ -54,7 +55,8 @@ namespace ODPMS.ViewModels
             ContentDialog ticketDialog = new NewTicketContentDialog();
             ticketDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await ticketDialog.ShowAsync();
-            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+            //var tickets = DatabaseHelper.GetTicketListViewData("Open");
+            var tickets = await Ticket.GetTicketsByStatus("Open");
 
             if (TicketList.Count != 0)
                 TicketList.Clear();
@@ -70,7 +72,8 @@ namespace ODPMS.ViewModels
             ContentDialog ticketDialog = new OtherTicketsContentDialog();
             ticketDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await ticketDialog.ShowAsync();
-            var tickets = DatabaseHelper.GetTicketListViewData("Open");
+            //var tickets = DatabaseHelper.GetTicketListViewData("Open");
+            var tickets = await Ticket.GetTicketsByStatus("Open");
 
             if (TicketList.Count != 0)
                 TicketList.Clear();
@@ -94,7 +97,8 @@ namespace ODPMS.ViewModels
                     payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
                     await payDialog.ShowAsync();
 
-                    var tickets = DatabaseHelper.GetTicketListViewData("Open");
+                    //var tickets = DatabaseHelper.GetTicketListViewData("Open");
+                    var tickets = await Ticket.GetTicketsByStatus("Open");
 
                     if (TicketList.Count != 0)
                         TicketList.Clear();

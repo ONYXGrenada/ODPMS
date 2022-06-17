@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.System;
 
 namespace ODPMS.Models
 {
@@ -12,7 +13,7 @@ namespace ODPMS.Models
     public class User
     {
         [PrimaryKey, AutoIncrement]
-        public int? Id { get; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }
@@ -23,7 +24,10 @@ namespace ODPMS.Models
         public DateTime? LastLogin { get; set; }
         public bool IsReset { get; set; }
 
-        public User(int? id, string username, string password, string salt, string firstName, string lastName, string type, string status, DateTime? lastLogin)
+        [Ignore]
+        public static string StatusMessage { get; set; }
+
+        public User(int id, string username, string password, string salt, string firstName, string lastName, string type, string status, DateTime? lastLogin)
         {
             Id = id;
             Username = username;
@@ -38,21 +42,87 @@ namespace ODPMS.Models
 
         public User() { }
 
-        public User(string username, string password, string salt, string firstName, string lastName, string type, string status)
-        {
-            Username = username;
-            Password = password;
-            Salt = salt;
-            FirstName = firstName;
-            LastName = lastName;
-            Type = type;
-            Status = status;
-        }
-
         public override string ToString()
         {
             return Status;
         }
+
+        #region Database Functions
+        public static async Task<List<User>> GetAllUsers()
+        {
+            try
+            {
+                //await Init();
+                var query = App.Database.Current.Table<User>();
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+
+            return new List<User>();
+        }
+
+        public static async Task UpdateUser(User user)
+        {
+            int result = 0;
+            try
+            {
+                //await Init();
+                result = await App.Database.Current.UpdateAsync(user);
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", result);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+        }
+
+        public static async Task<User> Login(string username, string password)
+        {
+            try
+            {
+                //await Init();
+                var query = await App.Database.Current.Table<User>().Where(v => v.Username == username).FirstOrDefaultAsync();
+
+                if (query.Status == "Active" && 
+                    BCrypt.Net.BCrypt.HashPassword(password, query.Salt) == query.Password)
+                {
+                    query.LastLogin = DateTime.Now;
+                    await UpdateUser(query);
+                    StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
+                    return query;
+                } else 
+                {
+                    return new User();
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new User();
+        }
+
+        public static async Task CreateUser(User user)
+        {
+            int result = 0;
+            try
+            {
+                //await App.Database.Init();
+                result = await App.Database.Current.InsertAsync(user);
+
+                StatusMessage = string.Format("{0} record(s) added [Ticket: {1})", result, user.Id);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to add {0}. Error: {1}", user.Id, ex.Message);
+            }
+        }
+        #endregion
     }
 
     public class UserViewModel

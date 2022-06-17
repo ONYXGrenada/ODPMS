@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI;
 using ODPMS.Models;
 using ODPMS.Helpers;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -33,9 +34,9 @@ namespace ODPMS.Pages
             window.SetTitleBar(appTitleBar_grid);
         }
 
-        private void Login_Clicked(object sender, RoutedEventArgs e)
+        private async void Login_Clicked(object sender, RoutedEventArgs e)
         {
-            App.IsUserLoggedIn = Login(username_txt.Text, password_txt.Password);
+            App.IsUserLoggedIn = await Login(username_txt.Text, password_txt.Password);
             if (App.IsUserLoggedIn)
             {
                 Frame rootFrame = new Frame();
@@ -63,13 +64,14 @@ namespace ODPMS.Pages
             }
         }
 
-        private bool Login(string username, string password)
+        private async Task<bool> Login(string username, string password)
         {
-            List<User> users = DatabaseHelper.UserLogin(username, password);            
+            //List<User> users = DatabaseHelper.UserLogin(username, password);            
+            User user = await User.Login(username, password);
 
-            if (users.Count > 0)
+            if (user.Username != null)
             {
-                App.LoggedInUser = users[0];
+                App.LoggedInUser = user;
                 return true;
             } else
             {

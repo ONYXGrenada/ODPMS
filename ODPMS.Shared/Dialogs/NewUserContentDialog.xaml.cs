@@ -40,7 +40,7 @@ namespace ODPMS.Dialogs
             //this.ticketTerms_txtBlock.Text = String.Format("The hourly rate is {0}. Lost tickets will result in a full date charge of $18.00", NewTicket.Rate.ToString());
         }
 
-        private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Check for errors
 
@@ -68,9 +68,15 @@ namespace ODPMS.Dialogs
                 string password = BCrypt.Net.BCrypt.HashPassword(this.newPasswordConfirmed_txt.Password, salt);
                 string userType = ((ComboBoxItem)this.userType_cb.SelectedItem).Tag.ToString();
 
-                NewUser = new User(null, this.username_txt.Text, password, salt, this.firstName_txt.Text,
-                    this.lastName_txt.Text, userType, "Active", null);
-                DatabaseHelper.AddUser(NewUser);
+                NewUser = new();
+                NewUser.Username = this.username_txt.Text;
+                NewUser.Password = password;
+                NewUser.Salt = salt;
+                NewUser.FirstName = this.firstName_txt.Text;
+                NewUser.LastName = this.lastName_txt.Text;
+                NewUser.Type = userType;
+                NewUser.Status = "Active";
+                await User.CreateUser(NewUser);
             }
         }
 

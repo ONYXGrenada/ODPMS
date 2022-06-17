@@ -26,7 +26,7 @@ namespace ODPMS.Dialogs
             this.InitializeComponent();
         }
 
-        private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Check for errors
 
@@ -53,16 +53,25 @@ namespace ODPMS.Dialogs
                 // Add the new ticketType object to the database
                 string type = this.ticketType_cb.SelectionBoxItem.ToString();
                 string description = this.description_txt.Text;
-                double unitCost;
-                Double.TryParse(this.unitCost_txt.Text, out unitCost);
+                double rate;
+                Double.TryParse(this.unitCost_txt.Text, out rate);
                 int quantity;
                 Int32.TryParse(this.quantity_txt.Text, out quantity);
                 string selectedStatus = this.typeStatus_cb.SelectionBoxItem.ToString();
                 string user = App.LoggedInUser.Username;
                 DateTime activityDate = DateTime.Now;
 
-                TicketType NewTicketType = new TicketType(null, type, description, quantity, unitCost, selectedStatus, user, activityDate);
-                DatabaseHelper.AddTicketType(NewTicketType);
+                TicketType NewTicketType = new TicketType();
+                NewTicketType.Type = type;
+                NewTicketType.Description = description;
+                NewTicketType.Quantity = quantity;
+                NewTicketType.Rate = rate;
+                NewTicketType.Status = selectedStatus;
+                NewTicketType.User = user;
+                NewTicketType.ActivityDate = activityDate;
+                NewTicketType.IsDeletable = true;
+
+                await TicketType.CreateTicketType(NewTicketType);
             }
         }
 

@@ -83,7 +83,7 @@ namespace ODPMS.Dialogs
                 {
                     payAmount = 0.0;
                 }
-                double change = NewTicketType.UnitCost - payAmount;
+                double change = NewTicketType.Rate - payAmount;
                 if (change > 0)
                 {
                     this.changeReturned_txtBlock.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
@@ -117,7 +117,7 @@ namespace ODPMS.Dialogs
                     //    this.changeReturned_txtBlock.Text = "";
                     //}
                     
-                    this.typeCost_txt.Text = ticketType.UnitCost.ToString();
+                    this.typeCost_txt.Text = ticketType.Rate.ToString();
                     this.vehicleNum_txt.IsReadOnly = false;
                     this.paymentAmount_txt.IsReadOnly = false;
                                             

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using static SQLite.SQLite3;
 
 namespace ODPMS.Models
 {
@@ -25,6 +29,9 @@ namespace ODPMS.Models
         public double PayAmount { get; set; }
         public double Balance { get; set; }
         public string User { get; set; }
+
+        [Ignore]
+        public static string StatusMessage { get; set; }
 
         public Ticket(int? id, string type, string description, DateTime created, DateTime? closed, string status, int customerId, string registration, int quantity, double rate, double cost, double payAmount, double balance, string user)
         {
@@ -50,31 +57,6 @@ namespace ODPMS.Models
         }
 
         public Ticket() { }
-
-        //public static async Task<ObservableCollection<Ticket>> GetTicketsAsync()
-        //{
-        //    StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Tickets.txt"));
-        //    IList<string> lines = await FileIO.ReadLinesAsync(file);
-
-        //    ObservableCollection<Ticket> tickets = new ObservableCollection<Ticket>();
-
-        //    for (int i = 0; i < lines.Count; i += 10)
-        //    {
-        //        try
-        //        {
-        //            tickets.Add(new Ticket(Int32.Parse(lines[i]), Int32.Parse(lines[i + 1]), lines[i + 2], lines[i + 3], DateTime.Parse(lines[i + 4]),
-        //                DateTime.Parse(lines[i + 5]), lines[i + 6], double.Parse(lines[i + 7]), double.Parse(lines[i + 8]), double.Parse(lines[i + 9]), 
-        //                double.Parse(lines[i + 10]), lines[i + 11]));
-        //        } 
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-                
-        //    }
-
-        //    return tickets;
-        //}
 
         public override string ToString()
         {
@@ -102,7 +84,6 @@ namespace ODPMS.Models
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
-
             //return Cost;
         }
 
@@ -121,7 +102,6 @@ namespace ODPMS.Models
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
-
             Balance = Cost - PayAmount;
         }
 
@@ -143,7 +123,97 @@ namespace ODPMS.Models
 
             //return endDate;
         }
+
+        #region Database Functions
+        public static async Task<List<Ticket>> GetAllTickets()
+        {
+            try
+            {
+                //await Init();
+                var query = App.Database.Current.Table<Ticket>();
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+
+            return new List<Ticket>();
+        }
+
+        public static async Task<List<Ticket>> GetTicketsByType(string type)
+        {
+            try
+            {
+                //await Init();
+                var query = App.Database.Current.Table<Ticket>().Where(v => v.Type.Equals(type));
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new List<Ticket>();
+        }
+
+        public static async Task<List<Ticket>> GetTicketsByStatus(string status)
+        {
+            try
+            {
+                //await Init();
+                var query = App.Database.Current.Table<Ticket>().Where(v => v.Status.Equals(status));
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new List<Ticket>();
+        }
+
+        public static async Task<Ticket> GetTicket(int id)
+        {
+            try
+            {
+                //await Init();
+                var query = await App.Database.Current.GetAsync<Ticket>(id);
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
+
+                return query;
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new Ticket();
+        }
+
+        public static async Task CreateTicket(Ticket ticket)
+        {
+            int result = 0;
+            try
+            {
+                //await App.Database.Init();
+                result = await App.Database.Current.InsertAsync(ticket);
+
+                StatusMessage = string.Format("{0} record(s) added [Ticket: {1})", result, ticket.Id);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to add {0}. Error: {1}", ticket.Id, ex.Message);
+            }
+        }
+
+        #endregion
     }
+
+
 
     public class TicketViewModel
     {

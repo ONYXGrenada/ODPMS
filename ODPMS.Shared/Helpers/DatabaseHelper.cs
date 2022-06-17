@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
@@ -17,6 +18,8 @@ namespace ODPMS.Helpers
     {
         private readonly string _databasePath;
         private SQLiteAsyncConnection _database;
+
+        public SQLiteAsyncConnection Current { get { return _database; } }
         //private SQLiteAsyncConnection conn;
         //private string _dbPath;
         //public string StatusMessage { get; set; }
@@ -36,7 +39,7 @@ namespace ODPMS.Helpers
 
         public async Task Init()
         {
-            Type[] tables = { 
+            Type[] tables = {
                 typeof(Ticket),
                 typeof(User),
                 typeof(TicketType),
@@ -48,61 +51,71 @@ namespace ODPMS.Helpers
             }
             _database = new SQLiteAsyncConnection(_databasePath);
             await _database.CreateTablesAsync(CreateFlags.None, tables);
+
+            string salt = BCrypt.Net.BCrypt.GenerateSalt();
             User admin = new();
             admin.Username = "admin";
-            admin.Salt = BCrypt.Net.BCrypt.GenerateSalt();
-            admin.Password = BCrypt.Net.BCrypt.HashPassword("Password1", admin.Salt);
+            admin.Salt = salt;
+            admin.Password = BCrypt.Net.BCrypt.HashPassword("Password1", salt);
             admin.FirstName = "Admin";
             admin.LastName = "User";
             admin.Type = "admin";
             admin.Status = "Active";
 
-            var query = _database.Table<User>().Where(v => v.Username == "admin");
-            if (await query.CountAsync() == 0)
+            var queryUser = _database.Table<User>().Where(v => v.Username == "admin");
+            if (await queryUser.CountAsync() == 0)
                 await _database.InsertAsync(admin);
+
+            List<TicketType> ticketTypes = new();
+            TicketType ticketTypeH = new TicketType();
+            ticketTypeH.Type = "Hourly";
+            ticketTypeH.Description = "Hourly Ticket";
+            ticketTypeH.Quantity = 1;
+            ticketTypeH.Rate = 2.50;
+            ticketTypeH.Status = "Active";
+            ticketTypeH.User = "admin";
+            ticketTypeH.ActivityDate = DateTime.Now;
+            ticketTypes.Add(ticketTypeH);
+
+            TicketType ticketTypeD = new TicketType();
+            ticketTypeD.Type = "Daily";
+            ticketTypeD.Description = "Daily Ticket";
+            ticketTypeD.Quantity = 1;
+            ticketTypeD.Rate = 10.00;
+            ticketTypeD.Status = "Active";
+            ticketTypeD.User = "admin";
+            ticketTypeD.ActivityDate = DateTime.Now;
+            ticketTypes.Add(ticketTypeD);
+
+            TicketType ticketTypeW = new TicketType();
+            ticketTypeW.Type = "Weekly";
+            ticketTypeW.Description = "Weekly Ticket";
+            ticketTypeW.Quantity = 1;
+            ticketTypeW.Rate = 50.00;
+            ticketTypeW.Status = "Active";
+            ticketTypeW.User = "admin";
+            ticketTypeW.ActivityDate = DateTime.Now;
+            ticketTypes.Add(ticketTypeW);
+
+            TicketType ticketTypeM = new TicketType();
+            ticketTypeM.Type = "Monthly";
+            ticketTypeM.Description = "Monthly Ticket";
+            ticketTypeM.Quantity = 1;
+            ticketTypeM.Rate = 200.00;
+            ticketTypeM.Status = "Active";
+            ticketTypeM.User = "admin";
+            ticketTypeM.ActivityDate = DateTime.Now;
+            ticketTypes.Add(ticketTypeM);
+
+            foreach (var ticketType in ticketTypes)
+            {
+                var queryTicketType = _database.Table<TicketType>().Where(v => v.Type == ticketType.Type);
+                if (await queryTicketType.CountAsync() == 0)
+                    await _database.InsertAsync(ticketType);
+            }
         }
 
-        public async Task CreateTicketN()
-        {
-            int result = 0;
-            try
-            {
-                await Init();
 
-                var cultureInfo = new CultureInfo("en-US");
-
-                Ticket ticket = new();
-                ticket.Type = "Hourly";
-                ticket.Description = "Hourly Ticket";
-                ticket.Created = DateTime.Now;
-                ticket.Status = "Open";
-                ticket.User = App.LoggedInUser.Username;
-
-                result = await _database.InsertAsync(ticket);
-
-                //StatusMessage = string.Format("{0} record(s) added [Ticket: {1})", result, ticket.Id);
-            }
-            catch (Exception ex)
-            {
-                //StatusMessage = string.Format("Failed to add {0}. Error: {1}", ticket.Id, ex.Message);
-            }
-        }
-
-        public async Task<List<User>> GetAllUsers()
-        {
-            try
-            {
-                await Init();
-                //return await conn.Table<Ticket>().ToListAsync();
-                return await _database.Table<User>().ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                //StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
-            }
-
-            return new List<User>();
-        }
 
         //private async Task Init()
         //{
@@ -180,7 +193,7 @@ namespace ODPMS.Helpers
                     "TicketType NVARCHAR(25) NOT NULL, " +
                     "Description NVARCHAR(25), " +
                     "Quantity INTEGER, " +
-                    "UnitCost REAL, " +
+                    "Rate REAL, " +
                     "Status NVARCHAR(25), " +
                     "Username NVARCHAR(25), " +
                     "ActivityDate DATETIME);";
@@ -276,7 +289,7 @@ namespace ODPMS.Helpers
             string[] ticketType = { "Hourly", "Daily", "Weekly", "Monthly" };
             string[] ttDescription = { "Hourly Ticket", "Daily Ticket", "Weekly Customer", "Monthly Customer" };
             int[] ttQuantity = { 1, 2, 1, 1 };
-            double[] unitCost = { 2.50, 10.00, 50.00, 200.00 };
+            double[] ttRate = { 2.50, 10.00, 50.00, 200.00 };
             string[] ttStatus = { "Active", "Active", "Active", "Active" };
             string[] ttUsername = { "admin", "admin", "admin", "admin" };
             DateTime[] activityDate = { DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now };
@@ -339,12 +352,12 @@ namespace ODPMS.Helpers
                 for (int i = 0; i < ttId.Length; i++)
                 {
                     // Use parameterized query to prevent SQL injection attacks
-                    insertTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @Quantity, @UnitCost, @Status, @Username, @ActivityDate);";
+                    insertTypeCommand.CommandText = "INSERT INTO TicketType VALUES (@Id, @TicketType, @Description, @Quantity, @Rate, @Status, @Username, @ActivityDate);";
                     insertTypeCommand.Parameters.AddWithValue("@Id", ttId[i]);
                     insertTypeCommand.Parameters.AddWithValue("@TicketType", ticketType[i]);
                     insertTypeCommand.Parameters.AddWithValue("@Description", ttDescription[i]);
                     insertTypeCommand.Parameters.AddWithValue("@Quantity", ttQuantity[i]);
-                    insertTypeCommand.Parameters.AddWithValue("@UnitCost", unitCost[i]);
+                    insertTypeCommand.Parameters.AddWithValue("@Rate", ttRate[i]);
                     insertTypeCommand.Parameters.AddWithValue("@Status", ttStatus[i]);
                     insertTypeCommand.Parameters.AddWithValue("@Username", ttUsername[i]);
                     insertTypeCommand.Parameters.AddWithValue("@ActivityDate", activityDate[i]);              
@@ -467,13 +480,13 @@ namespace ODPMS.Helpers
                 if (ticketType.Type == "Hourly")
                 {
                    ticket = new Ticket(ticketId, ticketType.Type, ticketType.Description, DateTime.Now, null, "Open", 0, "0", ticketType.Quantity, 
-                       ticketType.UnitCost, float.Parse("0.0"), float.Parse("0.0"), float.Parse("0.0"), App.LoggedInUser.Username);
+                       ticketType.Rate, float.Parse("0.0"), float.Parse("0.0"), float.Parse("0.0"), App.LoggedInUser.Username);
                 }
                 else
                 {
                     //DateTime closed = ticketType.GetEndDate();
                     ticket = new Ticket(ticketId, ticketType.Type, ticketType.Description, DateTime.Now, null, "Open", customerId, registration,
-                        ticketType.Quantity, ticketType.UnitCost, ticketType.UnitCost, float.Parse("0.0"), ticketType.UnitCost, App.LoggedInUser.Username);
+                        ticketType.Quantity, ticketType.Rate, ticketType.Rate, float.Parse("0.0"), ticketType.Rate, App.LoggedInUser.Username);
                 }               
 
                 dbconn.Close();
@@ -1016,12 +1029,12 @@ namespace ODPMS.Helpers
 
                 // Use parameterized query to prevent SQL injection attacks
                 //insertCommand.CommandText = "INSERT INTO Tickets VALUES (@Id, @Number, @Type, @Description, @Created, @Closed, @Status, @Rate, @Cost, @Balance, @User);";
-                insertCommand.CommandText = "INSERT INTO TicketType VALUES (NULL, @Type, @Description, @Quantity, @UnitCost, @Status, @User, @ActivityDate);";
+                insertCommand.CommandText = "INSERT INTO TicketType VALUES (NULL, @Type, @Description, @Quantity, @Rate, @Status, @User, @ActivityDate);";
                 //insertCommand.Parameters.AddWithValue("@Id", ticket.Id);
                 insertCommand.Parameters.AddWithValue("@Type", ticketType.Type);
                 insertCommand.Parameters.AddWithValue("@Description", ticketType.Description);
                 insertCommand.Parameters.AddWithValue("@Quantity", ticketType.Quantity);
-                insertCommand.Parameters.AddWithValue("@UnitCost", ticketType.UnitCost);
+                insertCommand.Parameters.AddWithValue("@UnitCost", ticketType.Rate);
                 insertCommand.Parameters.AddWithValue("@Status", ticketType.Status);
                 insertCommand.Parameters.AddWithValue("@User", ticketType.User);
                 insertCommand.Parameters.AddWithValue("@ActivityDate", ticketType.ActivityDate);                

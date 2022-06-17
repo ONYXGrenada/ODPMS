@@ -20,6 +20,9 @@ namespace ODPMS.ViewModels
         public bool IsNotUserSelected => !IsUserSelected;
 
         [ObservableProperty]
+        bool isTicketTypeSelected;
+
+        [ObservableProperty]
         Visibility visibleState;
 
         [ObservableProperty]
@@ -44,14 +47,16 @@ namespace ODPMS.ViewModels
         BitmapImage companyLogo;
 
         [ObservableProperty]
-        object selectedUser;
+        User selectedUser;
+
+        [ObservableProperty]
+        TicketType selectedTicketType;
 
         [ObservableProperty]
         DataGrid userDataGrid;
 
-        public ObservableCollection<UserViewModel> Userss { get; } = new();
-        public ObservableCollection<UserViewModel> Users { get; } = new();
-        public ObservableCollection<TicketTypeViewModel> TicketTypes { get; } = new();
+        public ObservableCollection<User> Users { get; } = new();
+        public ObservableCollection<TicketType> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
 
         public SettingsViewModel()
@@ -65,8 +70,7 @@ namespace ODPMS.ViewModels
             if (App.LoggedInUser.Type == "admin")
             {
                 VisibleState = Visibility.Visible;
-                var users = DatabaseHelper.GetUsers();
-                //var users = await App.Database.GetAllUsers();
+                var users = await User.GetAllUsers();
 
                 if (Users.Count != 0)
                     Users.Clear();
@@ -74,7 +78,7 @@ namespace ODPMS.ViewModels
                 foreach (var user in users)
                     Users.Add(user);
 
-                var ticketTypes = DatabaseHelper.GetTicketTypeList("All");
+                var ticketTypes = await TicketType.GetAllTicketTypes();
 
                 if (TicketTypes.Count != 0)
                     TicketTypes.Clear();
@@ -95,7 +99,7 @@ namespace ODPMS.ViewModels
         [ICommand]
         private async void GetUsers()
         {
-            await App.Database.GetAllUsers();
+            await User.GetAllUsers();
         }
 
         private void GetCompanyData()
@@ -141,8 +145,7 @@ namespace ODPMS.ViewModels
                 App.LoggedInUser.LastName = LastName;
                 DatabaseHelper.UpdateUser(App.LoggedInUser);
 
-                var users = DatabaseHelper.GetUsers();
-                //var users = await App.Database.GetAllUsers();
+                var users = await User.GetAllUsers();
 
                 if (Users.Count != 0)
                     Users.Clear();
@@ -165,7 +168,7 @@ namespace ODPMS.ViewModels
         async void ResetUserPassword()
         {
             // Display the reset password dialog
-            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog((SelectedUser as UserViewModel).Id);
+            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog(SelectedUser.Id);
             resetPasswordDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await resetPasswordDialog.ShowAsync();
         }
@@ -178,8 +181,7 @@ namespace ODPMS.ViewModels
             newUserDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await newUserDialog.ShowAsync();
 
-            var users = DatabaseHelper.GetUsers();
-            //var users = await App.Database.GetAllUsers();
+            var users = await User.GetAllUsers();
 
             if (Users.Count != 0)
                 Users.Clear();
@@ -196,7 +198,21 @@ namespace ODPMS.ViewModels
             newTicketType.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await newTicketType.ShowAsync();
 
-            var ticketTypes = DatabaseHelper.GetTicketTypeList("All");
+            var ticketTypes = await TicketType.GetAllTicketTypes();
+
+            if (TicketTypes.Count != 0)
+                TicketTypes.Clear();
+
+            foreach (var ticketType in ticketTypes)
+                TicketTypes.Add(ticketType);
+        }
+
+        [ICommand]
+        async void DeleteTicketType()
+        {
+            await TicketType.DeleteTicketType(SelectedTicketType.Id);
+
+            var ticketTypes = await TicketType.GetAllTicketTypes();
 
             if (TicketTypes.Count != 0)
                 TicketTypes.Clear();
@@ -239,26 +255,13 @@ namespace ODPMS.ViewModels
             IsUserSelected = true;
         }
 
-        //[ICommand]
-        //private void UpdateUserDataColumns()
-        //{
-        //    if (e.Comlumn.Header.ToString() == "FirstName")
-        //    {
-        //        e.Column.Header = "First Name";
-        //    }
-        //    if (e.Column.Header.ToString() == "LastName")
-        //    {
-        //        e.Column.Header = "Last Name";
-        //    }
-        //    if (e.Column.Header.ToString() == "UserType")
-        //    {
-        //        e.Column.Header = "Type";
-        //    }
-        //    if (e.Column.Header.ToString() == "LastLogin")
-        //    {
-        //        e.Column.Header = "Last Login";
-        //    }
-        //}
-
+        [ICommand]
+        void TicketTypeSelected()
+        {
+            if (SelectedTicketType != null && SelectedTicketType.IsDeletable)
+                IsTicketTypeSelected = true;
+            else
+                IsTicketTypeSelected = false;
+        }
     }
 }

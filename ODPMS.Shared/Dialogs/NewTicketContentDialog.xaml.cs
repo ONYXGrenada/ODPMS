@@ -29,26 +29,36 @@ namespace ODPMS.Dialogs
 			this.InitializeComponent();
 		}
 
-		private void NewTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+		private async void NewTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
 		{
 			// Create a new ticket object and display on content dialog
 
-			NewTicket = DatabaseHelper.CreateTicket("Hourly Ticket", 0, "0");
+			//NewTicket = DatabaseHelper.CreateTicket("Hourly Ticket", 0, "0");
+			var tickets = await Ticket.GetAllTickets();
+			var ticketType = await TicketType.GetTicketType(1);
 
-			this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
+            NewTicket = new();
+			NewTicket.Id = tickets.Count + 1;
+			NewTicket.Type = "Hourly";
+			NewTicket.Description = ticketType.Description;
+            NewTicket.Created = DateTime.Now;
+			NewTicket.Status = "Open";
+			NewTicket.Rate = ticketType.Rate;
+            NewTicket.User = App.LoggedInUser.Username;
+
+            this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
 			this.ticketDate_txtBlock.Text = NewTicket.Created.ToString("MM/dd/yyyy");
 			this.ticketTime_txtBlock.Text = NewTicket.Created.ToString("T");
 			this.ticketGreeting_txtBlock.Text = "Thank you for your business!";
 			this.ticketTerms_txtBlock.Text = String.Format("The hourly rate is {0}. Lost tickets will result in a full date charge of $18.00", NewTicket.Rate.ToString());
 			generateBarCode(NewTicket.Id.ToString());
-			
-
         }
 
-		private void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 			// Add the new ticket object to the database
-			DatabaseHelper.AddTicket(NewTicket);
+			//DatabaseHelper.AddTicket(NewTicket);
+			await Ticket.CreateTicket(NewTicket);
 		}
 
 		private void CloseButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)

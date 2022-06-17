@@ -34,7 +34,7 @@ namespace ODPMS.Dialogs
             }
 		}
 
-		private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
             if(userId != null && userId != App.LoggedInUser.Id)
             {
@@ -43,7 +43,7 @@ namespace ODPMS.Dialogs
                 {
                     User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
                     User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
-                    DatabaseHelper.UpdateUser(User);
+                    await User.UpdateUser(User);
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace ODPMS.Dialogs
                 {
                     User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
                     User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
-                    DatabaseHelper.UpdateUser(User);
+                    await User.UpdateUser(User);
                 }
                 else
                 {
@@ -67,19 +67,6 @@ namespace ODPMS.Dialogs
                     statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
                     statusMessage_txtBlock.Text = "Please try again.";
                 }
-                //User = DatabaseHelper.GetUser((int)this.userId);
-                //if (this.newPassword_txt.Password == this.newPasswordConfirmed_txt.Password)
-                //{
-                //    User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
-                //    User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
-                //    DatabaseHelper.UpdateUser(User);
-                //}
-                //else
-                //{
-                //    args.Cancel = true;
-                //    statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
-                //    statusMessage_txtBlock.Text = "Please try again.";
-                //}
             }
         }
 
