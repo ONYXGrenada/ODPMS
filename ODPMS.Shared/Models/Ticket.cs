@@ -222,6 +222,20 @@ namespace ODPMS.Models
             }
         }
 
+        public static async Task DeleteTicket(int id)
+        {
+            int result = 0;
+            try
+            {
+                result = await App.Database.Current.DeleteAsync<Ticket>(id);
+
+                StatusMessage = string.Format("{0} record(s) deleted [Ticket: {1})", result, id);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to delete {0}. Error: {1}", id, ex.Message);
+            }
+        }
         #endregion
     }
 }

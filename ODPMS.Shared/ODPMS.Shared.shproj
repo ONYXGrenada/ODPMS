@@ -26,6 +26,7 @@
     <_Globbed_Compile Remove="Helpers\SettingsHelper.cs" />
     <_Globbed_Compile Remove="Models\DatabaseConn.cs" />
     <_Globbed_Compile Remove="Models\DatabaseHandler.cs" />
+    <_Globbed_Compile Remove="Models\Float.cs" />
     <_Globbed_Compile Remove="Models\SQLite.cs" />
     <_Globbed_Compile Remove="Models\Ticket.cs" />
     <_Globbed_Compile Remove="Models\TicketType.cs" />

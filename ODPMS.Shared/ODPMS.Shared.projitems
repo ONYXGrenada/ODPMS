@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Float.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Receipt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Ticket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\TicketType.cs" />
