@@ -252,6 +252,24 @@
                         IsEnabled="{Binding IsTicketTypeSelected}"
                         MinWidth="120"/>
             </StackPanel>
+            <StackPanel Margin="5">
+                <TextBlock MinWidth="110"
+                           Text="Message:" />
+                <TextBox x:Name="ticketMessage_txt"
+                         Text="{Binding TicketMessage, Mode=TwoWay}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         MinHeight="100"
+                         MinWidth="240"/>
+                <TextBlock MinWidth="110"
+                           Text="Disclaimer:" />
+                <TextBox x:Name="ticketDisclaimer_txt"
+                         Text="{Binding TicketDisclaimer, Mode=TwoWay}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         MinHeight="100"
+                         MinWidth="240"/>
+            </StackPanel>
         </StackPanel>
 
         <!--Section 5: Receipt Administration -->
@@ -269,11 +287,19 @@
                        Margin="0,12,0,0"
                        Text="Receipt Administration" />
 
-            <StackPanel Orientation="Horizontal"
-                        Margin="5">
+            <StackPanel Margin="5">
                 <TextBlock MinWidth="110"
-                           Text="Receipt message:" />
+                           Text="Message:" />
                 <TextBox x:Name="receiptMessage_txt"
+                         Text="{Binding ReceiptMessage, Mode=TwoWay}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         MinHeight="100"
+                         MinWidth="240"/>
+                <TextBlock MinWidth="110"
+                           Text="Disclaimer:" />
+                <TextBox x:Name="receiptDisclaimer_txt"
+                         Text="{Binding ReceiptDisclaimer, Mode=TwoWay}"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
                          MinHeight="100"

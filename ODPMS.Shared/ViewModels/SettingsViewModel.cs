@@ -53,7 +53,16 @@ namespace ODPMS.ViewModels
         TicketType selectedTicketType;
 
         [ObservableProperty]
-        DataGrid userDataGrid;
+        string ticketMessage;
+
+        [ObservableProperty]
+        string ticketDisclaimer;
+
+        [ObservableProperty]
+        string receiptMessage;
+
+        [ObservableProperty]
+        string receiptDisclaimer;
 
         public ObservableCollection<User> Users { get; } = new();
         public ObservableCollection<TicketType> TicketTypes { get; } = new();

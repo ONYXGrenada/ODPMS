@@ -24,10 +24,27 @@ namespace ODPMS.Dialogs
 	public sealed partial class NewTicketContentDialog : ContentDialog
 	{
 		private Ticket NewTicket;
-		public NewTicketContentDialog()
+        public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        public NewTicketContentDialog()
 		{
 			this.InitializeComponent();
+			Init();
 		}
+
+		void Init()
+		{
+            if (LocalSettings.Values["CompanyName"] != null)
+                this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
+
+            if (LocalSettings.Values["CompanyAddress"] != null)
+                this.companyAddress_txtBlock.Text = LocalSettings.Values["CompanyAddress"] as string;
+
+            if (LocalSettings.Values["CompanyEmail"] != null)
+                this.companyEmail_txtBlock.Text = LocalSettings.Values["CompanyEmail"] as string;
+
+            if (LocalSettings.Values["CompanyPhone"] != null)
+                this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
+        }
 
 		private async void NewTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
 		{

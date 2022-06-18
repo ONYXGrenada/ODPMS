@@ -27,6 +27,9 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         Visibility visibleOtherTicket;
 
+        [ObservableProperty]
+        bool canDelete;
+
         public HomeViewModel()
         {
             Title = "Home";
@@ -122,6 +125,36 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
+        async void DeleteTicket()
+        {
+            if (IsBusy)
+                return;
+
+            if (SelectedTicket == null)
+                return;
+
+            try
+            {
+                IsBusy = true;
+                int ticketNumber = SelectedTicket.Id;
+                TicketNumber = "";
+                SelectedTicket = null;
+                await Ticket.DeleteTicket(ticketNumber);
+                Init();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Unable to select the ticket: {ex.Message}");
+                //await Shell.Current.DisplayAlert("Error", $"Unable to select the ticket: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+                //IsRefreshing = false;
+            }
+        }
+
+        [ICommand]
         void SelectTicket()
         {
             if (IsBusy)
@@ -133,7 +166,7 @@ namespace ODPMS.ViewModels
             try
             {
                 IsBusy = true;
-                int ticketNumber = (int)SelectedTicket.Id;
+                int ticketNumber = SelectedTicket.Id;
                 TicketNumber = ticketNumber.ToString();
             }
             catch (Exception ex)

@@ -12,8 +12,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <viewmodels:HomeViewModel x:Key="MyHomeViewModel"/>
+    </Page.Resources>
 
-    <Grid>
+    <Grid DataContext="{StaticResource MyHomeViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -83,15 +86,28 @@
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" />
-                <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}" />
-                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
-                <controls:DataGridTextColumn Header="Created Date" Binding="{Binding Created}" />
-                <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}" />
-                <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}" />
-                <controls:DataGridTextColumn Header="User" Binding="{Binding User}" />
+                <controls:DataGridTextColumn Header="#" Binding="{Binding Id}"/>
+                <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <controls:DataGridTextColumn Header="Created Date" Binding="{Binding Created}"/>
+                <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
+                <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}"/>
+                <controls:DataGridTextColumn Header="User" Binding="{Binding User}"/>
             </controls:DataGrid.Columns>
+            <controls:DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="8">
+                        <Button Style="{StaticResource AccentButtonStyle}"
+                                HorizontalAlignment="Center"
+                                Content="Delete"
+                                Command="{Binding DeleteTicketCommand, Source={StaticResource MyHomeViewModel}}"
+                                MinWidth="120"/>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:DataGrid.RowDetailsTemplate>
         </controls:DataGrid>
 
         <controls:DataGrid x:Name="otherTicketList_dataGrid"
