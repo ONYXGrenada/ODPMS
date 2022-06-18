@@ -59,13 +59,11 @@ namespace ODPMS.Models
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
-            //return Cost;
         }
 
         public void PayTicket(double payAmount)
         {
             int gracePeriod = 5;
-            Status = "Paid";
             PayAmount += payAmount;
 
             if (Type == "Hourly")
@@ -78,15 +76,13 @@ namespace ODPMS.Models
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
             Balance = Cost - PayAmount;
+
+            if (Balance == 0)
+                Status = "Paid";
         }
 
         public void UpdateClosed()
         {
-            //DateTime endDate = DateTime.Now;
-            //if (Type == "Hourly")
-            //    return
-                //endDate = endDate.AddDays(1).Subtract(new TimeSpan(0, 0, 0, 0, 1));
-
             if (Type == "Daily")
                 Closed = Created.AddDays(Quantity);
 
@@ -95,8 +91,6 @@ namespace ODPMS.Models
 
             else if (Type == "Monthly")
                 Closed = Created.AddDays(Quantity * 30);
-
-            //return endDate;
         }
 
         #region Database Functions

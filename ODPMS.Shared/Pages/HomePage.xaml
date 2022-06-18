@@ -72,22 +72,53 @@
 
         <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="2"
-                           AutoGenerateColumns="True"
+                           AutoGenerateColumns="False"
                            SelectionMode="Single"
                            SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
-                           ItemsSource="{Binding TicketList}">
+                           ItemsSource="{Binding TicketList}"
+                           Visibility="{Binding VisibleTicket}">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
                     <ic:InvokeCommandAction Command="{Binding SelectTicketCommand}"/>
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" />
+                <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}" />
+                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                <controls:DataGridTextColumn Header="Created Date" Binding="{Binding Created}" />
+                <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}" />
+                <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}" />
+                <controls:DataGridTextColumn Header="User" Binding="{Binding User}" />
+            </controls:DataGrid.Columns>
         </controls:DataGrid>
 
         <controls:DataGrid x:Name="otherTicketList_dataGrid"
                            Grid.Row="3"
-                           AutoGenerateColumns="True"
+                           AutoGenerateColumns="False"
                            SelectionMode="Single"
-                           ItemsSource="{Binding OtherTicketList}"/>
+                           SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
+                           ItemsSource="{Binding OtherTicketList}"
+                           Visibility="{Binding VisibleOtherTicket}">
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="SelectionChanged">
+                    <ic:InvokeCommandAction Command="{Binding SelectTicketCommand}"/>
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" />
+                <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}" />
+                <controls:DataGridTextColumn Header="Registration" Binding="{Binding Registration}" />
+                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                <controls:DataGridTextColumn Header="Created Date" Binding="{Binding Created}" />
+                <controls:DataGridTextColumn Header="Expiry Date" Binding="{Binding Closed}" />
+                <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}" />
+                <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}" />
+                <controls:DataGridTextColumn Header="User" Binding="{Binding User}" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
 
     </Grid>
 </Page>

@@ -35,11 +35,11 @@ namespace ODPMS.Dialogs
         public OtherTicketsContentDialog()
         {
             this.InitializeComponent();
-            this.ticketType_cb.SelectedIndex = 0;
-            _ = Init();
+            Init();
+            
         }
 
-        async Task Init()
+        async void Init()
         {
             var ticketTypes = await TicketType.GetTicketTypesByStatus("Active");
 
@@ -53,6 +53,8 @@ namespace ODPMS.Dialogs
                     TicketTypesList.Add(ticketType);
                 }
 
+            this.ticketType_cb.SelectedIndex = 0;
+            this.ticketType_cb.SelectionChanged += ticketType_cb_SelectionChanged;
         }
 
         private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -70,21 +72,24 @@ namespace ODPMS.Dialogs
 
             var tickets = await Ticket.GetAllTickets();
 
-            //NewTicket = DatabaseHelper.CreateTicket(ticketDescription, customerId, registration);
             NewTicket = new();
             NewTicket.Id = tickets.Count + 1;
             NewTicket.Type = NewTicketType.Type;
             NewTicket.Description = NewTicketType.Description;
             NewTicket.Created = DateTime.Now;
             NewTicket.Status = "Open";
+            NewTicket.Quantity = NewTicketType.Quantity;
             NewTicket.Rate = NewTicketType.Rate;
             NewTicket.User = App.LoggedInUser.Username;
             NewTicket.CustomerId = customerId;
             NewTicket.Registration = registration;
+            
+            NewTicket.UpdateClosed();
 
-            NewTicket.PayTicket(payAmount);
+            if (payAmount > 0)
+                NewTicket.PayTicket(payAmount);
+
             await Ticket.CreateTicket(NewTicket);
-            //DatabaseHelper.AddTicket(NewTicket);
         }
 
         private void SecondaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -135,21 +140,10 @@ namespace ODPMS.Dialogs
                 {
                     string fromDate = DateTime.Now.ToString("d MMMM, yyyy");
                     string toDate = ticketType.GetEndDate().ToString("d MMMM, yyyy");
-
-                    //if (ticketType.Type == "Hourly")
-                    //{
-                    //    this.typeCost_txt.Text = "To be determined";
-                    //    this.vehicleNum_txt.IsReadOnly = true;
-                    //    this.vehicleNum_txt.Text = "";
-                    //    this.paymentAmount_txt.IsReadOnly = true;
-                    //    this.paymentAmount_txt.Text = "";
-                    //    this.changeReturned_txtBlock.Text = "";
-                    //}
                     
                     this.typeCost_txt.Text = ticketType.Rate.ToString();
                     this.vehicleNum_txt.IsReadOnly = false;
                     this.paymentAmount_txt.IsReadOnly = false;
-                                            
 
                     this.typePeriod.Text = fromDate + " - " + toDate;
                     break;

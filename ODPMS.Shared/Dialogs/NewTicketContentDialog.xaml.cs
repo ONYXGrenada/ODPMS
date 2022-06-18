@@ -44,6 +44,7 @@ namespace ODPMS.Dialogs
             NewTicket.Created = DateTime.Now;
 			NewTicket.Status = "Open";
 			NewTicket.Rate = ticketType.Rate;
+            NewTicket.Quantity = ticketType.Quantity;
             NewTicket.User = App.LoggedInUser.Username;
 
             this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
@@ -57,7 +58,6 @@ namespace ODPMS.Dialogs
 		private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 			// Add the new ticket object to the database
-			//DatabaseHelper.AddTicket(NewTicket);
 			await Ticket.CreateTicket(NewTicket);
 		}
 
