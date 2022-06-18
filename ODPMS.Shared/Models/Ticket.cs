@@ -29,6 +29,9 @@ namespace ODPMS.Models
         public double PayAmount { get; set; }
         public double Balance { get; set; }
         public string User { get; set; }
+        public string UpdateUser { get; set; }
+        public DateTime? Updated { get; set; }
+
 
         [Ignore]
         public static string StatusMessage { get; set; }
@@ -228,6 +231,22 @@ namespace ODPMS.Models
             catch (Exception ex)
             {
                 StatusMessage = string.Format("Failed to delete {0}. Error: {1}", id, ex.Message);
+            }
+        }
+
+        public static async Task DeleteTicket(Ticket ticket)
+        {
+            int result = 0;
+            ticket.Status = "Delete";
+            try
+            {
+                result = await App.Database.Current.UpdateAsync(ticket);
+
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", result);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
         }
         #endregion

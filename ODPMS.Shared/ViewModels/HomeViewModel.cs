@@ -136,10 +136,11 @@ namespace ODPMS.ViewModels
             try
             {
                 IsBusy = true;
-                int ticketNumber = SelectedTicket.Id;
+                SelectedTicket.UpdateUser = App.LoggedInUser.Username;
+                SelectedTicket.Updated = DateTime.Now;
+                await Ticket.DeleteTicket(selectedTicket);
                 TicketNumber = "";
                 SelectedTicket = null;
-                await Ticket.DeleteTicket(ticketNumber);
                 Init();
             }
             catch (Exception ex)
@@ -168,6 +169,13 @@ namespace ODPMS.ViewModels
                 IsBusy = true;
                 int ticketNumber = SelectedTicket.Id;
                 TicketNumber = ticketNumber.ToString();
+
+                // Allow ticket to be deleted if within 5 minutes
+                TimeSpan ts = DateTime.Now - SelectedTicket.Created;
+                if (ts.TotalMinutes % 60 < 5)
+                    CanDelete = true;
+                else
+                    CanDelete = false;
             }
             catch (Exception ex)
             {

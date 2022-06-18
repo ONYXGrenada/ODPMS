@@ -104,6 +104,7 @@
                                 HorizontalAlignment="Center"
                                 Content="Delete"
                                 Command="{Binding DeleteTicketCommand, Source={StaticResource MyHomeViewModel}}"
+                                IsEnabled="{Binding CanDelete, Source={StaticResource MyHomeViewModel}}"
                                 MinWidth="120"/>
                     </StackPanel>
                 </DataTemplate>

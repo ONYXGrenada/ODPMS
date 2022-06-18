@@ -73,7 +73,10 @@ namespace ODPMS.Dialogs
             var tickets = await Ticket.GetAllTickets();
 
             NewTicket = new();
-            NewTicket.Id = tickets.Count + 1;
+            if (tickets.Count == 0)
+                NewTicket.Id = 1;
+            else
+                NewTicket.Id = tickets.Select(x => x.Id).Max() + 1;
             NewTicket.Type = NewTicketType.Type;
             NewTicket.Description = NewTicketType.Description;
             NewTicket.Created = DateTime.Now;
