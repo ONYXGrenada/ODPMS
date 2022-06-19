@@ -25,7 +25,7 @@ namespace ODPMS.ViewModels
         {
             App.LoggedInUser = await User.Login(Username, Password);
 
-            if (App.LoggedInUser.Username != null)
+            if (App.LoggedInUser != null)
                 App.IsUserLoggedIn = true;
             else
                 App.IsUserLoggedIn = false;

@@ -87,7 +87,8 @@ namespace ODPMS.Models
             {
                 //await Init();
                 var query = await App.Database.Current.Table<User>().Where(v => v.Username == username).FirstOrDefaultAsync();
-
+                if (query == null)
+                    return null;
                 if (query.Status == "Active" && 
                     BCrypt.Net.BCrypt.HashPassword(password, query.Salt) == query.Password)
                 {
@@ -97,14 +98,14 @@ namespace ODPMS.Models
                     return query;
                 } else 
                 {
-                    return new User();
+                    return null;
                 }
             }
             catch (Exception ex)
             {
                 StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
-            return new User();
+            return null;
         }
 
         public static async Task CreateUser(User user)
