@@ -44,6 +44,7 @@
     <_Globbed_Compile Remove="Pages\TitleBar.cs" />
     <_Globbed_Compile Remove="Pages\TitleBarPage.xaml.cs" />
     <_Globbed_Compile Remove="TitleBarPage.xaml.cs" />
+    <_Globbed_Compile Remove="ViewModels\LoginViewModel.cs" />
     <_Globbed_Compile Remove="ViewModels\ReportsViewModel.cs" />
     <_Globbed_Compile Remove="ViewModel\BaseViewModel.cs" />
     <_Globbed_Compile Remove="ViewModel\HomeViewModel.cs" />
