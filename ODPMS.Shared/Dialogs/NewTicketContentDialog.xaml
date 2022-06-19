@@ -16,21 +16,12 @@
 
     <StackPanel x:Name="ticketTemplate_sp"
                 MaxWidth="320"
-                Padding="12,12"
+                Padding="8,8"
                 Background="White">
-        <Grid x:Name="ticketHeader_grid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Image x:Name="CompanyLogo"
-                    Source="Images/logo-placeholder.png"
-                    HorizontalAlignment="Left" 
-                    Width="16" 
-                    Height="16" 
-                    Margin="8,0"/>
+        <StackPanel x:Name="ticketHeader_sp">
+            <Image x:Name="companyLogo_img"
+                   Width="180"
+                   Height="180"/>
             <TextBlock x:Name="companyName_txtBlock" 
                        Text="Generic Company Ltd."
                        TextWrapping="Wrap"
@@ -39,7 +30,6 @@
                        HorizontalAlignment="Center"
                        Margin="0,0,0,0"/>
             <TextBlock x:Name="companyAddress_txtBlock" 
-                       Grid.Row="1"
                        Text="St. George, Grenada"
                        FontSize="12"
                        Foreground="Black"
@@ -47,7 +37,6 @@
                        HorizontalAlignment="Center"
                        Margin="0,0,0,0"/>
             <TextBlock x:Name="companyEmail_txtBlock" 
-                       Grid.Row="2"
                        Text="email: info@genericcompany.com"
                        FontSize="12"
                        Foreground="Black"
@@ -55,14 +44,13 @@
                        HorizontalAlignment="Center"
                        Margin="0,0,0,0"/>
             <TextBlock x:Name="companyPhone_txtBlock" 
-                       Grid.Row="3"
                        Text="Phone: 473 440-1234"
                        FontSize="12"
                        Foreground="Black"
                        TextWrapping="NoWrap"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,0"/>
-        </Grid>
+        </StackPanel>
         <Grid x:Name="ticketBody_grid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -121,34 +109,26 @@
                        HorizontalAlignment="Right"
                        Margin="0,0,0,0"/>
         </Grid>
-        <Grid x:Name="ticketBarcode_grid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <StackPanel x:Name="ticketBarcode_sp">
             <Image x:Name="ticketBarCode_img"
                    Width="300"
                    Height="200"/>
-        </Grid>
-        <Grid x:Name="ticketFooter_grid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        </StackPanel>
+        <StackPanel x:Name="ticketFooter_sp">
             <TextBlock x:Name="ticketGreeting_txtBlock"
-                       Grid.Row="0"
                        TextWrapping="Wrap"
-                       FontSize="12"
-                       Foreground="Black"
-                       HorizontalAlignment="Center"
-                       Margin="0,12,0,0"/>
-            <TextBlock x:Name="ticketTerms_txtBlock"
-                       Grid.Row="1"
-                       TextWrapping="Wrap"
+                       TextAlignment="Center"
                        FontSize="12"
                        Foreground="Black"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,0"/>
-        </Grid>
+            <TextBlock x:Name="ticketDisclaimer_txtBlock"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       FontSize="12"
+                       Foreground="Black"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,0"/>
+        </StackPanel>
     </StackPanel>
 </ContentDialog>

@@ -16,6 +16,8 @@ using ODPMS.Helpers;
 using Microsoft.UI;
 using Windows.UI.Popups;
 using ODPMS.Models;
+using ODPMS.Pages;
+using Windows.ApplicationModel.Core;
 
 namespace ODPMS.Dialogs
 {
@@ -43,6 +45,7 @@ namespace ODPMS.Dialogs
                 {
                     User.Salt = BCrypt.Net.BCrypt.GenerateSalt();
                     User.Password = BCrypt.Net.BCrypt.HashPassword(this.newPassword_txt.Password, User.Salt);
+                    User.IsReset = true;
                     await User.UpdateUser(User);
                 }
                 else
@@ -72,7 +75,7 @@ namespace ODPMS.Dialogs
 
 		private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
-		}
+        }
 
         private void NewPassword_Changed(object sender, RoutedEventArgs e)
         {

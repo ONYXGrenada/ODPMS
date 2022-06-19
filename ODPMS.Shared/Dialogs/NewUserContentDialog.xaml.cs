@@ -76,6 +76,7 @@ namespace ODPMS.Dialogs
                 NewUser.LastName = this.lastName_txt.Text;
                 NewUser.Type = userType;
                 NewUser.Status = "Active";
+                NewUser.IsReset = true;
                 await User.CreateUser(NewUser);
             }
         }

@@ -44,6 +44,15 @@ namespace ODPMS.Dialogs
 
             if (LocalSettings.Values["CompanyPhone"] != null)
                 this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
+            if (LocalSettings.Values["CompanyLogo"] != null)
+            {
+                string clogo = LocalSettings.Values["CompanyLogo"] as string;
+                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                {
+                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
+                }
+            }
         }
 
 		private async void NewTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
@@ -71,7 +80,8 @@ namespace ODPMS.Dialogs
 			this.ticketDate_txtBlock.Text = NewTicket.Created.ToString("MM/dd/yyyy");
 			this.ticketTime_txtBlock.Text = NewTicket.Created.ToString("T");
 			this.ticketGreeting_txtBlock.Text = "Thank you for your business!";
-			this.ticketTerms_txtBlock.Text = String.Format("The hourly rate is {0}. Lost tickets will result in a full date charge of $18.00", NewTicket.Rate.ToString());
+			this.ticketDisclaimer_txtBlock.Text = String.Format("The hourly rate is {0}. " +
+                "Lost tickets will result in a full date charge of $18.00", NewTicket.Rate.ToString());
 			generateBarCode(NewTicket.Id.ToString());
         }
 

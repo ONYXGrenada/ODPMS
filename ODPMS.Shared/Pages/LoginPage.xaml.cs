@@ -39,6 +39,23 @@ namespace ODPMS.Pages
             App.IsUserLoggedIn = await Login(username_txt.Text, password_txt.Password);
             if (App.IsUserLoggedIn)
             {
+                if (App.LoggedInUser.IsReset)
+                {
+                    ContentDialog resetPasswordDialog = new ResetPasswordContentDialog(App.LoggedInUser.Id);
+                    resetPasswordDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                    ContentDialogResult result = await resetPasswordDialog.ShowAsync();
+
+                    if (result == ContentDialogResult.Secondary)
+                    {
+                        Application.Current.Exit();
+                        return;
+                    }
+                    else
+                    {
+                        App.LoggedInUser.IsReset = false;
+                        await User.UpdateUser(App.LoggedInUser);
+                    }
+                }
                 Frame rootFrame = new Frame();
                 rootFrame.Navigate(typeof(MainPage));
                 Window window = (Application.Current as App)?.Window;
