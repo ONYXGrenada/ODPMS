@@ -9,12 +9,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <!--<i:Interaction.Behaviors>
-        <ic:EventTriggerBehavior EventName="KeyDown">
-            <ic:InvokeCommandAction Command="{Binding EnterKeyDownCommand}"
-                                    CommandParameter="{x:Markup KeyEventArgs}"/>
-        </ic:EventTriggerBehavior>
-    </i:Interaction.Behaviors>-->
 
     <Grid>
         <Grid.RowDefinitions>
