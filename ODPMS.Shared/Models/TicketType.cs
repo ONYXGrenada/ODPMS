@@ -64,6 +64,22 @@ namespace ODPMS.Models
             return new List<TicketType>();
         }
 
+        public static async Task<List<TicketType>> GetAllTicketTypesDisplay()
+        {
+            try
+            {
+                var query = App.Database.Current.Table<TicketType>().Where(v => !v.Status.Equals("Delete"));
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new List<TicketType>();
+        }
+
         public static async Task<List<TicketType>> GetTicketTypesByStatus(string status)
         {
             try

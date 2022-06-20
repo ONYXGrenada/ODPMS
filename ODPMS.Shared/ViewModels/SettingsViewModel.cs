@@ -87,7 +87,7 @@ namespace ODPMS.ViewModels
                 foreach (var user in users)
                     Users.Add(user);
 
-                var ticketTypes = await TicketType.GetAllTicketTypes();
+                var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
 
                 if (TicketTypes.Count != 0)
                     TicketTypes.Clear();
@@ -148,7 +148,7 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        private async void UpdateUser()
+        async void UpdateUser()
         {
             if (FirstName != App.LoggedInUser.FirstName || LastName != App.LoggedInUser.LastName)
             {
@@ -202,6 +202,27 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
+        async void UpdateOtherUser()
+        {
+            await User.UpdateUser(SelectedUser);
+
+            if (SelectedUser.Id == App.LoggedInUser.Id)
+            {
+                App.LoggedInUser = SelectedUser;
+                FirstName = App.LoggedInUser.FirstName;
+                LastName = App.LoggedInUser.LastName;
+            }
+
+            var users = await User.GetAllUsers();
+
+            if (Users.Count != 0)
+                Users.Clear();
+
+            foreach (var user in users)
+                Users.Add(user);
+        }
+
+        [ICommand]
         async void AddTicketType()
         {
             // Display the new user dialog
@@ -209,7 +230,7 @@ namespace ODPMS.ViewModels
             newTicketType.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await newTicketType.ShowAsync();
 
-            var ticketTypes = await TicketType.GetAllTicketTypes();
+            var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
 
             if (TicketTypes.Count != 0)
                 TicketTypes.Clear();
@@ -221,9 +242,23 @@ namespace ODPMS.ViewModels
         [ICommand]
         async void DeleteTicketType()
         {
-            await TicketType.DeleteTicketType(SelectedTicketType.Id);
+            await TicketType.DeleteTicketType(SelectedTicketType);
 
-            var ticketTypes = await TicketType.GetAllTicketTypes();
+            var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
+
+            if (TicketTypes.Count != 0)
+                TicketTypes.Clear();
+
+            foreach (var ticketType in ticketTypes)
+                TicketTypes.Add(ticketType);
+        }
+
+        [ICommand]
+        async void UpdateTicketType()
+        {
+            await TicketType.UpdateTicketType(SelectedTicketType);
+
+            var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
 
             if (TicketTypes.Count != 0)
                 TicketTypes.Clear();

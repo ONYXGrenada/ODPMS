@@ -69,12 +69,12 @@
                     HorizontalAlignment="Center"
                     Content="Reset Password"
                     Command="{Binding ResetPasswordCommand}"
-                    MinWidth="120"/>
+                    MinWidth="160"/>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Update User"
                     Command="{Binding UpdateUserCommand}"
-                    MinWidth="120"/>
+                    MinWidth="160"/>
         </StackPanel>
 
         <!--Section 2: Users Administration -->
@@ -100,28 +100,31 @@
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
                         <ic:InvokeCommandAction Command="{Binding UserSelectedCommand}"/>
                     </ic:EventTriggerBehavior>
+                    <ic:EventTriggerBehavior EventName="RowEditEnded">
+                        <ic:InvokeCommandAction Command="{Binding UpdateOtherUserCommand}"/>
+                    </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" />
-                    <controls:DataGridTextColumn Header="Username" Binding="{Binding Username}" />
-                    <controls:DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
-                    <controls:DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" />
-                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" />
-                    <controls:DataGridTextColumn Header="Last Login" Binding="{Binding LastLogin}" />
+                    <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" IsReadOnly="True"/>
+                    <controls:DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
+                    <controls:DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
+                    <controls:DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
+                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}"/>
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}"/>
+                    <controls:DataGridTextColumn Header="Last Login" Binding="{Binding LastLogin}" IsReadOnly="True"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add User"
                     Command="{Binding AddUserCommand}"
-                    MinWidth="120"/>
+                    MinWidth="160"/>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Reset Password"
                     Command="{Binding ResetUserPasswordCommand}"
                     IsEnabled="{Binding IsUserSelected}"
-                    MinWidth="120"/>
+                    MinWidth="160"/>
         </StackPanel>
 
         <!--Section 3: Company Administratioon -->
@@ -147,70 +150,81 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center"
                            Text="Company Logo:" />
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal">
-                    <Image x:Name="companyLogo_img"
-                           Width="300"
-                           Height="200"
-                           Source="{Binding CompanyLogo}"/>
-                    <Button Style="{StaticResource AccentButtonStyle}"
-                            Grid.Column="2"
-                            Content="Browse"
-                            Command="{Binding GetCompanyLogoCommand}"
-                            MinWidth="120"/>
-                    <TextBlock x:Name="TestDisplay_txt" />
-                </StackPanel>
+                <Image x:Name="companyLogo_img"
+                       Grid.Column="2"
+                       HorizontalAlignment="Left"
+                       Width="300"
+                       Height="200"
+                       Source="{Binding CompanyLogo}"/>
+                <Button Style="{StaticResource AccentButtonStyle}"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Content="Browse"
+                        Command="{Binding GetCompanyLogoCommand}"
+                        MinWidth="160"/>
+                <TextBlock x:Name="TestDisplay_txt" />
 
-
-                <TextBlock Grid.Row="1"
-                           VerticalAlignment="Center"
-                           Text="Company Name:" />
-                <TextBox x:Name="companyName_txt"
-                         Grid.Row="1"
-                         Grid.Column="1"
-                         MinWidth="200"
-                         Text="{Binding CompanyName, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="2"
                            VerticalAlignment="Center"
-                           Text="Address:" />
-                <TextBox x:Name="companyAddress_txt"
+                           Text="Company Name:" />
+                <TextBox x:Name="companyName_txt"
                          Grid.Row="2"
                          Grid.Column="1"
+                         HorizontalAlignment="Left"
                          MinWidth="200"
-                         Text="{Binding CompanyAddress, Mode=TwoWay}"/>
+                         MaxWidth="400"
+                         Text="{Binding CompanyName, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="3"
                            VerticalAlignment="Center"
-                           Text="Email:" />
-                <TextBox x:Name="companyEmail_txt"
+                           Text="Address:" />
+                <TextBox x:Name="companyAddress_txt"
                          Grid.Row="3"
                          Grid.Column="1"
+                         HorizontalAlignment="Left"
                          MinWidth="200"
-                         Text="{Binding CompanyEmail, Mode=TwoWay}"/>
+                         MaxWidth="400"
+                         Text="{Binding CompanyAddress, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="4"
                            VerticalAlignment="Center"
-                           Text="Phone:" />
-                <TextBox x:Name="companyPhone_txt"
+                           Text="Email:" />
+                <TextBox x:Name="companyEmail_txt"
                          Grid.Row="4"
                          Grid.Column="1"
+                         HorizontalAlignment="Left"
                          MinWidth="200"
+                         MaxWidth="400"
+                         Text="{Binding CompanyEmail, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="5"
+                           VerticalAlignment="Center"
+                           Text="Phone:" />
+                <TextBox x:Name="companyPhone_txt"
+                         Grid.Row="5"
+                         Grid.Column="1"
+                         HorizontalAlignment="Left"
+                         MinWidth="200"
+                         MaxWidth="400"
                          Text="{Binding CompanyPhone, Mode=TwoWay}"/>
             </Grid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Update Company"
                     Command="{Binding UpdateCompanyCommand}"
-                    MinWidth="120"/>
+                    MinWidth="160"/>
         </StackPanel>
 
         <!--Section 4: Ticket Administration -->
@@ -236,31 +250,34 @@
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
                         <ic:InvokeCommandAction Command="{Binding TicketTypeSelectedCommand}"/>
                     </ic:EventTriggerBehavior>
+                    <ic:EventTriggerBehavior EventName="RowEditEnded">
+                        <ic:InvokeCommandAction Command="{Binding UpdateTicketTypeCommand}"/>
+                    </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" IsReadOnly="True"/>
                     <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True"/>
-                    <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}" />
-                    <controls:DataGridTextColumn Header="Period" Binding="{Binding Period}" />
-                    <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}" />
-                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" />
+                    <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                    <controls:DataGridTextColumn Header="Period" Binding="{Binding Period}"/>
+                    <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}"/>
                     <controls:DataGridTextColumn Header="Last Updated" Binding="{Binding Updated}" IsReadOnly="True"/>
                     <controls:DataGridTextColumn Header="Updated By" Binding="{Binding UpdatedBy}" IsReadOnly="True"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center"
+                        Spacing="8">
                 <Button Style="{StaticResource AccentButtonStyle}"
                         HorizontalAlignment="Center"
                         Content="Add Ticket Type"
                         Command="{Binding AddTicketTypeCommand}"
-                        MinWidth="120"/>
+                        MinWidth="160"/>
                 <Button Style="{StaticResource AccentButtonStyle}"
                         HorizontalAlignment="Center"
                         Content="Delete Ticket Type"
                         Command="{Binding DeleteTicketTypeCommand}"
                         IsEnabled="{Binding IsTicketTypeSelected}"
-                        MinWidth="120"/>
+                        MinWidth="160"/>
             </StackPanel>
             <StackPanel Margin="5"
                         Spacing="8">
@@ -284,7 +301,7 @@
                     HorizontalAlignment="Center"
                     Content="Update"
                     Command="{Binding UpdateTicketCommand}"
-                    MinWidth="120"/>
+                    MinWidth="160"/>
             </StackPanel>
         </StackPanel>
 
@@ -325,7 +342,7 @@
                     HorizontalAlignment="Center"
                     Content="Update"
                     Command="{Binding UpdateReceiptCommand}"
-                    MinWidth="120"/>
+                    MinWidth="160"/>
             </StackPanel>
         </StackPanel>
     </Grid>
