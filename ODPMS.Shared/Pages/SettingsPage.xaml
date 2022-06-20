@@ -280,6 +280,11 @@
                          AcceptsReturn="True"
                          MinHeight="100"
                          MinWidth="240"/>
+                <Button Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Content="Update"
+                    Command="{Binding UpdateTicketCommand}"
+                    MinWidth="120"/>
             </StackPanel>
         </StackPanel>
 
@@ -316,6 +321,11 @@
                          AcceptsReturn="True"
                          MinHeight="100"
                          MinWidth="240"/>
+                <Button Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Content="Update"
+                    Command="{Binding UpdateReceiptCommand}"
+                    MinWidth="120"/>
             </StackPanel>
         </StackPanel>
     </Grid>

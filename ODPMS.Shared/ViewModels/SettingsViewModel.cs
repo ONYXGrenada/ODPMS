@@ -103,6 +103,8 @@ namespace ODPMS.ViewModels
             LastName = App.LoggedInUser.LastName;
 
             GetCompanyData();
+            GetTicketCustomMessages();
+            GetReceiptCustomMessages();
         }
 
         [ICommand]
@@ -256,6 +258,38 @@ namespace ODPMS.ViewModels
             {
                 //OutputTextBlock.Text = "Operation cancelled.";
             }
+        }
+
+        private void GetTicketCustomMessages()
+        {
+            if (LocalSettings.Values["TicketMessage"] != null)
+                TicketMessage = LocalSettings.Values["TicketMessage"] as string;
+
+            if (LocalSettings.Values["TicketDisclaimer"] != null)
+                TicketDisclaimer = LocalSettings.Values["TicketDisclaimer"] as string;
+        }
+
+        [ICommand]
+        private void UpdateTicket()
+        {
+            LocalSettings.Values["TicketMessage"] = TicketMessage;
+            LocalSettings.Values["TicketDisclaimer"] = TicketDisclaimer;
+        }
+
+        private void GetReceiptCustomMessages()
+        {
+            if (LocalSettings.Values["ReceiptMessage"] != null)
+                ReceiptMessage = LocalSettings.Values["ReceiptMessage"] as string;
+
+            if (LocalSettings.Values["ReceiptDisclaimer"] != null)
+                ReceiptDisclaimer = LocalSettings.Values["ReceiptDisclaimer"] as string;
+        }
+
+        [ICommand]
+        private void UpdateReceipt()
+        {
+            LocalSettings.Values["ReceiptMessage"] = ReceiptMessage;
+            LocalSettings.Values["ReceiptDisclaimer"] = ReceiptDisclaimer;
         }
 
         [ICommand]
