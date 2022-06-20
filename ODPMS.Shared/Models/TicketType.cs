@@ -26,7 +26,6 @@ namespace ODPMS.Models
         
         [Ignore]
         public static string StatusMessage { get; set; }
-        public enum Statuses { Active, Inactive, Delete };
 
         public DateTime GetEndDate()
         {

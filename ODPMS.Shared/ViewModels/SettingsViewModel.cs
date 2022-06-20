@@ -67,8 +67,8 @@ namespace ODPMS.ViewModels
         public ObservableCollection<User> Users { get; } = new();
         public ObservableCollection<TicketType> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
-        public ObservableCollection<string> Statuses { get; } = new() {"Active", "Inactive"};
-        public ObservableCollection<string> UserTypes { get; } = new() {"admin", "user"};
+        public List<string> Statuses { get; } = new() {"Active", "Inactive"};
+        public List<string> UserTypes { get; } = new() {"admin", "user"};
 
         public SettingsViewModel()
         {
