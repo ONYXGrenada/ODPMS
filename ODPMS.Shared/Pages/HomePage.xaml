@@ -76,6 +76,7 @@
         <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="2"
                            AutoGenerateColumns="False"
+                           IsReadOnly="True"
                            SelectionMode="Single"
                            SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
                            ItemsSource="{Binding TicketList}"
@@ -114,6 +115,7 @@
         <controls:DataGrid x:Name="otherTicketList_dataGrid"
                            Grid.Row="3"
                            AutoGenerateColumns="False"
+                           IsReadOnly="True"
                            SelectionMode="Single"
                            SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
                            ItemsSource="{Binding OtherTicketList}"
@@ -131,7 +133,6 @@
                 <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
                 <controls:DataGridTextColumn Header="Created Date" Binding="{Binding Created}" />
                 <controls:DataGridTextColumn Header="Expiry Date" Binding="{Binding Closed}" />
-                <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}" />
                 <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}" />
                 <controls:DataGridTextColumn Header="User" Binding="{Binding User}" />
             </controls:DataGrid.Columns>

@@ -12,9 +12,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d">
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">-->
+    <Page.Resources>
+        <viewmodels:SettingsViewModel x:Key="MySettingsViewModel"/>
+    </Page.Resources>
 
     <Grid Padding="56,0,0,0"
-          Margin="5">
+          Margin="5"
+          DataContext="{StaticResource MySettingsViewModel}">
         <Grid.RowDefinitions>
             <!--Section 1: User Settings -->
             <RowDefinition Height="Auto" />
@@ -100,7 +104,7 @@
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
                         <ic:InvokeCommandAction Command="{Binding UserSelectedCommand}"/>
                     </ic:EventTriggerBehavior>
-                    <ic:EventTriggerBehavior EventName="RowEditEnded">
+                    <ic:EventTriggerBehavior EventName="CellEditEnded">
                         <ic:InvokeCommandAction Command="{Binding UpdateOtherUserCommand}"/>
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
@@ -109,8 +113,8 @@
                     <controls:DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
                     <controls:DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
                     <controls:DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
-                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}"/>
-                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}"/>
+                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" ItemsSource="{Binding UserTypes, Source={StaticResource MySettingsViewModel}}"/>
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{Binding Statuses, Source={StaticResource MySettingsViewModel}}"/>
                     <controls:DataGridTextColumn Header="Last Login" Binding="{Binding LastLogin}" IsReadOnly="True"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
@@ -250,7 +254,7 @@
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
                         <ic:InvokeCommandAction Command="{Binding TicketTypeSelectedCommand}"/>
                     </ic:EventTriggerBehavior>
-                    <ic:EventTriggerBehavior EventName="RowEditEnded">
+                    <ic:EventTriggerBehavior EventName="CellEditEnded">
                         <ic:InvokeCommandAction Command="{Binding UpdateTicketTypeCommand}"/>
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
@@ -260,7 +264,7 @@
                     <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
                     <controls:DataGridTextColumn Header="Period" Binding="{Binding Period}"/>
                     <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
-                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}"/>
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{Binding Statuses, Source={StaticResource MySettingsViewModel}}"/>
                     <controls:DataGridTextColumn Header="Last Updated" Binding="{Binding Updated}" IsReadOnly="True"/>
                     <controls:DataGridTextColumn Header="Updated By" Binding="{Binding UpdatedBy}" IsReadOnly="True"/>
                 </controls:DataGrid.Columns>

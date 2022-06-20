@@ -80,6 +80,7 @@
         <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="3"
                            AutoGenerateColumns="True"
+                           IsReadOnly="True"
                            ItemsSource="{Binding TicketList}"/>
     </Grid>
 </Page>

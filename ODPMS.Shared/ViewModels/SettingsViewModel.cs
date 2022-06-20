@@ -67,6 +67,8 @@ namespace ODPMS.ViewModels
         public ObservableCollection<User> Users { get; } = new();
         public ObservableCollection<TicketType> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        public ObservableCollection<string> Statuses { get; } = new() {"Active", "Inactive"};
+        public ObservableCollection<string> UserTypes { get; } = new() {"admin", "user"};
 
         public SettingsViewModel()
         {
@@ -204,11 +206,12 @@ namespace ODPMS.ViewModels
         [ICommand]
         async void UpdateOtherUser()
         {
-            await User.UpdateUser(SelectedUser);
+            User updatedUser = SelectedUser;
+            await User.UpdateUser(updatedUser);
 
-            if (SelectedUser.Id == App.LoggedInUser.Id)
+            if (updatedUser.Id == App.LoggedInUser.Id)
             {
-                App.LoggedInUser = SelectedUser;
+                App.LoggedInUser = updatedUser;
                 FirstName = App.LoggedInUser.FirstName;
                 LastName = App.LoggedInUser.LastName;
             }
@@ -256,7 +259,8 @@ namespace ODPMS.ViewModels
         [ICommand]
         async void UpdateTicketType()
         {
-            await TicketType.UpdateTicketType(SelectedTicketType);
+            TicketType updatedTicket = SelectedTicketType;
+            await TicketType.UpdateTicketType(updatedTicket);
 
             var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
 
