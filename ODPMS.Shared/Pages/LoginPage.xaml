@@ -15,13 +15,11 @@
             <RowDefinition Height="32"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-
-
         <Grid x:Name="appTitleBar_grid">
             <Image Source="Images/WindowIcon.png"
-               HorizontalAlignment="Left" 
-               Width="16" Height="16" 
-               Margin="8,0"/>
+                   HorizontalAlignment="Left" 
+                   Width="16" Height="16" 
+                   Margin="8,0"/>
             <TextBlock x:Name="appTitle_txtBlock" 
                        Text="Onyx Parking Management Solution"
                        TextWrapping="NoWrap"
@@ -29,7 +27,6 @@
                        VerticalAlignment="Center"
                        Margin="28,0,0,0"/>
         </Grid>
-
         <Grid Grid.Row="1">
             <StackPanel Orientation="Vertical" 
                         VerticalAlignment="Center"
@@ -59,8 +56,7 @@
                            Text="{Binding StatusMessage}"
                            Foreground="{Binding StatusMessageColor}"
                            VerticalAlignment="Center" 
-                           HorizontalAlignment="Center">
-                </TextBlock>
+                           HorizontalAlignment="Center"/>
                 <Button x:Name="loginButton_btn" 
                         Content="Login" 
                         Command="{Binding LoginCommand}"

@@ -32,7 +32,8 @@ namespace ODPMS.Helpers
                 typeof(Ticket),
                 typeof(User),
                 typeof(TicketType),
-                typeof(Receipt)
+                typeof(Receipt),
+                typeof(CashFloat)
             };
             if (_database != null)
             {
