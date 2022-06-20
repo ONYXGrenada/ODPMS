@@ -55,7 +55,7 @@ namespace ODPMS.ViewModels
                 }
                 else if (ticket.Type != "Hourly" && ticket.Closed >= DateTime.Now)
                 {
-                    ticket.UpdateCost();
+                    //ticket.UpdateCost();
                     OtherTicketList.Add(ticket);
                 }
             }

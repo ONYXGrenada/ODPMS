@@ -51,11 +51,11 @@ namespace ODPMS.Models
         public void UpdateCost()
         {
             int gracePeriod = 5;
-            Closed = DateTime.Now;
+            //Closed = DateTime.Now;
 
             if (Type == "Hourly")
             {
-                TimeSpan ts = (DateTime)Closed - Created;
+                TimeSpan ts = (DateTime)DateTime.Now - Created;
 
                 if (ts.TotalMinutes % 60 >= gracePeriod)
                     Cost = Rate * Math.Ceiling(ts.TotalHours);
@@ -66,6 +66,9 @@ namespace ODPMS.Models
 
         public void PayTicket(double payAmount)
         {
+            if (payAmount == 0)
+                return;
+
             int gracePeriod = 5;
             PayAmount += payAmount;
 
@@ -78,10 +81,16 @@ namespace ODPMS.Models
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
-            Balance = Cost - PayAmount;
+
+            if (payAmount > Cost)
+                Balance = 0;
+            else
+                Balance = Cost - PayAmount;
 
             if (Balance == 0)
                 Status = "Paid";
+            else if (Balance > 0)
+                Status = "Partial";
         }
 
         public void UpdateClosed()
