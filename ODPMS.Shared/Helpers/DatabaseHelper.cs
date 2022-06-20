@@ -60,41 +60,49 @@ namespace ODPMS.Helpers
             TicketType ticketTypeH = new TicketType();
             ticketTypeH.Type = "Hourly";
             ticketTypeH.Description = "Hourly Ticket";
-            ticketTypeH.Quantity = 1;
+            ticketTypeH.Period = 1;
             ticketTypeH.Rate = 2.50;
             ticketTypeH.Status = "Active";
             ticketTypeH.User = "admin";
-            ticketTypeH.ActivityDate = DateTime.Now;
+            ticketTypeH.Created = DateTime.Now;
+            ticketTypeH.Updated = DateTime.Now;
+            ticketTypeH.UpdatedBy = "admin";
             ticketTypes.Add(ticketTypeH);
 
             TicketType ticketTypeD = new TicketType();
             ticketTypeD.Type = "Daily";
             ticketTypeD.Description = "Daily Ticket";
-            ticketTypeD.Quantity = 1;
+            ticketTypeD.Period = 1;
             ticketTypeD.Rate = 10.00;
             ticketTypeD.Status = "Active";
             ticketTypeD.User = "admin";
-            ticketTypeD.ActivityDate = DateTime.Now;
+            ticketTypeD.Created = DateTime.Now;
+            ticketTypeD.Updated = DateTime.Now;
+            ticketTypeD.UpdatedBy = "admin";
             ticketTypes.Add(ticketTypeD);
 
             TicketType ticketTypeW = new TicketType();
             ticketTypeW.Type = "Weekly";
             ticketTypeW.Description = "Weekly Ticket";
-            ticketTypeW.Quantity = 1;
+            ticketTypeW.Period = 1;
             ticketTypeW.Rate = 50.00;
             ticketTypeW.Status = "Active";
             ticketTypeW.User = "admin";
-            ticketTypeW.ActivityDate = DateTime.Now;
+            ticketTypeW.Created = DateTime.Now;
+            ticketTypeW.Updated = DateTime.Now;
+            ticketTypeW.UpdatedBy = "admin";
             ticketTypes.Add(ticketTypeW);
 
             TicketType ticketTypeM = new TicketType();
             ticketTypeM.Type = "Monthly";
             ticketTypeM.Description = "Monthly Ticket";
-            ticketTypeM.Quantity = 1;
+            ticketTypeM.Period = 1;
             ticketTypeM.Rate = 200.00;
             ticketTypeM.Status = "Active";
             ticketTypeM.User = "admin";
-            ticketTypeM.ActivityDate = DateTime.Now;
+            ticketTypeM.Created = DateTime.Now;
+            ticketTypeM.Updated = DateTime.Now;
+            ticketTypeM.UpdatedBy = "admin";
             ticketTypes.Add(ticketTypeM);
 
             foreach (var ticketType in ticketTypes)

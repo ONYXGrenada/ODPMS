@@ -81,12 +81,14 @@ namespace ODPMS.Dialogs
             NewTicket.Description = NewTicketType.Description;
             NewTicket.Created = DateTime.Now;
             NewTicket.Status = "Open";
-            NewTicket.Quantity = NewTicketType.Quantity;
+            NewTicket.Period = NewTicketType.Period;
             NewTicket.Rate = NewTicketType.Rate;
             NewTicket.User = App.LoggedInUser.Username;
             NewTicket.CustomerId = customerId;
             NewTicket.Registration = registration;
-            
+            NewTicket.Updated = DateTime.Now;
+            NewTicket.UpdatedBy = App.LoggedInUser.Username;
+
             NewTicket.UpdateClosed();
 
             if (payAmount > 0)

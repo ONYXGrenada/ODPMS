@@ -98,7 +98,7 @@ namespace ODPMS.ViewModels
             if (saveFile != null)
             {
                 List<string> TicketListStr = new List<string>();
-                TicketListStr.Add("Id,Type,Description,Created,Closed,Status,CustomerId,Registration,Quantity,Rate,Cost,PayAmount,Balance,User");
+                TicketListStr.Add("Id,Type,Description,Created,Closed,Status,CustomerId,Registration,Period,Rate,Cost,PayAmount,Balance,User");
                 // Save file was picked, you can now write in it
                 foreach (Ticket ticket in TicketList)
                 {

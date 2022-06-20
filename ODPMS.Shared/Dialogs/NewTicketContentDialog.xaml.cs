@@ -73,8 +73,10 @@ namespace ODPMS.Dialogs
             NewTicket.Created = DateTime.Now;
 			NewTicket.Status = "Open";
 			NewTicket.Rate = ticketType.Rate;
-            NewTicket.Quantity = ticketType.Quantity;
+            NewTicket.Period = ticketType.Period;
             NewTicket.User = App.LoggedInUser.Username;
+            NewTicket.Updated = DateTime.Now;
+            NewTicket.UpdatedBy = App.LoggedInUser.Username;
 
             this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
 			this.ticketDate_txtBlock.Text = NewTicket.Created.ToString("MM/dd/yyyy");

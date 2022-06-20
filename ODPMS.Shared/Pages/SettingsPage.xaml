@@ -102,7 +102,7 @@
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                    <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" />
                     <controls:DataGridTextColumn Header="Username" Binding="{Binding Username}" />
                     <controls:DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
                     <controls:DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
@@ -228,7 +228,7 @@
                        Margin="0,12,0,0"
                        Text="Ticket Administration"/>
             <controls:DataGrid x:Name="ticketTypes_dataGrid"
-                               AutoGenerateColumns="True"
+                               AutoGenerateColumns="False"
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedTicketType, Mode=TwoWay}"
                                ItemsSource="{Binding TicketTypes}">
@@ -237,6 +237,16 @@
                         <ic:InvokeCommandAction Command="{Binding TicketTypeSelectedCommand}"/>
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" IsReadOnly="True"/>
+                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True"/>
+                    <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}" />
+                    <controls:DataGridTextColumn Header="Period" Binding="{Binding Period}" />
+                    <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}" />
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" />
+                    <controls:DataGridTextColumn Header="Last Updated" Binding="{Binding Updated}" IsReadOnly="True"/>
+                    <controls:DataGridTextColumn Header="Updated By" Binding="{Binding UpdatedBy}" IsReadOnly="True"/>
+                </controls:DataGrid.Columns>
             </controls:DataGrid>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
@@ -252,7 +262,8 @@
                         IsEnabled="{Binding IsTicketTypeSelected}"
                         MinWidth="120"/>
             </StackPanel>
-            <StackPanel Margin="5">
+            <StackPanel Margin="5"
+                        Spacing="8">
                 <TextBlock MinWidth="110"
                            Text="Message:" />
                 <TextBox x:Name="ticketMessage_txt"
@@ -287,7 +298,8 @@
                        Margin="0,12,0,0"
                        Text="Receipt Administration" />
 
-            <StackPanel Margin="5">
+            <StackPanel Margin="5"
+                        Spacing="8">
                 <TextBlock MinWidth="110"
                            Text="Message:" />
                 <TextBox x:Name="receiptMessage_txt"

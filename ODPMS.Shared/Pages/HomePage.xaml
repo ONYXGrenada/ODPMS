@@ -79,7 +79,7 @@
                            SelectionMode="Single"
                            SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
                            ItemsSource="{Binding TicketList}"
-                           Visibility="{Binding VisibleTicket}">
+                           Visibility="{Binding VisibleTicketList}">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
                     <ic:InvokeCommandAction Command="{Binding SelectTicketCommand}"/>
@@ -117,7 +117,7 @@
                            SelectionMode="Single"
                            SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
                            ItemsSource="{Binding OtherTicketList}"
-                           Visibility="{Binding VisibleOtherTicket}">
+                           Visibility="{Binding VisibleOtherTicketList}">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="SelectionChanged">
                     <ic:InvokeCommandAction Command="{Binding SelectTicketCommand}"/>

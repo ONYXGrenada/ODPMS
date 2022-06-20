@@ -36,7 +36,7 @@ namespace ODPMS.Dialogs
                 statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
                 statusMessage_txtBlock.Text = "Description is required.";
             }
-            if (string.IsNullOrEmpty(this.quantity_txt.Text))
+            if (string.IsNullOrEmpty(this.period_txt.Text))
             {
                 args.Cancel = true;
                 statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
@@ -55,20 +55,21 @@ namespace ODPMS.Dialogs
                 string description = this.description_txt.Text;
                 double rate;
                 Double.TryParse(this.unitCost_txt.Text, out rate);
-                int quantity;
-                Int32.TryParse(this.quantity_txt.Text, out quantity);
+                int period;
+                Int32.TryParse(this.period_txt.Text, out period);
                 string selectedStatus = this.typeStatus_cb.SelectionBoxItem.ToString();
                 string user = App.LoggedInUser.Username;
-                DateTime activityDate = DateTime.Now;
 
                 TicketType NewTicketType = new TicketType();
                 NewTicketType.Type = type;
                 NewTicketType.Description = description;
-                NewTicketType.Quantity = quantity;
+                NewTicketType.Period = period;
                 NewTicketType.Rate = rate;
                 NewTicketType.Status = selectedStatus;
                 NewTicketType.User = user;
-                NewTicketType.ActivityDate = activityDate;
+                NewTicketType.Created = DateTime.Now;
+                NewTicketType.Updated = DateTime.Now;
+                NewTicketType.UpdatedBy = user;
                 NewTicketType.IsDeletable = true;
 
                 await TicketType.CreateTicketType(NewTicketType);

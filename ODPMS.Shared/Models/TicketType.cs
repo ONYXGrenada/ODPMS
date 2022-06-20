@@ -15,11 +15,13 @@ namespace ODPMS.Models
         public int Id { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
-        public int Quantity {  get; set; }
+        public int Period {  get; set; }
         public double Rate { get; set; }
         public string Status { get; set; }
         public string User { get; set; }
-        public DateTime ActivityDate { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
+        public string UpdatedBy { get; set; }
         public bool IsDeletable { get; set; }
         
         [Ignore]
@@ -32,13 +34,13 @@ namespace ODPMS.Models
                 endDate = endDate.AddDays(1).Subtract(new TimeSpan(0, 0, 0, 0, 1));
 
             if (Type == "Daily")
-                endDate = endDate.AddDays(Quantity);
+                endDate = endDate.AddDays(Period);
 
             else if (Type == "Weekly")
-                endDate = endDate.AddDays(Quantity * 7);
+                endDate = endDate.AddDays(Period * 7);
 
             else if (Type == "Monthly")
-                endDate = endDate.AddDays(Quantity * 30);
+                endDate = endDate.AddDays(Period * 30);
 
             return endDate;
         }
@@ -96,6 +98,22 @@ namespace ODPMS.Models
             return new TicketType();
         }
 
+        public static async Task UpdateTicketType(TicketType ticketType)
+        {
+            int result = 0;
+            ticketType.Updated = DateTime.Now;
+            ticketType.UpdatedBy = App.LoggedInUser.Username;
+            try
+            {
+                result = await App.Database.Current.UpdateAsync(ticketType);
+                StatusMessage = string.Format("{0} record(s) found in the ticket type table)", result);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+        }
+
         public static async Task CreateTicketType(TicketType ticketType)
         {
             int result = 0;
@@ -109,6 +127,23 @@ namespace ODPMS.Models
             catch (Exception ex)
             {
                 StatusMessage = string.Format("Failed to add {0}. Error: {1}", ticketType.Id, ex.Message);
+            }
+        }
+
+        public static async Task DeleteTicketType(TicketType ticketType)
+        {
+            int result = 0;
+            ticketType.Status = "Delete";
+            ticketType.Updated = DateTime.Now;
+            ticketType.UpdatedBy = App.LoggedInUser.Username;
+            try
+            {
+                result = await App.Database.Current.UpdateAsync(ticketType);
+                StatusMessage = string.Format("{0} record(s) found in the ticket type table)", result);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
         }
 

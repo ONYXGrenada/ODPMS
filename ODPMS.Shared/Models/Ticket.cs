@@ -23,14 +23,14 @@ namespace ODPMS.Models
         public string Status { get; set; }
         public int? CustomerId { get; set; }
         public string Registration { get; set; }
-        public int Quantity { get; set; }
+        public int Period { get; set; }
         public double Rate { get; set; }
         public double Cost { get; set; }
         public double PayAmount { get; set; }
         public double Balance { get; set; }
         public string User { get; set; }
-        public string UpdateUser { get; set; }
         public DateTime? Updated { get; set; }
+        public string UpdatedBy { get; set; }
 
 
         [Ignore]
@@ -44,7 +44,7 @@ namespace ODPMS.Models
         public string ToCsv()
         {
             return Id.ToString() + "," + Type + "," + Description + "," + Created + "," + Closed.ToString() + "," + Status +
-                "," + CustomerId.ToString() + "," + Registration + Quantity.ToString() + "," + "," + Rate.ToString() + "," + Cost.ToString() + "," + PayAmount.ToString() + "," + 
+                "," + CustomerId.ToString() + "," + Registration + Period.ToString() + "," + "," + Rate.ToString() + "," + Cost.ToString() + "," + PayAmount.ToString() + "," + 
                 Balance.ToString() + "," + User;
         }
 
@@ -87,13 +87,13 @@ namespace ODPMS.Models
         public void UpdateClosed()
         {
             if (Type == "Daily")
-                Closed = Created.AddDays(Quantity);
+                Closed = Created.AddDays(Period);
 
             else if (Type == "Weekly")
-                Closed = Created.AddDays(Quantity * 7);
+                Closed = Created.AddDays(Period * 7);
 
             else if (Type == "Monthly")
-                Closed = Created.AddDays(Quantity * 30);
+                Closed = Created.AddDays(Period * 30);
         }
 
         #region Database Functions
@@ -192,6 +192,8 @@ namespace ODPMS.Models
         public static async Task UpdateTicket(Ticket ticket)
         {
             int result = 0;
+            ticket.Updated = DateTime.Now;
+            ticket.UpdatedBy = App.LoggedInUser.Username;
             try
             {
                 result = await App.Database.Current.UpdateAsync(ticket);
@@ -238,6 +240,8 @@ namespace ODPMS.Models
         {
             int result = 0;
             ticket.Status = "Delete";
+            ticket.Updated = DateTime.Now;
+            ticket.UpdatedBy = App.LoggedInUser.Username;
             try
             {
                 result = await App.Database.Current.UpdateAsync(ticket);

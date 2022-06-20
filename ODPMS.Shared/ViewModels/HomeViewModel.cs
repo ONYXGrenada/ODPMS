@@ -22,10 +22,10 @@ namespace ODPMS.ViewModels
         Ticket selectedTicket;
 
         [ObservableProperty]
-        Visibility visibleTicket;
+        Visibility visibleTicketList;
 
         [ObservableProperty]
-        Visibility visibleOtherTicket;
+        Visibility visibleOtherTicketList;
 
         [ObservableProperty]
         bool canDelete;
@@ -61,13 +61,13 @@ namespace ODPMS.ViewModels
             }
 
             if (TicketList.Count != 0)
-                VisibleTicket = Visibility.Visible;
+                VisibleTicketList = Visibility.Visible;
             else
-                VisibleTicket = Visibility.Collapsed;
+                VisibleTicketList = Visibility.Collapsed;
             if (OtherTicketList.Count != 0)
-                VisibleOtherTicket = Visibility.Visible;
+                VisibleOtherTicketList = Visibility.Visible;
             else
-                VisibleOtherTicket = Visibility.Collapsed;
+                VisibleOtherTicketList = Visibility.Collapsed;
 
             WelcomeMessage = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
         }
@@ -136,8 +136,8 @@ namespace ODPMS.ViewModels
             try
             {
                 IsBusy = true;
-                SelectedTicket.UpdateUser = App.LoggedInUser.Username;
                 SelectedTicket.Updated = DateTime.Now;
+                SelectedTicket.UpdatedBy = App.LoggedInUser.Username;
                 await Ticket.DeleteTicket(selectedTicket);
                 TicketNumber = "";
                 SelectedTicket = null;

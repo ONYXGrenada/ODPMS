@@ -34,10 +34,10 @@
                  PlaceholderText="Description"/>
         <TextBlock Text="Quantity:"
                    Grid.Row="2"/>
-        <TextBox x:Name="quantity_txt"
+        <TextBox x:Name="period_txt"
                  Grid.Row="2"
                  Grid.Column="1"
-                 PlaceholderText="Quantity"/>
+                 PlaceholderText="Period"/>
         <TextBlock Text="Unit Cost:"
                    Grid.Row="3"/>
         <TextBox x:Name="unitCost_txt"
