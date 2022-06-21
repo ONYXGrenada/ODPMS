@@ -100,14 +100,22 @@ namespace ODPMS.ViewModels
                 Ticket checkTicket = await Ticket.GetTicket(ticketNumber);
                 if (checkTicket.Id > 0)
                 {
-                    ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
-                    payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
-                    await payDialog.ShowAsync();
+                    if (checkTicket.Status == "Paid")
+                        ValidTicketMessage = string.Format("This ticket has already been paid.");
+                    else if (checkTicket.Status == "Closed")
+                        ValidTicketMessage = string.Format("This ticket is no longer valid.");
 
-                    Init();
+                    else
+                    {
+                        ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
+                        payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                        await payDialog.ShowAsync();
 
-                    TicketNumber = "";
-                    SelectedTicket = null;
+                        Init();
+
+                        TicketNumber = "";
+                        SelectedTicket = null;
+                    }
                 }
                 else
                 {

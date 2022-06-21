@@ -119,9 +119,6 @@ namespace ODPMS.Dialogs
 				
                 this.ticketBarCode_img.Source = image;
             }
-
-
-
         }
     }
 }
