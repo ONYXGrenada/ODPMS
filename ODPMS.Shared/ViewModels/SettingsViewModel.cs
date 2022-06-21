@@ -138,6 +138,13 @@ namespace ODPMS.ViewModels
                     CompanyLogo = new BitmapImage(resourceUri);
                 }
             }
+
+            else
+            {
+                Uri resourceUri2 = new Uri("ms-appx:///Assets/Images/logo-placeholder.png");
+                CompanyLogo = new BitmapImage(resourceUri2);
+            }
+
         }
 
         [ICommand]

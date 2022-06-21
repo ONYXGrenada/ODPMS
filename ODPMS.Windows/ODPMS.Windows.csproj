@@ -18,8 +18,13 @@
 		<!-- This bundles the .NET Core libraries (Uncomment for packaged builds)  -->
 		<SelfContained>false</SelfContained>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <None Remove="Images\logo-placeholder.png" />
+	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="Images\logo-placeholder.png" />
 		<Content Include="Images\SplashScreen.scale-200.png" />
 		<Content Include="Images\LockScreenLogo.scale-200.png" />
 		<Content Include="Images\Square150x150Logo.scale-200.png" />
