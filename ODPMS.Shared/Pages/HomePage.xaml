@@ -114,6 +114,7 @@
 
         <controls:DataGrid x:Name="otherTicketList_dataGrid"
                            Grid.Row="3"
+                           Margin="0,20,0,0"
                            AutoGenerateColumns="False"
                            IsReadOnly="True"
                            SelectionMode="Single"
