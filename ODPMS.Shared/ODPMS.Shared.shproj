@@ -14,6 +14,7 @@
     <Content Remove="Assets\logo-placeholder.webp" />
   </ItemGroup>
   <ItemGroup>
+    <_Globbed_Compile Remove="Dialogs\CashFloatContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\ContentDialog1.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\NewSpecialTicketContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\NewTicketTypeContentDialog.xaml.cs" />

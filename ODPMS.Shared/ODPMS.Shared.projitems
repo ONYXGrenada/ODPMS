@@ -18,6 +18,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\CashFloatContentDialog.xaml.cs">
+      <DependentUpon>CashFloatContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Dialogs\OtherTicketsContentDialog.xaml.cs">
       <DependentUpon>OtherTicketsContentDialog.xaml</DependentUpon>
     </Compile>
