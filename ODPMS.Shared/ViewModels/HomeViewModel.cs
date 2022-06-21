@@ -38,7 +38,6 @@ namespace ODPMS.ViewModels
 
         async void Init()
         {
-            //var tickets = DatabaseHelper.GetTicketListViewData(null);
             var tickets = await Ticket.GetAllTickets();
 
             if (TicketList.Count != 0)
@@ -54,10 +53,7 @@ namespace ODPMS.ViewModels
                     TicketList.Add(ticket);
                 }
                 else if (ticket.Type != "Hourly" && ticket.Closed >= DateTime.Now)
-                {
-                    ticket.UpdateCost();
                     OtherTicketList.Add(ticket);
-                }
             }
 
             if (TicketList.Count != 0)

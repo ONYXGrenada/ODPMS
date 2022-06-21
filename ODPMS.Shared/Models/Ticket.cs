@@ -51,10 +51,10 @@ namespace ODPMS.Models
         public void UpdateCost()
         {
             int gracePeriod = 5;
-            Closed = DateTime.Now;
 
             if (Type == "Hourly")
             {
+                Closed = DateTime.Now;
                 TimeSpan ts = (DateTime)Closed - Created;
 
                 if (ts.TotalMinutes % 60 >= gracePeriod)
