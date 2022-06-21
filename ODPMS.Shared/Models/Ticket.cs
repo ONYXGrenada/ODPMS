@@ -82,7 +82,7 @@ namespace ODPMS.Models
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
 
-            if (payAmount > Cost)
+            if (PayAmount > Cost)
                 Balance = 0;
             else
                 Balance = Cost - PayAmount;

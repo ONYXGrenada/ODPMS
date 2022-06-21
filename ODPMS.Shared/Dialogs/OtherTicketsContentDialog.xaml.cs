@@ -77,15 +77,18 @@ namespace ODPMS.Dialogs
                 NewTicket.Id = 1;
             else
                 NewTicket.Id = tickets.Select(x => x.Id).Max() + 1;
+
             NewTicket.Type = NewTicketType.Type;
             NewTicket.Description = NewTicketType.Description;
             NewTicket.Created = DateTime.Now;
             NewTicket.Status = "Open";
-            NewTicket.Period = NewTicketType.Period;
-            NewTicket.Rate = NewTicketType.Rate;
-            NewTicket.User = App.LoggedInUser.Username;
             NewTicket.CustomerId = customerId;
             NewTicket.Registration = registration;
+            NewTicket.Period = NewTicketType.Period;
+            NewTicket.Rate = NewTicketType.Rate;
+            NewTicket.Cost = NewTicketType.Rate;
+            NewTicket.Balance = NewTicketType.Rate;
+            NewTicket.User = App.LoggedInUser.Username;
             NewTicket.Updated = DateTime.Now;
             NewTicket.UpdatedBy = App.LoggedInUser.Username;
 
