@@ -51,7 +51,6 @@ namespace ODPMS.Models
         public void UpdateCost()
         {
             int gracePeriod = 5;
-            //Closed = DateTime.Now;
 
             if (Type == "Hourly")
             {
