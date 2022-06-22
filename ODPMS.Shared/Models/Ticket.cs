@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage;
-using static SQLite.SQLite3;
-
-namespace ODPMS.Models
+﻿namespace ODPMS.Models
 {
     [Table("tickets")]
     public class Ticket
