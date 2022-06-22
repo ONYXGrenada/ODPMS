@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommunityToolkit.WinUI.UI.Controls;
 
 namespace ODPMS.ViewModels
 {
@@ -11,13 +9,13 @@ namespace ODPMS.ViewModels
 
         [ObservableProperty]
         string welcomeMessage;
-
+        
         [ObservableProperty]
         string validTicketMessage;
-
+        
         [ObservableProperty]
         string ticketNumber;
-
+        
         [ObservableProperty]
         Ticket selectedTicket;
 
@@ -50,6 +48,7 @@ namespace ODPMS.ViewModels
                 if (ticket.Type == "Hourly" && ticket.Status == "Open")
                 {
                     ticket.UpdateCost();
+                    ticket.UpdateDeletable();
                     TicketList.Add(ticket);
                 }
                 else if (ticket.Type != "Hourly" && ticket.Closed >= DateTime.Now)
@@ -60,6 +59,7 @@ namespace ODPMS.ViewModels
                 VisibleTicketList = Visibility.Visible;
             else
                 VisibleTicketList = Visibility.Collapsed;
+            
             if (OtherTicketList.Count != 0)
                 VisibleOtherTicketList = Visibility.Visible;
             else
@@ -129,22 +129,26 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        async void DeleteTicket()
+        async void DeleteTicket(Ticket ticket)
         {
             if (IsBusy)
                 return;
-
-            if (SelectedTicket == null)
+            
+            if (ticket == null)
                 return;
 
             try
             {
                 IsBusy = true;
-                SelectedTicket.Updated = DateTime.Now;
-                SelectedTicket.UpdatedBy = App.LoggedInUser.Username;
-                await Ticket.DeleteTicket(selectedTicket);
+                TimeSpan ts = DateTime.Now - ticket.Created;
+                if (ts.TotalMinutes % 60 < 5)
+                {
+                    ticket.IsDeletable = false;
+                    ticket.Updated = DateTime.Now;
+                    ticket.UpdatedBy = App.LoggedInUser.Username;
+                    await Ticket.DeleteTicket(ticket);
+                }
                 TicketNumber = "";
-                SelectedTicket = null;
                 Init();
             }
             catch (Exception ex)
@@ -160,7 +164,7 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        void SelectTicket()
+        async void SelectTicket()
         {
             if (IsBusy)
                 return;
@@ -176,10 +180,11 @@ namespace ODPMS.ViewModels
 
                 // Allow ticket to be deleted if within 5 minutes
                 TimeSpan ts = DateTime.Now - SelectedTicket.Created;
-                if (ts.TotalMinutes % 60 < 5)
-                    CanDelete = true;
-                else
-                    CanDelete = false;
+                if (ts.TotalMinutes % 60 > 5)
+                {
+                    SelectedTicket.IsDeletable = false;
+                    await Ticket.UpdateTicket(SelectedTicket);
+                }
             }
             catch (Exception ex)
             {

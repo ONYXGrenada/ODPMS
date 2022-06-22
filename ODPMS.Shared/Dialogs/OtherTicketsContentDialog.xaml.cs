@@ -91,6 +91,7 @@ namespace ODPMS.Dialogs
             NewTicket.User = App.LoggedInUser.Username;
             NewTicket.Updated = DateTime.Now;
             NewTicket.UpdatedBy = App.LoggedInUser.Username;
+            NewTicket.IsDeletable = true;
 
             NewTicket.UpdateClosed();
 

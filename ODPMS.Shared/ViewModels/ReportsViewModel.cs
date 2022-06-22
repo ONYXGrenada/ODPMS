@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
+﻿using System.Globalization;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;

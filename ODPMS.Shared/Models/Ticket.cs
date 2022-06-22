@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage;
-using static SQLite.SQLite3;
+﻿using System.Net.Sockets;
 
 namespace ODPMS.Models
 {
@@ -31,7 +22,7 @@ namespace ODPMS.Models
         public string User { get; set; }
         public DateTime? Updated { get; set; }
         public string UpdatedBy { get; set; }
-
+        public bool IsDeletable { get; set; }
 
         [Ignore]
         public static string StatusMessage { get; set; }
@@ -62,6 +53,15 @@ namespace ODPMS.Models
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
+        }
+
+        public void UpdateDeletable()
+        {
+            TimeSpan ts = DateTime.Now - Created;
+            if (ts.TotalMinutes % 60 < 5)
+                IsDeletable = true;
+            else
+                IsDeletable = false;
         }
 
         public void PayTicket(double payAmount)
