@@ -6,6 +6,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="using:ODPMS.Models"
     xmlns:viewmodels="using:ODPMS.ViewModels"
@@ -13,11 +14,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
-        <viewmodels:HomeViewModel x:Key="MyHomeViewModel"/>
-    </Page.Resources>
 
-    <Grid DataContext="{StaticResource MyHomeViewModel}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -77,6 +75,7 @@
         <controls:DataGrid x:Name="ticketList_dataGrid"
                            Grid.Row="2"
                            AutoGenerateColumns="False"
+                           IsReadOnly="True"
                            SelectionMode="Single"
                            SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
                            ItemsSource="{Binding TicketList}"
@@ -98,17 +97,31 @@
                 <controls:DataGridTemplateColumn Header="Actions">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                                <Button x:Name="buttonDeleteTicket_btn"
-                                        ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
-                                        Style="{StaticResource AccentButtonStyle}"
-                                        Content="Delete"
-                                        Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteTicketCommand, RelativeSource={RelativeSource Self}}"
-                                        CommandParameter="{Binding}"
-                                        HorizontalAlignment="Stretch"/>
+                            <Button x:Name="buttonDeleteTicket_btn"
+                                    ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
+                                    Content="Delete"
+                                    Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteTicketCommand, RelativeSource={RelativeSource Self}}"
+                                    CommandParameter="{Binding}"
+                                    IsEnabled="{Binding IsDeletable}"
+                                    HorizontalAlignment="Stretch"/>
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
             </controls:DataGrid.Columns>
+            <!--<controls:DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                Spacing="8">
+                        <Button Style="{StaticResource AccentButtonStyle}"
+                                Content="Delete"
+                                Command="{Binding DeleteTicketCommand, Source={StaticResource MyHomeViewModel}}"
+                                CommandParameter="{Binding}"
+                                IsEnabled="{Binding CanDelete, Source={StaticResource MyHomeViewModel}}"
+                                MinWidth="120"/>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:DataGrid.RowDetailsTemplate>-->
         </controls:DataGrid>
 
         <controls:DataGrid x:Name="otherTicketList_dataGrid"

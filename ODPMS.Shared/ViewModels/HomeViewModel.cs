@@ -6,7 +6,6 @@ namespace ODPMS.ViewModels
     {
         public ObservableCollection<Ticket> TicketList { get; } = new();
         public ObservableCollection<Ticket> OtherTicketList { get; } = new();
-        public ObservableCollection<bool> Delete1 { get; } = new();
 
         [ObservableProperty]
         string welcomeMessage;
@@ -29,9 +28,6 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         bool canDelete;
 
-        [ObservableProperty]
-        Visibility visibleDelete;
-
         public HomeViewModel()
         {
             Title = "Home";
@@ -52,8 +48,8 @@ namespace ODPMS.ViewModels
                 if (ticket.Type == "Hourly" && ticket.Status == "Open")
                 {
                     ticket.UpdateCost();
+                    ticket.UpdateDeletable();
                     TicketList.Add(ticket);
-                    Delete1.Add(false);
                 }
                 else if (ticket.Type != "Hourly" && ticket.Closed >= DateTime.Now)
                     OtherTicketList.Add(ticket);
@@ -139,6 +135,7 @@ namespace ODPMS.ViewModels
                 TimeSpan ts = DateTime.Now - ticket.Created;
                 if (ts.TotalMinutes % 60 < 5)
                 {
+                    ticket.IsDeletable = false;
                     ticket.Updated = DateTime.Now;
                     ticket.UpdatedBy = App.LoggedInUser.Username;
                     await Ticket.DeleteTicket(ticket);
@@ -159,7 +156,7 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        void SelectTicket()
+        async void SelectTicket()
         {
             if (IsBusy)
                 return;
@@ -173,14 +170,13 @@ namespace ODPMS.ViewModels
                 int ticketNumber = SelectedTicket.Id;
                 TicketNumber = ticketNumber.ToString();
 
-                int test = TicketList.IndexOf(SelectedTicket);
-
                 // Allow ticket to be deleted if within 5 minutes
                 TimeSpan ts = DateTime.Now - SelectedTicket.Created;
-                if (ts.TotalMinutes % 60 < 5)
-                    CanDelete = true;
-                else
-                    CanDelete = false;
+                if (ts.TotalMinutes % 60 > 5)
+                {
+                    SelectedTicket.IsDeletable = false;
+                    await Ticket.UpdateTicket(SelectedTicket);
+                }
             }
             catch (Exception ex)
             {

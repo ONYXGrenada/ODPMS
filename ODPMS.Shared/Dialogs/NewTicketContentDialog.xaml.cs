@@ -77,6 +77,7 @@ namespace ODPMS.Dialogs
             NewTicket.User = App.LoggedInUser.Username;
             NewTicket.Updated = DateTime.Now;
             NewTicket.UpdatedBy = App.LoggedInUser.Username;
+            NewTicket.IsDeletable = true;
 
             this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
 			this.ticketDate_txtBlock.Text = NewTicket.Created.ToString("MM/dd/yyyy");

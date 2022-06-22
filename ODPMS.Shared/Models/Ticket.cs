@@ -1,4 +1,6 @@
-﻿namespace ODPMS.Models
+﻿using System.Net.Sockets;
+
+namespace ODPMS.Models
 {
     [Table("tickets")]
     public class Ticket
@@ -20,7 +22,7 @@
         public string User { get; set; }
         public DateTime? Updated { get; set; }
         public string UpdatedBy { get; set; }
-
+        public bool IsDeletable { get; set; }
 
         [Ignore]
         public static string StatusMessage { get; set; }
@@ -51,6 +53,15 @@
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
+        }
+
+        public void UpdateDeletable()
+        {
+            TimeSpan ts = DateTime.Now - Created;
+            if (ts.TotalMinutes % 60 < 5)
+                IsDeletable = true;
+            else
+                IsDeletable = false;
         }
 
         public void PayTicket(double payAmount)
