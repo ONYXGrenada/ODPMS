@@ -141,7 +141,7 @@ namespace ODPMS.ViewModels
             {
                 IsBusy = true;
                 TimeSpan ts = DateTime.Now - ticket.Created;
-                if (ts.TotalMinutes % 60 < 5)
+                if (ts.TotalMinutes <= 5)
                 {
                     ticket.IsDeletable = false;
                     ticket.Updated = DateTime.Now;
@@ -180,7 +180,7 @@ namespace ODPMS.ViewModels
 
                 // Allow ticket to be deleted if within 5 minutes
                 TimeSpan ts = DateTime.Now - SelectedTicket.Created;
-                if (ts.TotalMinutes % 60 > 5)
+                if (ts.TotalMinutes > 5)
                 {
                     SelectedTicket.IsDeletable = false;
                     await Ticket.UpdateTicket(SelectedTicket);

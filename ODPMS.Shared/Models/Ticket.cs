@@ -58,7 +58,7 @@ namespace ODPMS.Models
         public void UpdateDeletable()
         {
             TimeSpan ts = DateTime.Now - Created;
-            if (ts.TotalMinutes % 60 < 5)
+            if (ts.TotalMinutes <= 5)
                 IsDeletable = true;
             else
                 IsDeletable = false;
