@@ -51,7 +51,7 @@ namespace ODPMS.ViewModels
                     ticket.UpdateDeletable();
                     TicketList.Add(ticket);
                 }
-                else if (ticket.Type != "Hourly" && ticket.Closed >= DateTime.Now)
+                else if (ticket.Type != "Hourly" && ticket.Status != "Delete" && ticket.Closed >= DateTime.Now)
                     OtherTicketList.Add(ticket);
             }
 

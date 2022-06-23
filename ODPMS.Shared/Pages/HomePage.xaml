@@ -108,20 +108,6 @@
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
             </controls:DataGrid.Columns>
-            <!--<controls:DataGrid.RowDetailsTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Left"
-                                Spacing="8">
-                        <Button Style="{StaticResource AccentButtonStyle}"
-                                Content="Delete"
-                                Command="{Binding DeleteTicketCommand, Source={StaticResource MyHomeViewModel}}"
-                                CommandParameter="{Binding}"
-                                IsEnabled="{Binding CanDelete, Source={StaticResource MyHomeViewModel}}"
-                                MinWidth="120"/>
-                    </StackPanel>
-                </DataTemplate>
-            </controls:DataGrid.RowDetailsTemplate>-->
         </controls:DataGrid>
 
         <controls:DataGrid x:Name="otherTicketList_dataGrid"
@@ -148,6 +134,19 @@
                 <controls:DataGridTextColumn Header="Expiry Date" Binding="{Binding Closed}" />
                 <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}" />
                 <controls:DataGridTextColumn Header="User" Binding="{Binding User}" />
+                <controls:DataGridTemplateColumn Header="Actions">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="buttonDeleteTicket_btn"
+                                    ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
+                                    Content="Delete"
+                                    Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteTicketCommand, RelativeSource={RelativeSource Self}}"
+                                    CommandParameter="{Binding}"
+                                    IsEnabled="{Binding IsDeletable}"
+                                    HorizontalAlignment="Stretch"/>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 

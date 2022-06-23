@@ -5,6 +5,8 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="clr-namespace:ODPMS.Models"
     xmlns:viewmodels="using:ODPMS.ViewModels"
@@ -17,8 +19,7 @@
     </Page.Resources>
 
     <Grid Padding="56,0,0,0"
-          Margin="5"
-          DataContext="{StaticResource MySettingsViewModel}">
+          Margin="5">
         <Grid.RowDefinitions>
             <!--Section 1: User Settings -->
             <RowDefinition Height="Auto" />
