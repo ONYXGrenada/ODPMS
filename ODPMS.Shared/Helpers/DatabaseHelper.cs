@@ -39,6 +39,7 @@ namespace ODPMS.Helpers
             admin.LastName = "User";
             admin.Type = "admin";
             admin.Status = "Active";
+            admin.IsDeletable = false;
 
             var queryUser = _database.Table<User>().Where(v => v.Username == "admin");
             if (await queryUser.CountAsync() == 0)

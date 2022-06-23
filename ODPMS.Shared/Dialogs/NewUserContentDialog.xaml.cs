@@ -77,6 +77,9 @@ namespace ODPMS.Dialogs
                 NewUser.Type = userType;
                 NewUser.Status = "Active";
                 NewUser.IsReset = true;
+                NewUser.Updated = DateTime.Now;
+                NewUser.UpdatedBy = App.LoggedInUser.Username;
+                NewUser.IsDeletable = true;
                 await User.CreateUser(NewUser);
             }
         }

@@ -41,12 +41,11 @@
 
                 <SplitButton x:Name="buttonNewTicket_btn"
                              Content="New Ticket"
-                             Style="{StaticResource AccentButtonStyle}"                             
                              Command="{Binding NewTicketCommand}"
                              HorizontalAlignment="Center">
                     <SplitButton.Flyout>
                         <MenuFlyout Placement="BottomEdgeAlignedRight">
-                            <MenuFlyoutItem Text="Other Tickets" 
+                            <MenuFlyoutItem Text="Other Tickets"
                                             Command="{Binding OtherTicketsCommand}"/>
                         </MenuFlyout>
                     </SplitButton.Flyout>

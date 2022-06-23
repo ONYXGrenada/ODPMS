@@ -72,11 +72,6 @@
             
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
-                    Content="Reset Password"
-                    Command="{Binding ResetPasswordCommand}"
-                    MinWidth="160"/>
-            <Button Style="{StaticResource AccentButtonStyle}"
-                    HorizontalAlignment="Center"
                     Content="Update User"
                     Command="{Binding UpdateUserCommand}"
                     MinWidth="160"/>
@@ -117,18 +112,33 @@
                     <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" ItemsSource="{Binding UserTypes, Source={StaticResource MySettingsViewModel}}"/>
                     <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{Binding Statuses, Source={StaticResource MySettingsViewModel}}"/>
                     <controls:DataGridTextColumn Header="Last Login" Binding="{Binding LastLogin}" IsReadOnly="True"/>
+                    <controls:DataGridTemplateColumn Header="Actions">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="buttonResetUserPassword_btn"
+                                            ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
+                                            Content="Reset Password"
+                                            Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.ResetPasswordCommand, RelativeSource={RelativeSource Self}}"
+                                            CommandParameter="{Binding}"
+                                            HorizontalAlignment="Stretch"/>
+                                    <Button x:Name="buttonDeleteUser_btn"
+                                            ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
+                                            Content="Delete"
+                                            Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteUserCommand, RelativeSource={RelativeSource Self}}"
+                                            CommandParameter="{Binding}"
+                                            IsEnabled="{Binding IsDeletable}"
+                                            HorizontalAlignment="Stretch"/> 
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
             <Button Style="{StaticResource AccentButtonStyle}"
                     HorizontalAlignment="Center"
                     Content="Add User"
                     Command="{Binding AddUserCommand}"
-                    MinWidth="160"/>
-            <Button Style="{StaticResource AccentButtonStyle}"
-                    HorizontalAlignment="Center"
-                    Content="Reset Password"
-                    Command="{Binding ResetUserPasswordCommand}"
-                    IsEnabled="{Binding IsUserSelected}"
                     MinWidth="160"/>
         </StackPanel>
 
@@ -268,6 +278,19 @@
                     <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{Binding Statuses, Source={StaticResource MySettingsViewModel}}"/>
                     <controls:DataGridTextColumn Header="Last Updated" Binding="{Binding Updated}" IsReadOnly="True"/>
                     <controls:DataGridTextColumn Header="Updated By" Binding="{Binding UpdatedBy}" IsReadOnly="True"/>
+                    <controls:DataGridTemplateColumn Header="Actions">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="buttonDeleteTicket_btn"
+                                        ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
+                                        Content="Delete"
+                                        Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteTicketTypeCommand, RelativeSource={RelativeSource Self}}"
+                                        CommandParameter="{Binding}"
+                                        IsEnabled="{Binding IsDeletable}"
+                                        HorizontalAlignment="Stretch"/>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
             <StackPanel HorizontalAlignment="Center"
@@ -276,12 +299,6 @@
                         HorizontalAlignment="Center"
                         Content="Add Ticket Type"
                         Command="{Binding AddTicketTypeCommand}"
-                        MinWidth="160"/>
-                <Button Style="{StaticResource AccentButtonStyle}"
-                        HorizontalAlignment="Center"
-                        Content="Delete Ticket Type"
-                        Command="{Binding DeleteTicketTypeCommand}"
-                        IsEnabled="{Binding IsTicketTypeSelected}"
                         MinWidth="160"/>
             </StackPanel>
             <StackPanel Margin="5"

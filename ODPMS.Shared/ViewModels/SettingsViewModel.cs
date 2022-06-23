@@ -76,7 +76,7 @@ namespace ODPMS.ViewModels
             if (App.LoggedInUser.Type == "admin")
             {
                 VisibleState = Visibility.Visible;
-                var users = await User.GetAllUsers();
+                var users = await User.GetAllUsersDisplay();
 
                 if (Users.Count != 0)
                     Users.Clear();
@@ -160,7 +160,7 @@ namespace ODPMS.ViewModels
                 App.LoggedInUser.LastName = LastName;
                 await User.UpdateUser(App.LoggedInUser);
 
-                var users = await User.GetAllUsers();
+                var users = await User.GetAllUsersDisplay();
 
                 if (Users.Count != 0)
                     Users.Clear();
@@ -171,21 +171,24 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        async void ResetPassword()
+        async void ResetPassword(User user)
         {
+            if (user == null)
+                user = App.LoggedInUser;
+            
             // Display the reset password dialog
-            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog(null);
-            resetPasswordDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
-            await resetPasswordDialog.ShowAsync();
-        }
-
-        [ICommand]
-        async void ResetUserPassword()
-        {
-            // Display the reset password dialog
-            ContentDialog resetPasswordDialog = new ResetPasswordContentDialog(SelectedUser.Id);
-            resetPasswordDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
-            await resetPasswordDialog.ShowAsync();
+            if (user.Id == App.LoggedInUser.Id)
+            {
+                ContentDialog resetPasswordDialog = new ResetPasswordContentDialog(null);
+                resetPasswordDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await resetPasswordDialog.ShowAsync();
+            }
+            else
+            {
+                ContentDialog resetPasswordDialog = new ResetPasswordContentDialog(user.Id);
+                resetPasswordDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await resetPasswordDialog.ShowAsync();
+            }
         }
 
         [ICommand]
@@ -196,7 +199,7 @@ namespace ODPMS.ViewModels
             newUserDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await newUserDialog.ShowAsync();
 
-            var users = await User.GetAllUsers();
+            var users = await User.GetAllUsersDisplay();
 
             if (Users.Count != 0)
                 Users.Clear();
@@ -218,11 +221,25 @@ namespace ODPMS.ViewModels
                 LastName = App.LoggedInUser.LastName;
             }
 
-            var users = await User.GetAllUsers();
+            var users = await User.GetAllUsersDisplay();
 
             if (Users.Count != 0)
                 Users.Clear();
 
+            foreach (var user in users)
+                Users.Add(user);
+        }
+
+        [ICommand]
+        async void DeleteUser(User deletedUser)
+        {
+            await User.DeleteUser(deletedUser);
+
+            var users = await User.GetAllUsersDisplay();
+
+            if (Users.Count != 0)
+                Users.Clear();
+            
             foreach (var user in users)
                 Users.Add(user);
         }
@@ -245,9 +262,9 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        async void DeleteTicketType()
+        async void DeleteTicketType(TicketType selected)
         {
-            await TicketType.DeleteTicketType(SelectedTicketType);
+            await TicketType.DeleteTicketType(selected);
 
             var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
 

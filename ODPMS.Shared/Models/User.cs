@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -23,6 +24,9 @@ namespace ODPMS.Models
         public string Status { get; set; }
         public DateTime? LastLogin { get; set; }
         public bool IsReset { get; set; }
+        public DateTime Updated { get; set; }
+        public string UpdatedBy { get; set; }
+        public bool IsDeletable { get; set; }
 
         [Ignore]
         public static string StatusMessage { get; set; }
@@ -49,6 +53,23 @@ namespace ODPMS.Models
             }
             return new List<User>();
         }
+
+        public static async Task<List<User>> GetAllUsersDisplay()
+        {
+            try
+            {
+                //await Init();
+                var query = App.Database.Current.Table<User>().Where(v => !v.Status.Equals("Delete"));
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new List<User>();
+        }        
 
         public static async Task<User> GetUser(int id)
         {
@@ -123,6 +144,24 @@ namespace ODPMS.Models
                 StatusMessage = string.Format("Failed to add {0}. Error: {1}", user.Id, ex.Message);
             }
         }
+
+        public static async Task DeleteUser(User user)
+        {
+            int result = 0;
+            user.Status = "Delete";
+            user.Updated = DateTime.Now;
+            user.UpdatedBy = App.LoggedInUser.Username;
+            try
+            {
+                result = await App.Database.Current.UpdateAsync(user);
+
+                StatusMessage = string.Format("{0} record(s) deleted [User: {1})", result, user.Id);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to delete {0}. Error: {1}", user.Id, ex.Message);
+            }
+        }        
 
         public static async Task DeleteUser(int id)
         {
