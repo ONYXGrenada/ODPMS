@@ -13,24 +13,42 @@ using Microsoft.UI.Xaml.Navigation;
 using ODPMS.Models;
 using ODPMS.Helpers;
 using System.Globalization;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage;
 
 namespace ODPMS.Dialogs
 {
 	public sealed partial class PayTicketContentDialog : ContentDialog
 	{
         private Ticket ticket;
+        private Receipt receipt;
+        public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         private double payAmount;
         private int PayTicketNumber { get; set; }
         public PayTicketContentDialog(int PayTicketNumber)
 		{
 			this.InitializeComponent();
             this.PayTicketNumber = PayTicketNumber;
+            Init();
 		}
 
-        private async void PayTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+        //private async void PayTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+        //{
+        //    // Get ticket object from database
+        //    ticket = await Ticket.GetTicket(this.PayTicketNumber);
+
+        //    ticket.UpdateCost();
+
+        //    this.ticketNumber_txtBlock.Text = "Ticket Number: " + ticket.Id;
+        //    this.ticketStatus_txtBlock.Text = "Status: " + ticket.Status;
+        //    this.ticketStartTime_txtBlock.Text = "Start Time: " + ticket.Created;
+        //    this.ticketEndTime_txtBlock.Text = "End Time: " + ticket.Closed;
+        //    this.ticketDuration_txtBlock.Text = "Duration: " + ticket.Cost / ticket.Rate + " Hours";
+        //    this.ticketCost_txtBlock.Text = "Cost: " + ticket.Cost.ToString("C", CultureInfo.CurrentCulture);
+        //}
+
+        async void Init()
         {
-            // Get ticket object from database
-            //ticket = DatabaseHelper.FindTicket(this.PayTicketNumber);
             ticket = await Ticket.GetTicket(this.PayTicketNumber);
 
             ticket.UpdateCost();
@@ -41,7 +59,36 @@ namespace ODPMS.Dialogs
             this.ticketEndTime_txtBlock.Text = "End Time: " + ticket.Closed;
             this.ticketDuration_txtBlock.Text = "Duration: " + ticket.Cost / ticket.Rate + " Hours";
             this.ticketCost_txtBlock.Text = "Cost: " + ticket.Cost.ToString("C", CultureInfo.CurrentCulture);
+            
+            if (LocalSettings.Values["CompanyName"] != null)
+                this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
+
+            if (LocalSettings.Values["CompanyAddress"] != null)
+                this.companyAddress_txtBlock.Text = LocalSettings.Values["CompanyAddress"] as string;
+
+            if (LocalSettings.Values["CompanyEmail"] != null)
+                this.companyEmail_txtBlock.Text = LocalSettings.Values["CompanyEmail"] as string;
+
+            if (LocalSettings.Values["CompanyPhone"] != null)
+                this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
+
+            if (LocalSettings.Values["CompanyLogo"] != null)
+            {
+                string clogo = LocalSettings.Values["CompanyLogo"] as string;
+                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                {
+                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
+                }
+            }
+
+            if (LocalSettings.Values["TicketMessage"] != null)
+                this.receiptMessage_txtBlock.Text = LocalSettings.Values["ReceiptMessage"] as string;
+
+            if (LocalSettings.Values["TicketDisclaimer"] != null)
+                this.receiptDisclaimer_txtBlock.Text = LocalSettings.Values["ReceiptDisclaimer"] as string;
         }
+
         private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Pay execute the pay function to display change and update ticket in the database

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ODPMS.Models
 {
-    [Table("ticketType")]
+    [Table("ticketTypes")]
     public class TicketType
     {
         [PrimaryKey, AutoIncrement]

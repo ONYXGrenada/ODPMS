@@ -10,29 +10,143 @@
     CloseButtonText="Cancel"
     PrimaryButtonClick="PrimaryButton_Clicked"
     CloseButtonClick="CloseButton_Clicked"
-    Opened="PayTicket_Opened"
     CornerRadius="8">
+    <!--Opened="PayTicket_Opened">-->
 
-    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <!-- Content body -->
-        <TextBlock x:Name="ticketNumber_txtBlock" TextWrapping="Wrap" />
-        <TextBlock x:Name="ticketStatus_txtBlock" TextWrapping="Wrap" />
-        <TextBlock x:Name="ticketStartTime_txtBlock" TextWrapping="Wrap" />
-        <TextBlock x:Name="ticketEndTime_txtBlock" TextWrapping="Wrap" />
-        <TextBlock x:Name="ticketDuration_txtBlock" TextWrapping="Wrap" />
-        <TextBlock x:Name="ticketCost_txtBlock" TextWrapping="Wrap" />
-        <Grid Padding="20"
-              RowSpacing="10"
-              HorizontalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="Payment Amount:"/>
-            <TextBox Grid.Row="1"  x:Name="paymentAmount_txt" TextChanged="PayAmount_Changed"/>
-            <TextBlock Grid.Row="2" x:Name="changeReturned_txtBlock" />
-        </Grid>
+    <Grid ColumnDefinitions="220,Auto"
+          ColumnSpacing="8">
         
-    </StackPanel>
+        <StackPanel VerticalAlignment="Stretch" 
+                    HorizontalAlignment="Stretch">
+            <!-- Content body -->
+            <TextBlock x:Name="ticketNumber_txtBlock" TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketStatus_txtBlock" TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketStartTime_txtBlock" TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketEndTime_txtBlock" TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketDuration_txtBlock" TextWrapping="Wrap" />
+            <TextBlock x:Name="ticketCost_txtBlock" TextWrapping="Wrap" />
+            <Grid Padding="20"
+                  RowSpacing="10"
+                  HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Payment Amount:"/>
+                <TextBox Grid.Row="1"  x:Name="paymentAmount_txt" TextChanged="PayAmount_Changed"/>
+                <TextBlock Grid.Row="2" 
+                           x:Name="changeReturned_txtBlock"
+                           TextWrapping="Wrap"/>
+            </Grid>
+        
+        </StackPanel>
+
+        <StackPanel x:Name="receiptTemplate_sp"
+                    Grid.Column="1"
+                    MaxWidth="280"
+                    MinWidth="280"
+                    Padding="8,8"
+                    Background="White">
+            <StackPanel x:Name="receiptHeader_sp">
+                <Image x:Name="companyLogo_img"
+                       Width="180"
+                       Height="180"
+                       HorizontalAlignment="Center"/>
+                <TextBlock x:Name="companyName_txtBlock" 
+                           Text="Generic Company Ltd."
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           Foreground="Black"
+                           HorizontalAlignment="Center"/>
+                <TextBlock x:Name="companyAddress_txtBlock" 
+                           Text="St. George, Grenada"
+                           FontSize="12"
+                           Foreground="Black"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+                <TextBlock x:Name="companyEmail_txtBlock" 
+                           Text="email: info@genericcompany.com"
+                           FontSize="12"
+                           Foreground="Black"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+                <TextBlock x:Name="companyPhone_txtBlock" 
+                           Text="Phone: 473 440-1234"
+                           FontSize="12"
+                           Foreground="Black"
+                           TextWrapping="NoWrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+            </StackPanel>
+            <Grid x:Name="ticketBody_grid"
+                  RowDefinitions="*,*,*,*"
+                  ColumnDefinitions="*,*">
+                <TextBlock Text="Receipt Number:"
+                       Grid.Column="0"
+                       TextWrapping="Wrap"
+                       FontSize="16"
+                       Foreground="Black"
+                       HorizontalAlignment="Left"
+                       Margin="0,12,0,0"/>
+                <TextBlock x:Name="receiptNumber_txtBlock" 
+                       Grid.Column="1"
+                       TextWrapping="NoWrap"
+                       FontSize="16"
+                       Foreground="Black"
+                       HorizontalAlignment="Right"
+                       Margin="0,12,0,0"/>
+                <TextBlock Text="Receipt Date:"
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       TextWrapping="Wrap"
+                       FontSize="16"
+                       Foreground="Black"
+                       HorizontalAlignment="Left"
+                       Margin="0,0,0,0"/>
+                <TextBlock x:Name="receiptDate_txtBlock" 
+                       Grid.Column="1"
+                       Grid.Row="1"
+                       TextWrapping="NoWrap"
+                       FontSize="16"
+                       Foreground="Black"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,0,0"/>
+                <TextBlock Text="Receipt Time:"
+                       Grid.Column="0"
+                       Grid.Row="2"
+                       TextWrapping="Wrap"
+                       FontSize="16"
+                       Foreground="Black"
+                       HorizontalAlignment="Left"
+                       Margin="0,0,0,0"/>
+                <TextBlock x:Name="receiptTime_txtBlock" 
+                       Grid.Column="1"
+                       Grid.Row="2"
+                       TextWrapping="NoWrap"
+                       FontSize="16"
+                       Foreground="Black"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,0,0"/>
+            </Grid>
+            <StackPanel x:Name="receiptFooter_sp">
+                <TextBlock x:Name="receiptMessage_txtBlock"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       FontSize="12"
+                       Foreground="Black"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,0"/>
+                <TextBlock x:Name="receiptDisclaimer_txtBlock"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       FontSize="12"
+                       Foreground="Black"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </ContentDialog>
