@@ -29,7 +29,7 @@ namespace ODPMS.Models
         {
             try
             {
-                //await Init();
+                await App.Database.Init();
                 var query = App.Database.Current.Table<Receipt>();
                 StatusMessage = string.Format("{0} record(s) found in the receipt table)", await query.CountAsync());
 
@@ -46,7 +46,7 @@ namespace ODPMS.Models
         {
             try
             {
-                //await Init();
+                await App.Database.Init();
                 var query = App.Database.Current.Table<Receipt>().Where(v => v.Status.Equals(status));
                 StatusMessage = string.Format("{0} record(s) found in the receipt table)", await query.CountAsync());
 
@@ -63,6 +63,7 @@ namespace ODPMS.Models
         {
             try
             {
+                await App.Database.Init();
                 AsyncTableQuery<Receipt> query;
                 if (status == "All")
                     query = App.Database.Current.Table<Receipt>().Where(v => v.Created >= fromDate &&
@@ -87,7 +88,7 @@ namespace ODPMS.Models
         {
             try
             {
-                //await Init();
+                await App.Database.Init();
                 var query = await App.Database.Current.GetAsync<Receipt>(id);
                 StatusMessage = string.Format("{0} record(s) found in the receipt table)", query);
 
@@ -105,6 +106,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
+                await App.Database.Init();
                 result = await App.Database.Current.UpdateAsync(receipt);
                 StatusMessage = string.Format("{0} record(s) found in the receipt table)", result);
             }
@@ -119,7 +121,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
-                //await App.Database.Init();
+                await App.Database.Init();
                 result = await App.Database.Current.InsertAsync(receipt);
 
                 StatusMessage = string.Format("{0} record(s) added [Receipt: {1})", result, receipt.Id);
@@ -135,6 +137,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
+                await App.Database.Init();
                 result = await App.Database.Current.DeleteAsync<Receipt>(id);
 
                 StatusMessage = string.Format("{0} record(s) deleted [Receipt: {1})", result, id);

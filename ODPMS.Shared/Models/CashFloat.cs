@@ -24,7 +24,7 @@ namespace ODPMS.Models
         {
             try
             {
-                //await Init();
+                await App.Database.Init();
                 var query = App.Database.Current.Table<CashFloat>();
                 StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
 
@@ -41,7 +41,7 @@ namespace ODPMS.Models
         {
             try
             {
-                //await Init();
+                await App.Database.Init();
                 var query = await App.Database.Current.GetAsync<CashFloat>(id);
                 StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
 
@@ -59,6 +59,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
+                await App.Database.Init();
                 result = await App.Database.Current.UpdateAsync(cashFloat);
                 StatusMessage = string.Format("{0} record(s) found in the ticket table)", result);
             }
@@ -73,7 +74,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
-                //await App.Database.Init();
+                await App.Database.Init();
                 result = await App.Database.Current.InsertAsync(cashFloat);
 
                 StatusMessage = string.Format("{0} record(s) added [Ticket: {1})", result, cashFloat.Id);
@@ -89,6 +90,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
+                await App.Database.Init();
                 result = await App.Database.Current.DeleteAsync<CashFloat>(id);
 
                 StatusMessage = string.Format("{0} record(s) deleted [Ticket: {1})", result, id);

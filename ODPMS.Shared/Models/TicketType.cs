@@ -50,8 +50,7 @@ namespace ODPMS.Models
         {
             try
             {
-                //await Init();
-                //return await conn.Table<Ticket>().ToListAsync();
+                await App.Database.Init();
                 var query = App.Database.Current.Table<TicketType>();
                 StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
 
@@ -68,6 +67,7 @@ namespace ODPMS.Models
         {
             try
             {
+                await App.Database.Init();
                 var query = App.Database.Current.Table<TicketType>().Where(v => !v.Status.Equals("Delete"));
                 StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
 
@@ -84,6 +84,7 @@ namespace ODPMS.Models
         {
             try
             {
+                await App.Database.Init();
                 var query = App.Database.Current.Table<TicketType>().Where(v => v.Status.Equals(status));
                 StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
 
@@ -100,8 +101,7 @@ namespace ODPMS.Models
         {
             try
             {
-                //await Init();
-                //return await conn.Table<Ticket>().ToListAsync();
+                await App.Database.Init();
                 var query = await App.Database.Current.GetAsync<TicketType>(id);
                 StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
 
@@ -121,6 +121,7 @@ namespace ODPMS.Models
             ticketType.UpdatedBy = App.LoggedInUser.Username;
             try
             {
+                await App.Database.Init();
                 result = await App.Database.Current.UpdateAsync(ticketType);
                 StatusMessage = string.Format("{0} record(s) found in the ticket type table)", result);
             }
@@ -135,7 +136,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
-                //await App.Database.Init();
+                await App.Database.Init();
                 result = await App.Database.Current.InsertAsync(ticketType);
 
                 StatusMessage = string.Format("{0} record(s) added [Ticket: {1})", result, ticketType.Id);
@@ -154,6 +155,7 @@ namespace ODPMS.Models
             ticketType.UpdatedBy = App.LoggedInUser.Username;
             try
             {
+                await App.Database.Init();
                 result = await App.Database.Current.UpdateAsync(ticketType);
                 StatusMessage = string.Format("{0} record(s) found in the ticket type table)", result);
             }
@@ -168,6 +170,7 @@ namespace ODPMS.Models
             int result = 0;
             try
             {
+                await App.Database.Init();
                 result = await App.Database.Current.DeleteAsync<TicketType>(id);
 
                 StatusMessage = string.Format("{0} record(s) deleted [Ticket: {1})", result, id);

@@ -18,7 +18,7 @@ namespace ODPMS
         private static string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
             "Onyx Digital", "OPMS", "Data");
 
-        private static DatabaseHelper _database;
+        private static DatabaseHelper database;
         public static DatabaseHelper Database
         {
             get
@@ -27,11 +27,11 @@ namespace ODPMS
                 {
                     Directory.CreateDirectory(dbPath);
                 }
-                if (_database == null)
+                if (database == null)
                 {
-                    _database = new DatabaseHelper(Path.Combine(dbPath, "odpms_data.db3"));
+                    database = new DatabaseHelper(Path.Combine(dbPath, "odpms_data.db3"));
                 }
-                return _database;
+                return database;
             }
         }
         /// <summary>
@@ -43,8 +43,6 @@ namespace ODPMS
             InitializeLogging();
 
             this.InitializeComponent();
-            Database.Init();
-            //DatabaseHelper.InitializeDatabase();
 
 #if HAS_UNO || NETFX_CORE
             this.Suspending += OnSuspending;

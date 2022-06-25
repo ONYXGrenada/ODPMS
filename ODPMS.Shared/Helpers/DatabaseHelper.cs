@@ -13,8 +13,8 @@ namespace ODPMS.Helpers
         {
             _databasePath = dbPath;
         }
-
-        public async void Init()
+        
+        public async Task Init()
         {
             Type[] tables = {
                 typeof(Ticket),
