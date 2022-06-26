@@ -9,76 +9,66 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid RowDefinitions="Auto,Auto">
 
-        <Grid HorizontalAlignment="Stretch"
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto"
+              ColumnSpacing="16"
               Padding="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal"
-                        Spacing="10">
+            <StackPanel Spacing="8">
                 <CalendarDatePicker x:Name="fromDate_pkr"
                                     Date="{Binding FromDate, Mode=TwoWay}"
                                     Header="From Date:"
-                                    VerticalAlignment="Bottom"/>
+                                    HorizontalAlignment="Stretch"/>
                 <TimePicker x:Name="fromTime_pkr"
                             Time="{Binding FromTime, Mode=TwoWay}"
-                            VerticalAlignment="Bottom"/>
+                            HorizontalAlignment="Stretch"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1"
-                        Orientation="Horizontal"
-                        Spacing="10">
+                        Spacing="8">
                 <CalendarDatePicker x:Name="toDate_pkr" 
                                     Date="{Binding ToDate, Mode=TwoWay}"
                                     Header="To Date:"
-                                    VerticalAlignment="Bottom"/>
+                                    HorizontalAlignment="Stretch"/>
                 <TimePicker x:Name="toTime_pkr"
                             Time="{Binding ToTime, Mode=TwoWay}"
-                            VerticalAlignment="Bottom">
-                </TimePicker>
+                            HorizontalAlignment="Stretch"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="2" 
-                        Orientation="Horizontal"
-                        Spacing="10">
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Column="2" 
+                        Spacing="8">
                 <ComboBox x:Name="status_cbox"
                           SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
-                          Header="Status:">
+                          Header="Status:"
+                          HorizontalAlignment="Stretch">
                     <ComboBoxItem Name="All" Content="All" IsSelected="True"/>
                     <ComboBoxItem Name="Closed" Content="Closed"/>
                     <ComboBoxItem Name="Open" Content="Open"/>
                     <ComboBoxItem Name="Paid" Content="Paid"/>
                 </ComboBox>
-                <Button Content="Submit"
+                <Button Margin="0,-10,0,0"
+                        Content="Submit"
                         Command="{Binding ReportSubmitCommand}"
                         Style="{StaticResource AccentButtonStyle}"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Right"/>
+                        HorizontalAlignment="Stretch"/>
             </StackPanel>
 
-            <Button Grid.Column="3"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Right"
-                    Content="Export"
-                    Command="{Binding ReportExportCommand}"
-                    IsEnabled="{Binding IsNotEmpty}"
-                    Style="{StaticResource AccentButtonStyle}"/>
+            <StackPanel Grid.Column="3" 
+                        Spacing="8">
+                <TextBlock Text="Export:"
+                           HorizontalAlignment="Stretch"/>
+                <Button HorizontalAlignment="Stretch"
+                        Content="Export"
+                        Command="{Binding ReportExportCommand}"
+                        IsEnabled="{Binding IsNotEmpty}"
+                        Style="{StaticResource AccentButtonStyle}"/>
+            </StackPanel>
         </Grid>
 
         <controls:DataGrid x:Name="ticketList_dataGrid"
-                           Grid.Row="3"
+                           Grid.Row="1"
                            AutoGenerateColumns="True"
                            IsReadOnly="True"
                            ItemsSource="{Binding TicketList}"/>
