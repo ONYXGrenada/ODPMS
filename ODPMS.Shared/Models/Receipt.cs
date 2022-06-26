@@ -14,9 +14,9 @@ namespace ODPMS.Models
         public string TicketType { get; set; }
         public DateTime Created { get; set; }
         public string Status { get; set; }  
-        public float Cost { get; set; }
-        public float Paid { get; set; }
-        public float Balance { get; set; }
+        public double Cost { get; set; }
+        public double Paid { get; set; }
+        public double Balance { get; set; }
         public string PaymentMethod { get; set; }
         public string ChequeNumber { get; set; }
         public string User { get; set; }

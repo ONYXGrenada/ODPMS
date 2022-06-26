@@ -49,9 +49,23 @@ namespace ODPMS.Dialogs
 
         async void Init()
         {
+            // Get Ticket
             ticket = await Ticket.GetTicket(this.PayTicketNumber);
-
             ticket.UpdateCost();
+
+            var receipts = await Receipt.GetAllReceipts();
+
+            // New Receipt
+            receipt = new();
+            if (receipts.Count == 0)
+                receipt.Id = 1;
+            else
+                receipt.Id = receipts.Select(x => x.Id).Max() + 1;
+            receipt.TicketNumber = ticket.Id;
+            receipt.TicketType = ticket.Type;
+            receipt.Created = DateTime.Now;
+            receipt.Cost = ticket.Cost;
+            receipt.User = App.LoggedInUser.Username;
 
             this.ticketNumber_txtBlock.Text = "Ticket Number: " + ticket.Id;
             this.ticketStatus_txtBlock.Text = "Status: " + ticket.Status;
@@ -60,6 +74,14 @@ namespace ODPMS.Dialogs
             this.ticketDuration_txtBlock.Text = "Duration: " + ticket.Cost / ticket.Rate + " Hours";
             this.ticketCost_txtBlock.Text = "Cost: " + ticket.Cost.ToString("C", CultureInfo.CurrentCulture);
             
+            this.receiptNumber_txtBlock.Text = receipt.Id.ToString();
+            this.receiptDate_txtBlock.Text = receipt.Created.ToString("MM/dd/yyyy");
+            this.receiptTime_txtBlock.Text = receipt.Created.ToString("T");
+            this.ticketNumberReceipt_txtBlock.Text = receipt.TicketNumber.ToString();
+            this.receiptCost_txtBlock.Text = receipt.Cost.ToString("C", CultureInfo.CurrentCulture);
+            this.receiptPaid_txtBlock.Text = receipt.Paid.ToString("C", CultureInfo.CurrentCulture);
+            this.receiptBalance_txtBlock.Text = receipt.Balance.ToString("C", CultureInfo.CurrentCulture);
+
             if (LocalSettings.Values["CompanyName"] != null)
                 this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
 
@@ -82,10 +104,10 @@ namespace ODPMS.Dialogs
                 }
             }
 
-            if (LocalSettings.Values["TicketMessage"] != null)
+            if (LocalSettings.Values["ReceiptMessage"] != null)
                 this.receiptMessage_txtBlock.Text = LocalSettings.Values["ReceiptMessage"] as string;
 
-            if (LocalSettings.Values["TicketDisclaimer"] != null)
+            if (LocalSettings.Values["ReceiptDisclaimer"] != null)
                 this.receiptDisclaimer_txtBlock.Text = LocalSettings.Values["ReceiptDisclaimer"] as string;
         }
 
@@ -102,6 +124,7 @@ namespace ODPMS.Dialogs
             }
             ticket.PayTicket(payAmount);
             await Ticket.UpdateTicket(ticket);
+            await Receipt.CreateReceipt(receipt);
             //DatabaseHelper.PayTicket(ticket);
         }
 
@@ -124,10 +147,18 @@ namespace ODPMS.Dialogs
             if (change > 0)
             {
                 this.changeReturned_txtBlock.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
+                this.receipt.Paid = payAmount;
+                this.receipt.Balance = change;
+                this.receiptPaid_txtBlock.Text = receipt.Paid.ToString("C", CultureInfo.CurrentCulture);
+                this.receiptBalance_txtBlock.Text = receipt.Balance.ToString("C", CultureInfo.CurrentCulture);
             }
             else
             {
                 this.changeReturned_txtBlock.Text = string.Format("Please return {0} to the customer", (change*-1).ToString("C", CultureInfo.CurrentCulture));
+                this.receipt.Paid = payAmount;
+                this.receipt.Balance = change;
+                this.receiptPaid_txtBlock.Text = receipt.Paid.ToString("C", CultureInfo.CurrentCulture);
+                this.receiptBalance_txtBlock.Text = receipt.Balance.ToString("C", CultureInfo.CurrentCulture);
             }
         }
     }

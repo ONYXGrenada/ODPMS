@@ -19,6 +19,10 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage;
+using BarcodeLib;
+using Windows.Storage.Streams;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,6 +33,7 @@ namespace ODPMS.Dialogs
         ObservableCollection<TicketType> TicketTypesList = new ObservableCollection<TicketType>();
         private Ticket NewTicket;
         private TicketType NewTicketType;
+        public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         private double payAmount;
         private int PayTicketNumber { get; set; }
         
@@ -41,6 +46,7 @@ namespace ODPMS.Dialogs
 
         async void Init()
         {
+            // Get ticket types
             var ticketTypes = await TicketType.GetTicketTypesByStatus("Active");
 
             if (TicketTypesList.Count != 0)
@@ -55,6 +61,57 @@ namespace ODPMS.Dialogs
 
             this.ticketType_cb.SelectedIndex = 0;
             this.ticketType_cb.SelectionChanged += ticketType_cb_SelectionChanged;
+
+            // Create new ticket object
+            var tickets = await Ticket.GetAllTickets();
+
+            NewTicket = new();
+            if (tickets.Count == 0)
+                NewTicket.Id = 1;
+            else
+                NewTicket.Id = tickets.Select(x => x.Id).Max() + 1;
+
+            NewTicket.Created = DateTime.Now;
+            NewTicket.Status = "Open";
+            NewTicket.User = App.LoggedInUser.Username;
+            NewTicket.Updated = DateTime.Now;
+            NewTicket.UpdatedBy = App.LoggedInUser.Username;
+            NewTicket.IsDeletable = true;
+
+
+            // Set field values
+            if (LocalSettings.Values["CompanyName"] != null)
+                this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
+
+            if (LocalSettings.Values["CompanyAddress"] != null)
+                this.companyAddress_txtBlock.Text = LocalSettings.Values["CompanyAddress"] as string;
+
+            if (LocalSettings.Values["CompanyEmail"] != null)
+                this.companyEmail_txtBlock.Text = LocalSettings.Values["CompanyEmail"] as string;
+
+            if (LocalSettings.Values["CompanyPhone"] != null)
+                this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
+
+            if (LocalSettings.Values["CompanyLogo"] != null)
+            {
+                string clogo = LocalSettings.Values["CompanyLogo"] as string;
+                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                {
+                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
+                }
+            }
+
+            if (LocalSettings.Values["TicketMessage"] != null)
+                this.ticketMessage_txtBlock.Text = LocalSettings.Values["TicketMessage"] as string;
+
+            if (LocalSettings.Values["TicketDisclaimer"] != null)
+                this.ticketDisclaimer_txtBlock.Text = LocalSettings.Values["TicketDisclaimer"] as string;
+
+            this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
+            this.ticketDate_txtBlock.Text = NewTicket.Created.ToString("MM/dd/yyyy");
+            this.ticketTime_txtBlock.Text = NewTicket.Created.ToString("T");
+            generateBarCode(NewTicket.Id.ToString());
         }
 
         private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -70,28 +127,28 @@ namespace ODPMS.Dialogs
             Double.TryParse(this.paymentAmount_txt.Text, out payAmount);
             int customerId = 0;
 
-            var tickets = await Ticket.GetAllTickets();
+            //var tickets = await Ticket.GetAllTickets();
 
-            NewTicket = new();
-            if (tickets.Count == 0)
-                NewTicket.Id = 1;
-            else
-                NewTicket.Id = tickets.Select(x => x.Id).Max() + 1;
+            //NewTicket = new();
+            //if (tickets.Count == 0)
+            //    NewTicket.Id = 1;
+            //else
+            //    NewTicket.Id = tickets.Select(x => x.Id).Max() + 1;
 
             NewTicket.Type = NewTicketType.Type;
             NewTicket.Description = NewTicketType.Description;
-            NewTicket.Created = DateTime.Now;
-            NewTicket.Status = "Open";
+            //NewTicket.Created = DateTime.Now;
+            //NewTicket.Status = "Open";
             NewTicket.CustomerId = customerId;
             NewTicket.Registration = registration;
             NewTicket.Period = NewTicketType.Period;
             NewTicket.Rate = NewTicketType.Rate;
             NewTicket.Cost = NewTicketType.Rate;
             NewTicket.Balance = NewTicketType.Rate;
-            NewTicket.User = App.LoggedInUser.Username;
-            NewTicket.Updated = DateTime.Now;
-            NewTicket.UpdatedBy = App.LoggedInUser.Username;
-            NewTicket.IsDeletable = true;
+            //NewTicket.User = App.LoggedInUser.Username;
+            //NewTicket.Updated = DateTime.Now;
+            //NewTicket.UpdatedBy = App.LoggedInUser.Username;
+            //NewTicket.IsDeletable = true;
 
             NewTicket.UpdateClosed();
 
@@ -160,9 +217,27 @@ namespace ODPMS.Dialogs
             }                
         }
 
-        private void vehicleNum_txt_LostFocus(object sender, RoutedEventArgs e)
+        public async void generateBarCode(String ticketNumber)
         {
+            //Create barcode
+            Barcode barcode = new Barcode();
+            await ApplicationData.Current.LocalFolder.CreateFileAsync("ticket" + ticketNumber + ".jpg", CreationCollisionOption.OpenIfExists);
+            string filePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "ticket" + ticketNumber + ".jpg");
+            //barcode.IncludeLabel = true;
+            barcode.Encode(TYPE.CODE93, ticketNumber, 200, 100);
+            barcode.SaveImage(filePath, SaveTypes.JPG);
 
+
+            //Place barcode on ticket
+
+            var barcodePath = await ApplicationData.Current.LocalFolder.GetFileAsync("ticket" + ticketNumber + ".jpg");
+            using (IRandomAccessStream fileStream = await barcodePath.OpenAsync(Windows.Storage.FileAccessMode.Read))
+            {
+                BitmapImage image = new BitmapImage();
+                image.SetSource(fileStream);
+
+                this.ticketBarCode_img.Source = image;
+            }
         }
     }
 }

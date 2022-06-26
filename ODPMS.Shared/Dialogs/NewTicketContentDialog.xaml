@@ -15,7 +15,8 @@
 
 
     <StackPanel x:Name="ticketTemplate_sp"
-                MaxWidth="320"
+                MaxWidth="280"
+                MinWidth="280"
                 Padding="8,8"
                 Background="White">
         <StackPanel x:Name="ticketHeader_sp">
