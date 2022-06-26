@@ -44,10 +44,10 @@ namespace ODPMS.ViewModels
 
             foreach (var ticket in tickets)
             {
+                ticket.UpdateDeletable();
                 if (ticket.Type == "Hourly" && ticket.Status == "Open")
                 {
                     ticket.UpdateCost();
-                    ticket.UpdateDeletable();
                     TicketList.Add(ticket);
                 }
                 else if (ticket.Type != "Hourly" && ticket.Status != "Delete" && ticket.Closed >= DateTime.Now)
