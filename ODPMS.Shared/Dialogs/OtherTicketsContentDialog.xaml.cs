@@ -207,7 +207,7 @@ namespace ODPMS.Dialogs
                     string fromDate = DateTime.Now.ToString("d MMMM, yyyy");
                     string toDate = ticketType.GetEndDate().ToString("d MMMM, yyyy");
                     
-                    this.typeCost_txt.Text = ticketType.Rate.ToString();
+                    this.typeCost_txt.Text = ticketType.Rate.ToString("C", CultureInfo.CurrentCulture);
                     this.vehicleNum_txt.IsReadOnly = false;
                     this.paymentAmount_txt.IsReadOnly = false;
 
