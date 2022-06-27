@@ -14,7 +14,13 @@ namespace ODPMS.ViewModels
         
         [ObservableProperty]
         string ticketNumber;
-        
+
+        [ObservableProperty]
+        string dailyTicketsHeader;
+
+        [ObservableProperty]
+        string otherTicketsHeader;
+
         [ObservableProperty]
         Ticket selectedTicket;
 
@@ -63,6 +69,9 @@ namespace ODPMS.ViewModels
                 VisibleOtherTicketList = Visibility.Visible;
             else
                 VisibleOtherTicketList = Visibility.Collapsed;
+
+            DailyTicketsHeader = String.Format("Daily Tickets ({0})", TicketList.Count);
+            OtherTicketsHeader = String.Format("Other Tickets ({0})", OtherTicketList.Count);
 
             WelcomeMessage = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
         }

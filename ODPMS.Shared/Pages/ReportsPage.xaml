@@ -53,7 +53,7 @@
                     </ComboBox.ItemTemplate>
                     <i:Interaction.Behaviors>
                         <ic:EventTriggerBehavior EventName="SelectionChanged">
-                            <ic:InvokeCommandAction Command="{Binding SelectedReport_Changed}"/>
+                            <ic:InvokeCommandAction Command="{Binding SelectedReport_ChangedCommand}" />
                         </ic:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </ComboBox>                
@@ -61,6 +61,7 @@
                 <ComboBox x:Name="status_cbox"
                           ItemsSource="{Binding StatusList}"                           
                           SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
+                          IsEnabled="{Binding StatusIsEnabled}"
                           Header="Status:"
                           HorizontalAlignment="Stretch">
                     <ComboBox.ItemTemplate>
@@ -84,9 +85,6 @@
                         Command="{Binding ReportSubmitCommand}"
                         Style="{StaticResource AccentButtonStyle}"
                         HorizontalAlignment="Stretch"/>
-
-               
-
             </StackPanel>
 
             <StackPanel Grid.Column="3" 
@@ -98,7 +96,6 @@
                         Command="{Binding ReportExportCommand}"
                         IsEnabled="{Binding IsNotEmpty}"
                         Style="{StaticResource AccentButtonStyle}"/>
-                <TextBlock Text="{Binding SelectedStatus.Name}" />
             </StackPanel>
         </Grid>
 

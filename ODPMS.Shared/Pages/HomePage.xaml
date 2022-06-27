@@ -71,7 +71,7 @@
             </StackPanel>
         </Grid>
 
-        <Expander Header="Daily Tickets"
+        <Expander Header="{Binding DailyTicketsHeader}"
                   Grid.Row="2"
                   IsExpanded="True"
                   HorizontalAlignment="Stretch">
@@ -151,7 +151,7 @@
             </controls:DataGrid.Columns>
         </controls:DataGrid>-->
 
-        <Expander Header="Other Tickets"
+        <Expander Header="{Binding OtherTicketsHeader}"
                   Grid.Row="3"
                   IsExpanded="True"
                   HorizontalAlignment="Stretch">

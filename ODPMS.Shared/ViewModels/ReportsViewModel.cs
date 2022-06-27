@@ -39,6 +39,9 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         Visibility visibleReceiptList;
 
+        [ObservableProperty]
+        bool statusIsEnabled;
+
         public ReportsViewModel()
         {
             Title = "Reports";
@@ -57,13 +60,15 @@ namespace ODPMS.ViewModels
             SelectedReport = ReportTypeList[0];
 
             StatusList.Add(new ComboBoxItem() { Name = "All", Content = "All" });
-            StatusList.Add(new ComboBoxItem() { Name = "Active", Content = "Active" });
-            StatusList.Add(new ComboBoxItem() { Name = "Closed", Content = "Closed" });
-            StatusList.Add(new ComboBoxItem() { Name = "Paid", Content = "Paid" });
+            StatusList.Add(new ComboBoxItem() { Name = "Active", Content = "Active"});
+            StatusList.Add(new ComboBoxItem() { Name = "Closed", Content = "Closed"});
+            StatusList.Add(new ComboBoxItem() { Name = "Paid", Content = "Paid"});
             SelectedStatus = StatusList[0];
 
             VisibleTicketList = Visibility.Collapsed;
             VisibleReceiptList = Visibility.Collapsed;
+
+            StatusIsEnabled = false;
         }
 
         [ICommand]
@@ -120,16 +125,6 @@ namespace ODPMS.ViewModels
                 VisibleTicketList = Visibility.Collapsed;
                 VisibleReceiptList = Visibility.Visible;
             }
-
-
-            //if (TicketList.Count != 0)
-            //    TicketList.Clear();
-
-            //foreach (var ticket in tickets)
-            //    TicketList.Add(ticket);
-
-            //if (TicketList.Count > 0)
-            //    IsNotEmpty = true;
         }
 
         [ICommand]
@@ -149,8 +144,6 @@ namespace ODPMS.ViewModels
                 suggFileName = "Receipt Report";
                 ExportListStr.Add("Id,TicketNumber,TicketType,Created,Status,Cost,Paid,Balance,PaymentMethod,ChequeNumber,User");
             }
-                
-
 
             FileSavePicker picker = new();
             picker.SuggestedStartLocation = PickerLocationId.Downloads;
@@ -178,7 +171,6 @@ namespace ODPMS.ViewModels
                         ExportListStr.Add(receipt.ToCsv());
 
                 await FileIO.WriteLinesAsync(saveFile, ExportListStr);
-
             }
             else
             {
@@ -187,9 +179,18 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        private void SelectedReport_Changed()
+        public void SelectedReport_Changed()
         {
-            SelectedStatus = StatusList[0];
+            if (SelectedReport.Name == "Receipts")
+            {
+                SelectedStatus = StatusList[0];
+                StatusIsEnabled = false;
+            }
+
+            else if (SelectedReport.Name == "Tickets")
+            {
+                StatusIsEnabled = true;
+            }
         }
     }
 }
