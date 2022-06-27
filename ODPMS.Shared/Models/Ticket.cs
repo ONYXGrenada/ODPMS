@@ -34,9 +34,8 @@ namespace ODPMS.Models
 
         public string ToCsv()
         {
-            return Id.ToString() + "," + Type + "," + Description + "," + Created + "," + Closed.ToString() + "," + Status +
-                "," + CustomerId.ToString() + "," + Registration + Period.ToString() + "," + "," + Rate.ToString() + "," + Cost.ToString() + "," + PayAmount.ToString() + "," + 
-                Balance.ToString() + "," + User;
+            return Id + "," + Type + "," + Description + "," + Created + "," + Closed + "," + Status + "," + CustomerId + "," + 
+                Registration + "," + Period + "," + Rate + "," + Cost + "," + PayAmount + "," + Balance + "," + User + "," + Updated + "," + UpdatedBy;
         }
 
         public void UpdateCost()

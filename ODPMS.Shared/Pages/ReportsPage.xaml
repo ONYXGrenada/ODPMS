@@ -3,6 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:ODPMS.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -39,7 +41,36 @@
             <StackPanel Orientation="Horizontal" 
                         Grid.Column="2" 
                         Spacing="8">
+                <ComboBox x:Name="report_cbox"
+                          ItemsSource="{Binding ReportTypeList}"                           
+                          SelectedItem="{Binding SelectedReport, Mode=TwoWay}"
+                          Header="Type:"
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <i:Interaction.Behaviors>
+                        <ic:EventTriggerBehavior EventName="SelectionChanged">
+                            <ic:InvokeCommandAction Command="{Binding SelectedReport_Changed}"/>
+                        </ic:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </ComboBox>                
+
                 <ComboBox x:Name="status_cbox"
+                          ItemsSource="{Binding StatusList}"                           
+                          SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
+                          Header="Status:"
+                          HorizontalAlignment="Stretch">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <!--<ComboBox x:Name="status_cbox"
                           SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
                           Header="Status:"
                           HorizontalAlignment="Stretch">
@@ -47,12 +78,15 @@
                     <ComboBoxItem Name="Closed" Content="Closed"/>
                     <ComboBoxItem Name="Open" Content="Open"/>
                     <ComboBoxItem Name="Paid" Content="Paid"/>
-                </ComboBox>
+                </ComboBox>-->
                 <Button Margin="0,-10,0,0"
                         Content="Submit"
                         Command="{Binding ReportSubmitCommand}"
                         Style="{StaticResource AccentButtonStyle}"
                         HorizontalAlignment="Stretch"/>
+
+               
+
             </StackPanel>
 
             <StackPanel Grid.Column="3" 
@@ -64,6 +98,7 @@
                         Command="{Binding ReportExportCommand}"
                         IsEnabled="{Binding IsNotEmpty}"
                         Style="{StaticResource AccentButtonStyle}"/>
+                <TextBlock Text="{Binding SelectedStatus.Name}" />
             </StackPanel>
         </Grid>
 
@@ -71,6 +106,14 @@
                            Grid.Row="1"
                            AutoGenerateColumns="True"
                            IsReadOnly="True"
-                           ItemsSource="{Binding TicketList}"/>
+                           ItemsSource="{Binding TicketList}"
+                           Visibility="{Binding VisibleTicketList}"/>
+        <controls:DataGrid x:Name="receiptList_dataGrid"
+                           Grid.Row="1"
+                           AutoGenerateColumns="True"
+                           IsReadOnly="True"
+                           ItemsSource="{Binding ReceiptList}"
+                           Visibility="{Binding VisibleReceiptList}"/>
+        
     </Grid>
 </Page>

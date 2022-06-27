@@ -11,6 +11,9 @@ namespace ODPMS.ViewModels
         bool isNotEmpty;
 
         public ObservableCollection<Ticket> TicketList { get; } = new();
+        public ObservableCollection<Receipt> ReceiptList { get; } = new();
+        public ObservableCollection<ComboBoxItem> StatusList { get; } = new();
+        public ObservableCollection<ComboBoxItem> ReportTypeList { get; } = new();
 
         [ObservableProperty]
         System.Nullable<DateTimeOffset> fromDate;
@@ -27,6 +30,15 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         ComboBoxItem selectedStatus;
 
+        [ObservableProperty]
+        ComboBoxItem selectedReport;
+
+        [ObservableProperty]
+        Visibility visibleTicketList;
+
+        [ObservableProperty]
+        Visibility visibleReceiptList;
+
         public ReportsViewModel()
         {
             Title = "Reports";
@@ -39,7 +51,19 @@ namespace ODPMS.ViewModels
             ToDate = DateTime.Now;
             FromTime = new TimeSpan(0, 0, 0, 0);
             ToTime = new TimeSpan(0, 23, 59, 59);
-            SelectedStatus = new ComboBoxItem() { Name = "All", Content = "All" };
+
+            ReportTypeList.Add(new ComboBoxItem() { Name = "Receipts", Content = "Receipts" });
+            ReportTypeList.Add(new ComboBoxItem() { Name = "Tickets", Content = "Tickets" });
+            SelectedReport = ReportTypeList[0];
+
+            StatusList.Add(new ComboBoxItem() { Name = "All", Content = "All" });
+            StatusList.Add(new ComboBoxItem() { Name = "Active", Content = "Active" });
+            StatusList.Add(new ComboBoxItem() { Name = "Closed", Content = "Closed" });
+            StatusList.Add(new ComboBoxItem() { Name = "Paid", Content = "Paid" });
+            SelectedStatus = StatusList[0];
+
+            VisibleTicketList = Visibility.Collapsed;
+            VisibleReceiptList = Visibility.Collapsed;
         }
 
         [ICommand]
@@ -63,27 +87,76 @@ namespace ODPMS.ViewModels
             string status = SelectedStatus.Name.ToString();
 
             //var tickets = DatabaseHelper.GetTicketListRange(fromDate, toDate, status);
-            var tickets = await Ticket.GetTicketsByReportFilter(fromDate, toDate, status);
+            if (SelectedReport.Name == "Tickets")
+            {
+                var tickets = await Ticket.GetTicketsByReportFilter(fromDate, toDate, status);
 
-            if (TicketList.Count != 0)
-                TicketList.Clear();
+                if (TicketList.Count != 0)
+                    TicketList.Clear();
 
-            foreach (var ticket in tickets)
-                TicketList.Add(ticket);
+                foreach (var ticket in tickets)
+                    TicketList.Add(ticket);
 
-            if (TicketList.Count > 0)
-                IsNotEmpty = true;
+                if (TicketList.Count > 0)
+                    IsNotEmpty = true;
+
+                VisibleTicketList = Visibility.Visible;
+                VisibleReceiptList = Visibility.Collapsed;
+            }
+
+            else if (SelectedReport.Name == "Receipts")
+            {
+                var receipts = await Receipt.GetReceiptsByReportFilter(fromDate, toDate, status);
+
+                if (ReceiptList.Count != 0)
+                    ReceiptList.Clear();
+
+                foreach (var receipt in receipts)
+                    ReceiptList.Add(receipt);
+
+                if (ReceiptList.Count > 0)
+                    IsNotEmpty = true;
+
+                VisibleTicketList = Visibility.Collapsed;
+                VisibleReceiptList = Visibility.Visible;
+            }
+
+
+            //if (TicketList.Count != 0)
+            //    TicketList.Clear();
+
+            //foreach (var ticket in tickets)
+            //    TicketList.Add(ticket);
+
+            //if (TicketList.Count > 0)
+            //    IsNotEmpty = true;
         }
 
         [ICommand]
         private async void ReportExport()
         {
+            string suggFileName = "";
+            List<string> ExportListStr = new List<string>();
+
+            if (SelectedReport.Name == "Tickets")
+            {
+                suggFileName = "Ticket Report";
+                ExportListStr.Add("Id,Type,Description,Created,Closed,Status,CustomerId,Registration,Period,Rate,Cost,PayAmount,Balance,User,Updated,UpdatedBy");
+            }
+
+            else if (SelectedReport.Name == "Receipts")
+            {
+                suggFileName = "Receipt Report";
+                ExportListStr.Add("Id,TicketNumber,TicketType,Created,Status,Cost,Paid,Balance,PaymentMethod,ChequeNumber,User");
+            }
+                
+
 
             FileSavePicker picker = new();
             picker.SuggestedStartLocation = PickerLocationId.Downloads;
             picker.FileTypeChoices.Add("Csv", new List<string>() { ".csv" });
             picker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-            picker.SuggestedFileName = "Ticket Report";
+            picker.SuggestedFileName = suggFileName;
             picker.SettingsIdentifier = "settingsIdentifier";
             picker.DefaultFileExtension = ".csv";
 
@@ -94,21 +167,29 @@ namespace ODPMS.ViewModels
             StorageFile saveFile = await picker.PickSaveFileAsync();
             if (saveFile != null)
             {
-                List<string> TicketListStr = new List<string>();
-                TicketListStr.Add("Id,Type,Description,Created,Closed,Status,CustomerId,Registration,Period,Rate,Cost,PayAmount,Balance,User");
-                // Save file was picked, you can now write in it
-                foreach (Ticket ticket in TicketList)
-                {
-                    TicketListStr.Add(ticket.ToCsv());
-                }
 
-                await FileIO.WriteLinesAsync(saveFile, TicketListStr);
+                // Save file was picked, you can now write in it
+                if (SelectedReport.Name == "Tickets")
+                    foreach (Ticket ticket in TicketList)
+                        ExportListStr.Add(ticket.ToCsv());
+
+                if (SelectedReport.Name == "Receipts")
+                    foreach (Receipt receipt in ReceiptList)
+                        ExportListStr.Add(receipt.ToCsv());
+
+                await FileIO.WriteLinesAsync(saveFile, ExportListStr);
 
             }
             else
             {
                 // No file was picked or the dialog was cancelled.
             }
+        }
+
+        [ICommand]
+        private void SelectedReport_Changed()
+        {
+            SelectedStatus = StatusList[0];
         }
     }
 }

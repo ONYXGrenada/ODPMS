@@ -24,6 +24,12 @@ namespace ODPMS.Models
         [Ignore]
         public static string StatusMessage { get; set; }
 
+        public string ToCsv()
+        {
+            return Id.ToString() + "," + TicketNumber.ToString() + "," + TicketType + "," + Created + "," + Status + "," + Cost.ToString() + "," + 
+                Paid.ToString() + "," + Balance.ToString() + "," + PaymentMethod + "," + ChequeNumber + "," + User;
+        }
+
         #region Database Functions
         public static async Task<List<Receipt>> GetAllReceipts()
         {
