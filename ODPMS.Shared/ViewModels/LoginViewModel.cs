@@ -64,7 +64,8 @@ namespace ODPMS.ViewModels
             StatusMessage = "";
         }
 
-        public void EnterKeyDown(KeyRoutedEventArgs e)
+        [ICommand]
+        public void EnterKeyUp(KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
                 Login();
