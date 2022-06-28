@@ -58,7 +58,13 @@
                         Spacing="8">
                 <StackPanel Orientation="Horizontal">
                     <TextBox x:Name="ticketNumber_txt"
-                             Text="{Binding TicketNumber, Mode=TwoWay}"/>
+                             Text="{Binding TicketNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="KeyUp">
+                                <ic:InvokeCommandAction Command="{Binding PayTicketEnterCommand}"/>
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                     <Button x:Name="buttonPayTicket_btn"
                             Grid.Column="1"
                             Content="Pay Ticket"
