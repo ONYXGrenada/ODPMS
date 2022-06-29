@@ -44,11 +44,13 @@
                            HorizontalAlignment="Center"/>
                 <PasswordBox x:Name="password_txt"
                              Password="{Binding Password, Mode=TwoWay}"
-                             PlaceholderText="Enter your password"
-                             KeyDown="KeyDownEventHandler">
+                             PlaceholderText="Enter your password">
                     <i:Interaction.Behaviors>
                         <ic:EventTriggerBehavior EventName="PasswordChanged">
                             <ic:InvokeCommandAction Command="{Binding PasswordChangedCommand}"/>
+                        </ic:EventTriggerBehavior>
+                        <ic:EventTriggerBehavior EventName="KeyUp">
+                            <ic:InvokeCommandAction Command="{Binding EnterKeyUpCommand}"/>
                         </ic:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </PasswordBox>

@@ -36,10 +36,5 @@ namespace ODPMS.Pages
             viewModel = new LoginViewModel();
             DataContext = viewModel;
         }
-
-        void KeyDownEventHandler(object sender, KeyRoutedEventArgs e)
-        {
-            viewModel.EnterKeyDown(e);
-        }
     }
 }
