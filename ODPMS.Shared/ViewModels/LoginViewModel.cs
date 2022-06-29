@@ -65,7 +65,7 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        public void EnterKeyUp(KeyRoutedEventArgs e)
+        private void EnterKeyUp(KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
                 Login();
