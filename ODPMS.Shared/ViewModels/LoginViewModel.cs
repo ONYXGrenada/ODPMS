@@ -63,12 +63,5 @@ namespace ODPMS.ViewModels
             StatusMessageColor = new SolidColorBrush(Colors.Black);
             StatusMessage = "";
         }
-
-        [ICommand]
-        private void EnterKeyUp(KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-                Login();
-        }
     }
 }
