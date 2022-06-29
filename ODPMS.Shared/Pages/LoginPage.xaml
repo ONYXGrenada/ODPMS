@@ -2,6 +2,7 @@
     x:Class="ODPMS.Pages.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:CommunityToolkit.WinUI.UI.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:ODPMS.Pages"
@@ -49,9 +50,9 @@
                         <ic:EventTriggerBehavior EventName="PasswordChanged">
                             <ic:InvokeCommandAction Command="{Binding PasswordChangedCommand}"/>
                         </ic:EventTriggerBehavior>
-                        <ic:EventTriggerBehavior EventName="KeyUp">
-                            <ic:InvokeCommandAction Command="{Binding EnterKeyUpCommand}"/>
-                        </ic:EventTriggerBehavior>
+                        <behaviors:KeyDownTriggerBehavior Key="Enter">
+                            <ic:InvokeCommandAction Command="{Binding LoginCommand}"/>
+                        </behaviors:KeyDownTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </PasswordBox>
                 <TextBlock x:Name="statusMessage_txtBlock"

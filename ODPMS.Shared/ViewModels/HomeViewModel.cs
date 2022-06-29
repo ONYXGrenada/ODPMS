@@ -153,15 +153,6 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        void PayTicketEnter(KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                PayTicket();
-            }
-        }
-
-        [ICommand]
         async void DeleteTicket(Ticket ticket)
         {
             if (IsBusy)
