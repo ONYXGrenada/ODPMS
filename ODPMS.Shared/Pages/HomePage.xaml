@@ -64,6 +64,26 @@
                             Content="Pay Ticket"
                             Command="{Binding PayTicketCommand}"
                             HorizontalAlignment="Center"/>
+                    <AutoSuggestBox Width="300" 
+                                    AutomationProperties.Name="Basic AutoSuggestBox"
+                                    PlaceholderText="Type a control name"
+                                    QueryIcon="Find"
+                                    TextMemberPath="propertyName"
+                                    SuggestionChosen="{Binding TestVal}"
+                                    Text="{Binding SearchText, Mode=TwoWay}"
+                                    ItemsSource="{Binding SuggestionList}">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="TextChanged">
+                                <ic:InvokeCommandAction Command="{Binding TextChangedCommand}"/>
+                            </ic:EventTriggerBehavior>
+                            <ic:EventTriggerBehavior EventName="SuggestionChosen">
+                                <ic:InvokeCommandAction Command="{Binding SearchSuggestionChosenCommand}" />
+                            </ic:EventTriggerBehavior>
+                            <ic:EventTriggerBehavior EventName="QuerySubmitted">
+                                <ic:InvokeCommandAction Command="{Binding SearchQuerySubmittedCommand}" />
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </AutoSuggestBox>
                 </StackPanel>
                 <TextBlock x:Name="validTicketMessage_txtBlock"
                            Text="{Binding ValidTicketMessage}"

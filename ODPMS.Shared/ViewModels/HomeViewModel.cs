@@ -1,10 +1,14 @@
 ﻿
+using ODPMS.Models;
+using System.Linq;
+
 namespace ODPMS.ViewModels
 {
     public partial class HomeViewModel : BaseViewModel
     {
         public ObservableCollection<Ticket> TicketList { get; } = new();
         public ObservableCollection<Ticket> OtherTicketList { get; } = new();
+        List<string> SearchList;
 
         [ObservableProperty]
         string welcomeMessage;
@@ -33,6 +37,12 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         bool canDelete;
 
+        [ObservableProperty]
+        List<string> suggestionList;
+
+        [ObservableProperty]
+        string searchText;
+
         public HomeViewModel()
         {
             Title = "Home";
@@ -42,6 +52,7 @@ namespace ODPMS.ViewModels
         async void Init()
         {
             var tickets = await Ticket.GetAllTickets();
+            SearchList = new List<string>();
 
             if (TicketList.Count != 0)
                 TicketList.Clear();
@@ -55,9 +66,14 @@ namespace ODPMS.ViewModels
                 {
                     ticket.UpdateCost();
                     TicketList.Add(ticket);
+                    SearchList.Add(ticket.Id.ToString());
                 }
                 else if (ticket.Type != "Hourly" && ticket.Status != "Delete" && ticket.Closed >= DateTime.Now)
+                {
                     OtherTicketList.Add(ticket);
+                    SearchList.Add(ticket.Registration.ToString());
+                }
+                    
             }
 
             if (TicketList.Count != 0)
@@ -203,6 +219,65 @@ namespace ODPMS.ViewModels
             {
                 IsBusy = false;
                 //IsRefreshing = false;
+            }
+        }
+
+        [ICommand]
+        public void TextChanged()
+        {
+            SuggestionList = new List<string>();
+            var splitText = SearchText.ToLower().Split(" ");
+            foreach (var cat in SearchList)
+            {
+                var found = splitText.All((key) =>
+                {
+                    return cat.ToLower().Contains(key);
+                });
+                if (found)
+                {
+                    SuggestionList.Add(cat);
+                }
+            }
+            if (SuggestionList.Count == 0)
+            {
+                SuggestionList.Add("No results found");
+            }
+            //sender.ItemsSource = SuggestionList;       
+
+        }
+
+        [ICommand]
+        public void SearchSuggestionChosen()
+        {
+            //searchText = (obj.ChosenSuggestion).ToString();            
+            return;
+        }
+
+        [ICommand]
+        async void SearchQuerySubmitted()
+        {
+            int searchTicket = 0;
+            if (searchText != null)
+            {
+                if (Int32.TryParse(searchText, out searchTicket))
+                {
+
+                }
+
+                else
+                {
+                    foreach (Ticket ticket in OtherTicketList)
+                    {
+                        if (ticket.Registration == searchText)
+                        {
+                            searchTicket = ticket.Id;
+                        }
+                    }
+                }
+
+                ContentDialog payDialog = new PayTicketContentDialog(searchTicket);
+                payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await payDialog.ShowAsync();
             }
         }
     }
