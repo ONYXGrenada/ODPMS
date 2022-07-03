@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using ODPMS.Models;
-using ODPMS.Helpers;
 using System.Globalization;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
+using ESCPOS_NET;
+using ESCPOS_NET.Emitters;
+using ESCPOS_NET.Utilities;
+using System.Windows.Input;
+using Microsoft.UI;
 
 namespace ODPMS.Dialogs
 {
@@ -22,6 +16,7 @@ namespace ODPMS.Dialogs
 	{
         private Ticket ticket;
         private Receipt receipt;
+        private bool printReceipt;
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         private double payAmount;
         private int PayTicketNumber { get; set; }
@@ -111,21 +106,39 @@ namespace ODPMS.Dialogs
                 this.receiptDisclaimer_txtBlock.Text = LocalSettings.Values["ReceiptDisclaimer"] as string;
         }
 
+        
+
         private async void PrimaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             // Pay execute the pay function to display change and update ticket in the database
             if (Double.TryParse(this.paymentAmount_txt.Text, out payAmount))
-            {
                 payAmount = double.Parse(this.paymentAmount_txt.Text);
+            else
+                payAmount = 0.0;
+
+            // Attempt to print receipt
+            if (printReceipt)
+            {
+                string printStatus = receipt.ToPrint();
+                if (printStatus == "Success")
+                {
+                    ticket.PayTicket(payAmount);
+                    await Ticket.UpdateTicket(ticket);
+                    await Receipt.CreateReceipt(receipt);
+                }
+                else
+                {
+                    args.Cancel = true;
+                    statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    statusMessage_txtBlock.Text = printStatus;
+                }
             }
             else
             {
-                payAmount = 0.0;
+                ticket.PayTicket(payAmount);
+                await Ticket.UpdateTicket(ticket);
+                await Receipt.CreateReceipt(receipt);
             }
-            ticket.PayTicket(payAmount);
-            await Ticket.UpdateTicket(ticket);
-            await Receipt.CreateReceipt(receipt);
-            //DatabaseHelper.PayTicket(ticket);
         }
 
         private void CloseButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -134,7 +147,9 @@ namespace ODPMS.Dialogs
         }
 
         private void PayAmount_Changed(object sender, RoutedEventArgs e)
-        {            
+        {
+            statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Black);
+            statusMessage_txtBlock.Text = "";
             if (Double.TryParse(this.paymentAmount_txt.Text,out payAmount))
             {
                 payAmount = double.Parse(this.paymentAmount_txt.Text);
@@ -160,6 +175,20 @@ namespace ODPMS.Dialogs
                 this.receiptPaid_txtBlock.Text = receipt.Paid.ToString("C", CultureInfo.CurrentCulture);
                 this.receiptBalance_txtBlock.Text = receipt.Balance.ToString("C", CultureInfo.CurrentCulture);
             }
+        }
+
+        private void PrintReceipt_Checked(object sender, RoutedEventArgs e)
+        {
+            printReceipt = true;
+            if (this.statusMessage_txtBlock != null)
+                this.statusMessage_txtBlock.Text = null;
+        }
+        
+        private void PrintReceipt_Unchecked(object sender, RoutedEventArgs e)
+        {
+            printReceipt = false;
+            if (this.statusMessage_txtBlock != null)
+                this.statusMessage_txtBlock.Text = null;            
         }
     }
 }

@@ -26,15 +26,13 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class LoginPage : Page
     {
-        LoginViewModel viewModel = null;
         public LoginPage()
         {
             this.InitializeComponent();
             Window window = (Application.Current as App)?.Window;
             window.ExtendsContentIntoTitleBar = true;
             window.SetTitleBar(appTitleBar_grid);
-            viewModel = new LoginViewModel();
-            DataContext = viewModel;
+            DataContext = new LoginViewModel();
         }
     }
 }

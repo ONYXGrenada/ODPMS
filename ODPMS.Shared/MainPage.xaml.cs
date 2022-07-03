@@ -25,12 +25,6 @@ namespace ODPMS
             Window window = (Application.Current as App)?.Window;
             window.ExtendsContentIntoTitleBar = true;
             window.SetTitleBar(AppTitleBar);
-            //var content = (Content as FrameworkElement)!;
-            //content.ActualThemeChanged += (s, e) =>
-            //{
-            //    ModifyTitlebarTheme();
-            //};
-            //ModifyTitlebarTheme();
         }
 
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)

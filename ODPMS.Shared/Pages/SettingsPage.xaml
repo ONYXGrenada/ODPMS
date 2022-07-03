@@ -9,14 +9,11 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:local="using:ODPMS.Pages"
     xmlns:models="clr-namespace:ODPMS.Models"
-    xmlns:viewmodels="using:ODPMS.ViewModels"
+    xmlns:viewModels="using:ODPMS.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d">
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">-->
-    <Page.Resources>
-        <viewmodels:SettingsViewModel x:Key="MySettingsViewModel"/>
-    </Page.Resources>
 
     <Grid Padding="56,0,0,0"
           Margin="5">
@@ -109,8 +106,8 @@
                     <controls:DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True"/>
                     <controls:DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
                     <controls:DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
-                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" ItemsSource="{Binding UserTypes, Source={StaticResource MySettingsViewModel}}"/>
-                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{Binding Statuses, Source={StaticResource MySettingsViewModel}}"/>
+                    <controls:DataGridComboBoxColumn Header="Type" Binding="{Binding Type}" ItemsSource="{x:Bind viewModels:SettingsViewModel.UserTypes}"/>
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{x:Bind viewModels:SettingsViewModel.Statuses}"/>
                     <controls:DataGridTextColumn Header="Last Login" Binding="{Binding LastLogin}" IsReadOnly="True"/>
                     <controls:DataGridTemplateColumn Header="Actions">
                         <controls:DataGridTemplateColumn.CellTemplate>
@@ -261,6 +258,9 @@
                                SelectionMode="Single"
                                SelectedItem="{Binding SelectedTicketType, Mode=TwoWay}"
                                ItemsSource="{Binding TicketTypes}">
+                <controls:DataGrid.Resources>
+                    <CollectionViewSource x:Key="statuses"/>
+                </controls:DataGrid.Resources>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
                         <ic:InvokeCommandAction Command="{Binding TicketTypeSelectedCommand}"/>
@@ -275,7 +275,7 @@
                     <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
                     <controls:DataGridTextColumn Header="Period" Binding="{Binding Period}"/>
                     <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
-                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{Binding Statuses, Source={StaticResource MySettingsViewModel}}"/>
+                    <controls:DataGridComboBoxColumn Header="Status" Binding="{Binding Status}" ItemsSource="{x:Bind viewModels:SettingsViewModel.Statuses}"/>
                     <controls:DataGridTextColumn Header="Last Updated" Binding="{Binding Updated}" IsReadOnly="True"/>
                     <controls:DataGridTextColumn Header="Updated By" Binding="{Binding UpdatedBy}" IsReadOnly="True"/>
                     <controls:DataGridTemplateColumn Header="Actions">
