@@ -159,24 +159,8 @@ namespace ODPMS.Models
         #endregion
 
         #region Print Functions
-        
         public string ToPrint()
         {
-            //var printer = new ESCPOSPrint();
-            //printer.Open();
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "ODPMS"));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Receipt"));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Ticket Number: " + TicketNumber.ToString()));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Ticket Type: " + TicketType));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Created: " + Created));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Status: " + Status));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Cost: " + Cost.ToString()));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Paid: " + Paid.ToString()));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Balance: " + Balance.ToString()));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Payment Method: " + PaymentMethod));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "Cheque Number: " + ChequeNumber));
-            //printer.Print(new ESCPOSPrint.PrintLine(ESCPOSPrint.PrintLine.Alignment.Center, "User: " + User));
-            //printer.Close();
             try
             {
                 var printer = new SerialPrinter(portName: "COM5", baudRate: 115200);
@@ -232,7 +216,6 @@ namespace ODPMS.Models
                 return StatusMessage = string.Format("Failed to print to the Receipt Printer. {0}", ex.Message);
             }
         }
-        
         #endregion
     }
 }

@@ -4,9 +4,6 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Globalization;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
-using ESCPOS_NET;
-using ESCPOS_NET.Emitters;
-using ESCPOS_NET.Utilities;
 using System.Windows.Input;
 using Microsoft.UI;
 
@@ -26,21 +23,6 @@ namespace ODPMS.Dialogs
             this.PayTicketNumber = PayTicketNumber;
             Init();
 		}
-
-        //private async void PayTicket_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
-        //{
-        //    // Get ticket object from database
-        //    ticket = await Ticket.GetTicket(this.PayTicketNumber);
-
-        //    ticket.UpdateCost();
-
-        //    this.ticketNumber_txtBlock.Text = "Ticket Number: " + ticket.Id;
-        //    this.ticketStatus_txtBlock.Text = "Status: " + ticket.Status;
-        //    this.ticketStartTime_txtBlock.Text = "Start Time: " + ticket.Created;
-        //    this.ticketEndTime_txtBlock.Text = "End Time: " + ticket.Closed;
-        //    this.ticketDuration_txtBlock.Text = "Duration: " + ticket.Cost / ticket.Rate + " Hours";
-        //    this.ticketCost_txtBlock.Text = "Cost: " + ticket.Cost.ToString("C", CultureInfo.CurrentCulture);
-        //}
 
         async void Init()
         {
