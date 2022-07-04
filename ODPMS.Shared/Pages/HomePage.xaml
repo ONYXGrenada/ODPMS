@@ -59,6 +59,7 @@
                         Spacing="8">
                 <StackPanel Orientation="Horizontal">
                     <TextBox x:Name="ticketNumber_txt"
+                             MinWidth="80"
                              Text="{Binding TicketNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
                             <behaviors:KeyDownTriggerBehavior Key="Enter">
@@ -71,14 +72,16 @@
                             Content="Pay Ticket"
                             Command="{Binding PayTicketCommand}"
                             HorizontalAlignment="Center"/>
-                    <AutoSuggestBox Width="300" 
+                    <AutoSuggestBox MinWidth="150" 
                                     AutomationProperties.Name="Basic AutoSuggestBox"
-                                    PlaceholderText="Type a control name"
+                                    PlaceholderText="Search"
+                                    Margin="20,0,0,0"
                                     QueryIcon="Find"
                                     TextMemberPath="propertyName"
-                                    SuggestionChosen="{Binding TestVal}"
-                                    Text="{Binding SearchText, Mode=TwoWay}"
-                                    ItemsSource="{Binding SuggestionList}">
+                                    UpdateTextOnSelect="True"
+                                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding SuggestionList}"
+                                    SuggestionChosen="{Binding chosenSuggestionTxt}">
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="TextChanged">
                                 <ic:InvokeCommandAction Command="{Binding TextChangedCommand}"/>

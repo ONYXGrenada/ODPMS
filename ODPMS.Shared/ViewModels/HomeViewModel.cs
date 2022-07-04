@@ -43,6 +43,9 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         string searchText;
 
+        [ObservableProperty]
+        AutoSuggestBox chosenSuggestionTxt;
+
         public HomeViewModel()
         {
             Title = "Home";
@@ -249,7 +252,8 @@ namespace ODPMS.ViewModels
         [ICommand]
         public void SearchSuggestionChosen()
         {
-            //searchText = (obj.ChosenSuggestion).ToString();            
+            //searchText = (obj.ChosenSuggestion).ToString();
+            //ValidTicketMessage = string.Format(ChosenSuggestionTxt);
             return;
         }
 
