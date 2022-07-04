@@ -143,44 +143,6 @@
             </controls:DataGrid>
         </Expander>
 
-        <!--<controls:DataGrid x:Name="ticketList_dataGrid"
-                           Grid.Row="2"
-                           AutoGenerateColumns="False"
-                           IsReadOnly="True"
-                           SelectionMode="Single"
-                           SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
-                           ItemsSource="{Binding TicketList}"
-                           Visibility="{Binding VisibleTicketList}">
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="SelectionChanged">
-                    <ic:InvokeCommandAction Command="{Binding SelectTicketCommand}"/>
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="#" Binding="{Binding Id}"/>
-                <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
-                <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
-                <controls:DataGridTextColumn Header="Created Date" Binding="{Binding Created}"/>
-                <controls:DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
-                <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}"/>
-                <controls:DataGridTextColumn Header="User" Binding="{Binding User}"/>
-                <controls:DataGridTemplateColumn Header="Actions">
-                    <controls:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button x:Name="buttonDeleteTicket_btn"
-                                    ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
-                                    Content="Delete"
-                                    Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteTicketCommand, RelativeSource={RelativeSource Self}}"
-                                    CommandParameter="{Binding}"
-                                    IsEnabled="{Binding IsDeletable}"
-                                    HorizontalAlignment="Stretch"/>
-                        </DataTemplate>
-                    </controls:DataGridTemplateColumn.CellTemplate>
-                </controls:DataGridTemplateColumn>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>-->
-
         <Expander Header="{Binding OtherTicketsHeader}"
                   Grid.Row="3"
                   IsExpanded="True"
@@ -223,46 +185,5 @@
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Expander>
-
-        <!--<controls:DataGrid x:Name="otherTicketList_dataGrid"
-                           Grid.Row="3"
-                           Margin="0,20,0,0"
-                           AutoGenerateColumns="False"
-                           IsReadOnly="True"
-                           SelectionMode="Single"
-                           SelectedItem="{Binding SelectedTicket, Mode=TwoWay}"
-                           ItemsSource="{Binding OtherTicketList}"
-                           Visibility="{Binding VisibleOtherTicketList}">
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="SelectionChanged">
-                    <ic:InvokeCommandAction Command="{Binding SelectTicketCommand}"/>
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="#" Binding="{Binding Id}" />
-                <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                <controls:DataGridTextColumn Header="Description" Binding="{Binding Description}" />
-                <controls:DataGridTextColumn Header="Registration" Binding="{Binding Registration}" />
-                <controls:DataGridTextColumn Header="Status" Binding="{Binding Status}" />
-                <controls:DataGridTextColumn Header="Created Date" Binding="{Binding Created}" />
-                <controls:DataGridTextColumn Header="Expiry Date" Binding="{Binding Closed}" />
-                <controls:DataGridTextColumn Header="Cost" Binding="{Binding Cost}" />
-                <controls:DataGridTextColumn Header="User" Binding="{Binding User}" />
-                <controls:DataGridTemplateColumn Header="Actions">
-                    <controls:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button x:Name="buttonDeleteTicket_btn"
-                                    ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
-                                    Content="Delete"
-                                    Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteTicketCommand, RelativeSource={RelativeSource Self}}"
-                                    CommandParameter="{Binding}"
-                                    IsEnabled="{Binding IsDeletable}"
-                                    HorizontalAlignment="Stretch"/>
-                        </DataTemplate>
-                    </controls:DataGridTemplateColumn.CellTemplate>
-                </controls:DataGridTemplateColumn>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>-->
-
     </Grid>
 </Page>

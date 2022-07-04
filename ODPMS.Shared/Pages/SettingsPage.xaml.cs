@@ -29,13 +29,10 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        SettingsViewModel viewModel = null;
-
         public SettingsPage()
         {
             this.InitializeComponent();
-            viewModel = new SettingsViewModel();
-            DataContext = viewModel;
+            DataContext = new SettingsViewModel();
         }
     }
 }

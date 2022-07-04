@@ -23,12 +23,10 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class ReportsPage : Page
     {
-        ReportsViewModel viewModel = null;
         public ReportsPage()
         {
             this.InitializeComponent();
-            viewModel = new ReportsViewModel();
-            DataContext = viewModel;
+            DataContext = new ReportsViewModel();
         }   
     }
 }

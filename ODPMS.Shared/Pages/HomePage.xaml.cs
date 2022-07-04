@@ -26,13 +26,10 @@ namespace ODPMS.Pages
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        HomeViewModel viewModel = null;
-
         public HomePage()
         {
             this.InitializeComponent();
-            viewModel = new HomeViewModel();
-            DataContext = viewModel;
+            DataContext = new HomeViewModel();
         }
     }
 }
