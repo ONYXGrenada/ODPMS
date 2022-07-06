@@ -79,15 +79,14 @@
                                     QueryIcon="Find"
                                     TextMemberPath="propertyName"
                                     UpdateTextOnSelect="True"
-                                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemsSource="{Binding SuggestionList}"
-                                    SuggestionChosen="{Binding chosenSuggestionTxt}">
+                                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                    ItemsSource="{Binding SuggestionList}">
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="TextChanged">
                                 <ic:InvokeCommandAction Command="{Binding TextChangedCommand}"/>
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="SuggestionChosen">
-                                <ic:InvokeCommandAction Command="{Binding SearchSuggestionChosenCommand}" />
+                                <ic:InvokeCommandAction Command="{Binding SearchSuggestionChosenCommand, UpdateSourceTrigger=LostFocus}" />
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="QuerySubmitted">
                                 <ic:InvokeCommandAction Command="{Binding SearchQuerySubmittedCommand}" />

@@ -225,9 +225,9 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
+        [ICommand]            
         public void TextChanged()
-        {
+        {   
             SuggestionList = new List<string>();
             var splitText = SearchText.ToLower().Split(" ");
             foreach (var cat in SearchList)
@@ -254,6 +254,9 @@ namespace ODPMS.ViewModels
         {
             //searchText = (obj.ChosenSuggestion).ToString();
             //ValidTicketMessage = string.Format(ChosenSuggestionTxt);
+            //AutoSuggestBoxSuggestionChosenEventArgs args = new AutoSuggestBoxSuggestionChosenEventArgs();
+            //ValidTicketMessage = string.Format("The ticket number you entered does not exist or is not open.");
+            //ValidTicketMessage = args.SelectedItem.ToString();
             return;
         }
 
