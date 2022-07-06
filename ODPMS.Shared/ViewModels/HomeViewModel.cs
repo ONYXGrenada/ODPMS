@@ -250,23 +250,18 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        public void SearchSuggestionChosen()
+        public void SearchSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            //searchText = (obj.ChosenSuggestion).ToString();
-            //ValidTicketMessage = string.Format(ChosenSuggestionTxt);
-            //AutoSuggestBoxSuggestionChosenEventArgs args = new AutoSuggestBoxSuggestionChosenEventArgs();
-            //ValidTicketMessage = string.Format("The ticket number you entered does not exist or is not open.");
-            //ValidTicketMessage = args.SelectedItem.ToString();
-            return;
+            SearchText = args.SelectedItem.ToString();
         }
 
         [ICommand]
         async void SearchQuerySubmitted()
         {
             int searchTicket = 0;
-            if (searchText != null)
+            if (SearchText != null)
             {
-                if (Int32.TryParse(searchText, out searchTicket))
+                if (Int32.TryParse(SearchText, out searchTicket))
                 {
 
                 }
@@ -275,7 +270,7 @@ namespace ODPMS.ViewModels
                 {
                     foreach (Ticket ticket in OtherTicketList)
                     {
-                        if (ticket.Registration == searchText)
+                        if (ticket.Registration == SearchText)
                         {
                             searchTicket = ticket.Id;
                         }

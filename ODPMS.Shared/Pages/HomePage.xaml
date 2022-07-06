@@ -73,20 +73,18 @@
                             Command="{Binding PayTicketCommand}"
                             HorizontalAlignment="Center"/>
                     <AutoSuggestBox MinWidth="150" 
-                                    AutomationProperties.Name="Basic AutoSuggestBox"
                                     PlaceholderText="Search"
                                     Margin="20,0,0,0"
                                     QueryIcon="Find"
-                                    TextMemberPath="propertyName"
                                     UpdateTextOnSelect="True"
-                                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                    Text="{Binding SearchText, Mode=TwoWay}"
                                     ItemsSource="{Binding SuggestionList}">
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="TextChanged">
                                 <ic:InvokeCommandAction Command="{Binding TextChangedCommand}"/>
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="SuggestionChosen">
-                                <ic:InvokeCommandAction Command="{Binding SearchSuggestionChosenCommand, UpdateSourceTrigger=LostFocus}" />
+                                <ic:InvokeCommandAction Command="{Binding SearchSuggestionChosenCommand}"/>
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="QuerySubmitted">
                                 <ic:InvokeCommandAction Command="{Binding SearchQuerySubmittedCommand}" />
