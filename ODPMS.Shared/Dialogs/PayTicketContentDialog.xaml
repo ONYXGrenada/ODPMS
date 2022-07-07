@@ -10,6 +10,7 @@
     Title="Pay Ticket"
     PrimaryButtonText="Pay"
     PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
+    IsPrimaryButtonEnabled="False"
     CloseButtonText="Cancel"
     PrimaryButtonClick="PrimaryButton_Clicked"
     CloseButtonClick="CloseButton_Clicked"
@@ -37,7 +38,8 @@
                            Text="Payment Amount:"/>
                 <TextBox Grid.Row="1"  
                          x:Name="paymentAmount_txt" 
-                         TextChanged="PayAmount_Changed"/>
+                         TextChanged="PayAmount_Changed"
+                         IsEnabled="False"/>
                 <TextBlock Grid.Row="2" 
                            x:Name="changeReturned_txtBlock"
                            TextWrapping="Wrap"/>
@@ -46,7 +48,8 @@
                           Content="Print Receipt" 
                           IsChecked="True" 
                           Checked="PrintReceipt_Checked" 
-                          Unchecked="PrintReceipt_Unchecked"/>
+                          Unchecked="PrintReceipt_Unchecked"
+                          IsEnabled="False"/>
                 <TextBlock x:Name="statusMessage_txtBlock"
                            Grid.Row="4"
                            TextWrapping="Wrap"

@@ -41,9 +41,6 @@ namespace ODPMS.ViewModels
         List<string> suggestionList;
 
         [ObservableProperty]
-        string searchText;
-
-        [ObservableProperty]
         AutoSuggestBox chosenSuggestionTxt;
 
         public HomeViewModel()
@@ -69,14 +66,21 @@ namespace ODPMS.ViewModels
                 {
                     ticket.UpdateCost();
                     TicketList.Add(ticket);
-                    SearchList.Add(ticket.Id.ToString());
                 }
                 else if (ticket.Type != "Hourly" && ticket.Status != "Delete" && ticket.Closed >= DateTime.Now)
                 {
                     OtherTicketList.Add(ticket);
-                    SearchList.Add(ticket.Registration.ToString());
                 }
-                    
+
+                //Creates a list of tickets that can be searched
+                //  This includes closed tickets and tickets that are no longer valid
+                if (ticket.Status != "Delete")
+                {
+                    if (ticket.Type == "Hourly")
+                        SearchList.Add(ticket.Id.ToString());
+                    else
+                        SearchList.Add(ticket.Registration.ToString());
+                }
             }
 
             if (TicketList.Count != 0)
@@ -229,7 +233,7 @@ namespace ODPMS.ViewModels
         public void TextChanged()
         {   
             SuggestionList = new List<string>();
-            var splitText = SearchText.ToLower().Split(" ");
+            var splitText = TicketNumber.ToLower().Split(" ");
             foreach (var cat in SearchList)
             {
                 var found = splitText.All((key) =>
@@ -252,34 +256,58 @@ namespace ODPMS.ViewModels
         [ICommand]
         public void SearchSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            SearchText = args.SelectedItem.ToString();
+            TicketNumber = args.SelectedItem.ToString();
         }
 
         [ICommand]
         async void SearchQuerySubmitted()
         {
-            int searchTicket = 0;
-            if (SearchText != null)
+            ValidTicketMessage = "";
+            int ticketNumber = 0;
+            if (TicketNumber != null)
             {
-                if (Int32.TryParse(SearchText, out searchTicket))
+                //Start if the testing area
+
+                // Display the pay ticket dialog
+                if (Int32.TryParse(TicketNumber, out ticketNumber))
                 {
-
+                    ticketNumber = Int32.Parse(TicketNumber);
+                    Ticket checkTicket = await Ticket.GetTicket(ticketNumber);
+                    if (checkTicket.Id > 0)
+                    {
+                        //If its a valid ticket
+                    }
+                    else
+                    {
+                        ValidTicketMessage = string.Format("The ticket number you entered is invalid.");
+                    }
                 }
-
                 else
                 {
                     foreach (Ticket ticket in OtherTicketList)
                     {
-                        if (ticket.Registration == SearchText)
+                        if (ticket.Registration == TicketNumber)
                         {
-                            searchTicket = ticket.Id;
+                            ticketNumber = ticket.Id;
                         }
+                    }
+
+                    if (ticketNumber == 0)
+                    {
+                        ValidTicketMessage = string.Format("The ticket number you entered is invalid.");
                     }
                 }
 
-                ContentDialog payDialog = new PayTicketContentDialog(searchTicket);
+                //End of the testing area
+
+                ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
                 payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
                 await payDialog.ShowAsync();
+
+                Init();
+
+                TicketNumber = "";
+                SelectedTicket = null;
             }
         }
     }
