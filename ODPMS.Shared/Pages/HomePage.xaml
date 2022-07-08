@@ -87,7 +87,7 @@
                     </TextBox>-->
                     <Button x:Name="buttonPayTicket_btn"
                             Grid.Column="1"
-                            Content="Pay Ticket"
+                            Content="Query"
                             Command="{Binding SearchQuerySubmittedCommand}"
                             HorizontalAlignment="Center"/>
                 </StackPanel>

@@ -79,7 +79,7 @@ namespace ODPMS.ViewModels
                     if (ticket.Type == "Hourly")
                         SearchList.Add(ticket.Id.ToString());
                     else
-                        SearchList.Add(ticket.Registration.ToString());
+                        SearchList.Add( $"{ticket.Id.ToString()} - {ticket.Registration.ToString()}");
                 }
             }
 
@@ -286,28 +286,34 @@ namespace ODPMS.ViewModels
                 {
                     foreach (Ticket ticket in OtherTicketList)
                     {
-                        if (ticket.Registration == TicketNumber)
-                        {
-                            ticketNumber = ticket.Id;
-                        }
+                        string[] parts = TicketNumber.Split('-');
+                        Int32.TryParse(parts[0].Replace(" ", ""), out ticketNumber);
+                        //if (ticket.Registration == TicketNumber)
+                        //{
+                        //    ticketNumber = ticket.Id;
+                        //}
                     }
 
-                    if (ticketNumber == 0)
-                    {
-                        ValidTicketMessage = string.Format("The ticket number you entered is invalid.");
-                    }
+                   
                 }
 
                 //End of the testing area
 
-                ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
-                payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
-                await payDialog.ShowAsync();
+                if (ticketNumber == 0)
+                {
+                    ValidTicketMessage = string.Format("The ticket number you entered is invalid.");
+                }
+                else
+                {
+                    ContentDialog payDialog = new PayTicketContentDialog(ticketNumber);
+                    payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                    await payDialog.ShowAsync();
 
-                Init();
+                    Init();
 
-                TicketNumber = "";
-                SelectedTicket = null;
+                    TicketNumber = "";
+                    SelectedTicket = null;
+                }
             }
         }
     }
