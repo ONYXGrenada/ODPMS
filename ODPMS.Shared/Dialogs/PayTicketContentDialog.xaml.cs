@@ -81,6 +81,9 @@ namespace ODPMS.Dialogs
                 }
             }
 
+            if (LocalSettings.Values["DefaultPrintReceipt"] != null)
+                this.printReceipt_chk.IsChecked = (bool)LocalSettings.Values["DefaultPrintReceipt"];
+
             if (LocalSettings.Values["ReceiptMessage"] != null)
                 this.receiptMessage_txtBlock.Text = LocalSettings.Values["ReceiptMessage"] as string;
 

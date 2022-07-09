@@ -14,6 +14,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d">
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">-->
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Page.Resources>
 
     <Grid Padding="56,0,0,0"
           Margin="5">
@@ -112,7 +115,8 @@
                     <controls:DataGridTemplateColumn Header="Actions">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="4">
                                     <Button x:Name="buttonResetUserPassword_btn"
                                             ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
                                             Content="Reset Password"
@@ -125,7 +129,13 @@
                                             Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteUserCommand, RelativeSource={RelativeSource Self}}"
                                             CommandParameter="{Binding}"
                                             IsEnabled="{Binding IsDeletable}"
-                                            HorizontalAlignment="Stretch"/> 
+                                            HorizontalAlignment="Stretch"/>
+                                    <Button x:Name="buttonFloat_btn"
+                                            ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
+                                            Content="Float"
+                                            Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.AdjustFloatCommand, RelativeSource={RelativeSource Self}}"
+                                            CommandParameter="{Binding}"
+                                            HorizontalAlignment="Stretch"/>
                                 </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>
@@ -149,7 +159,7 @@
                     Spacing="8"
                     CornerRadius="8"
                     Background="{ThemeResource LayerFillColorDefaultBrush}"
-                    Visibility="{Binding VisibleState}">
+                    Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="Company Administration"/>
@@ -249,7 +259,7 @@
                     Spacing="8"
                     CornerRadius="8"
                     Background="{ThemeResource LayerFillColorDefaultBrush}"
-                    Visibility="{Binding VisibleState}">
+                    Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="Ticket Administration"/>
@@ -320,10 +330,10 @@
                          MinHeight="100"
                          MinWidth="240"/>
                 <Button Style="{StaticResource AccentButtonStyle}"
-                    HorizontalAlignment="Center"
-                    Content="Update"
-                    Command="{Binding UpdateTicketCommand}"
-                    MinWidth="160"/>
+                        HorizontalAlignment="Center"
+                        Content="Update"
+                        Command="{Binding UpdateTicketSettingsCommand}"
+                        MinWidth="160"/>
             </StackPanel>
         </StackPanel>
 
@@ -337,13 +347,16 @@
                     Spacing="8"
                     CornerRadius="8"
                     Background="{ThemeResource LayerFillColorDefaultBrush}"
-                    Visibility="{Binding VisibleState}">
+                    Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="Receipt Administration" />
 
             <StackPanel Margin="5"
                         Spacing="8">
+                <CheckBox x:Name="defaultPrintReceipt_chk" 
+                          Content="Print Receipt (Default)"
+                          IsChecked="{Binding DefaultPrintReceipt, Mode=TwoWay}"/>
                 <TextBlock MinWidth="110"
                            Text="Message:" />
                 <TextBox x:Name="receiptMessage_txt"
@@ -361,10 +374,10 @@
                          MinHeight="100"
                          MinWidth="240"/>
                 <Button Style="{StaticResource AccentButtonStyle}"
-                    HorizontalAlignment="Center"
-                    Content="Update"
-                    Command="{Binding UpdateReceiptCommand}"
-                    MinWidth="160"/>
+                        HorizontalAlignment="Center"
+                        Content="Update"
+                        Command="{Binding UpdateReceiptSettingsCommand}"
+                        MinWidth="160"/>
             </StackPanel>
         </StackPanel>
     </Grid>
