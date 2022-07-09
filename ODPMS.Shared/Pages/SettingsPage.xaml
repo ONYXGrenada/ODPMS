@@ -87,7 +87,7 @@
                     Spacing="8"
                     CornerRadius="8"
                     Background="{ThemeResource LayerFillColorDefaultBrush}"
-                    Visibility="{Binding VisibleState}">
+                    Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
                        Margin="0,12,0,0"
                        Text="User Administration"/>
