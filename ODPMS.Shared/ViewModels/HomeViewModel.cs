@@ -83,6 +83,8 @@ namespace ODPMS.ViewModels
                 }
             }
 
+            SearchList.Reverse();
+
             if (TicketList.Count != 0)
                 VisibleTicketList = Visibility.Visible;
             else
