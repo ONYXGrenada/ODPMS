@@ -12,7 +12,7 @@ namespace ODPMS.Models
         public int Id { get; set; }
         public float Amount { get; set; }
         public string User { get; set; }
-        public DateTime Created { get; set; }
+        public string Created { get; set; }
         public DateTime? Updated { get; set; }
         public string UpdatedBy { get; set; }
 
@@ -93,6 +93,8 @@ namespace ODPMS.Models
                 await App.Database.Init();
                 result = await App.Database.Current.DeleteAsync<CashFloat>(id);
 
+
+
                 StatusMessage = string.Format("{0} record(s) deleted [Ticket: {1})", result, id);
             }
             catch (Exception ex)
@@ -100,6 +102,53 @@ namespace ODPMS.Models
                 StatusMessage = string.Format("Failed to delete {0}. Error: {1}", id, ex.Message);
             }
         }
+
+        public static async Task<CashFloat> CheckCashFloat(int id)
+        {
+            try
+            {
+                await App.Database.Init();
+                var query = await App.Database.Current.GetAsync<CashFloat>(id);
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", query);
+
+                return query;
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return new CashFloat();
+        }
+
+        public static async Task<bool> FloatExists(string userId)
+        {
+            bool result = false;
+            string today = DateTime.Now.ToString("yyyy-MM-dd");
+            try
+            {
+                await App.Database.Init();
+                var query = App.Database.Current.Table<CashFloat>().Where(v => v.User.Equals(userId) && v.Created.Equals(today));
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                //return await query.ToListAsync();
+                if (await query.CountAsync() > 0)
+                {
+                    result = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+
+            return result;
+
+        }
+
+
+
+
         #endregion
     }
 }
