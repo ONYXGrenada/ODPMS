@@ -17,7 +17,7 @@ namespace ODPMS.ViewModels
         bool isTicketTypeSelected;
 
         [ObservableProperty]
-        Visibility visibleState;
+        bool isVisible;
 
         [ObservableProperty]
         string firstName;
@@ -53,6 +53,9 @@ namespace ODPMS.ViewModels
         string ticketDisclaimer;
 
         [ObservableProperty]
+        bool defaultPrintReceipt;
+        
+        [ObservableProperty]
         string receiptMessage;
 
         [ObservableProperty]
@@ -74,7 +77,7 @@ namespace ODPMS.ViewModels
         {
             if (App.LoggedInUser.Type == "admin")
             {
-                VisibleState = Visibility.Visible;
+                IsVisible = true;
                 var users = await User.GetAllUsersDisplay();
 
                 if (Users.Count != 0)
@@ -93,14 +96,14 @@ namespace ODPMS.ViewModels
             }
             else
             {
-                VisibleState = Visibility.Collapsed;
+                IsVisible = false;
             }
             FirstName = App.LoggedInUser.FirstName;
             LastName = App.LoggedInUser.LastName;
 
             GetCompanyData();
-            GetTicketCustomMessages();
-            GetReceiptCustomMessages();
+            GetTicketSettings();
+            GetReceiptSettings();
         }
 
         [ICommand]
@@ -244,6 +247,15 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
+        async void AdjustFloat()
+        {
+            // Display the cash float dialog
+            ContentDialog cashFloat = new CashFloatContentDialog();
+            cashFloat.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+            await cashFloat.ShowAsync();
+        }
+
+        [ICommand]
         async void AddTicketType()
         {
             // Display the new user dialog
@@ -317,7 +329,7 @@ namespace ODPMS.ViewModels
             }
         }
 
-        private void GetTicketCustomMessages()
+        private void GetTicketSettings()
         {
             if (LocalSettings.Values["TicketMessage"] != null)
                 TicketMessage = LocalSettings.Values["TicketMessage"] as string;
@@ -327,14 +339,22 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        private void UpdateTicket()
+        private void UpdateTicketSettings()
         {
             LocalSettings.Values["TicketMessage"] = TicketMessage;
             LocalSettings.Values["TicketDisclaimer"] = TicketDisclaimer;
         }
 
-        private void GetReceiptCustomMessages()
+        private void GetReceiptSettings()
         {
+            if (LocalSettings.Values["DefaultPrintReceipt"] != null)
+                DefaultPrintReceipt = (bool)LocalSettings.Values["DefaultPrintReceipt"];
+            else
+            {
+                DefaultPrintReceipt = true;
+                LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
+            }
+
             if (LocalSettings.Values["ReceiptMessage"] != null)
                 ReceiptMessage = LocalSettings.Values["ReceiptMessage"] as string;
 
@@ -343,8 +363,9 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        private void UpdateReceipt()
+        private void UpdateReceiptSettings()
         {
+            LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
             LocalSettings.Values["ReceiptMessage"] = ReceiptMessage;
             LocalSettings.Values["ReceiptDisclaimer"] = ReceiptDisclaimer;
         }

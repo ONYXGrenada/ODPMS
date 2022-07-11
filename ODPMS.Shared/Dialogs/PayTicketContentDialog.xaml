@@ -44,7 +44,7 @@
                 <CheckBox Grid.Row="3" 
                           x:Name="printReceipt_chk" 
                           Content="Print Receipt" 
-                          IsChecked="True" 
+                          IsChecked="False" 
                           Checked="PrintReceipt_Checked" 
                           Unchecked="PrintReceipt_Unchecked"/>
                 <TextBlock x:Name="statusMessage_txtBlock"
