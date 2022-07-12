@@ -58,7 +58,25 @@
             <StackPanel Grid.Column="1"
                         Spacing="8">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="ticketNumber_txt"
+                    <AutoSuggestBox MinWidth="150" 
+                                    PlaceholderText="Search"
+                                    Margin="20,0,0,0"
+                                    UpdateTextOnSelect="True"
+                                    Text="{Binding TicketNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding SuggestionList}">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="TextChanged">
+                                <ic:InvokeCommandAction Command="{Binding TextChangedCommand}"/>
+                            </ic:EventTriggerBehavior>
+                            <ic:EventTriggerBehavior EventName="SuggestionChosen">
+                                <ic:InvokeCommandAction Command="{Binding SearchSuggestionChosenCommand}"/>
+                            </ic:EventTriggerBehavior>
+                            <ic:EventTriggerBehavior EventName="QuerySubmitted">
+                                <ic:InvokeCommandAction Command="{Binding SearchQuerySubmittedCommand}" />
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </AutoSuggestBox>
+                    <!--<TextBox x:Name="ticketNumber_txt"
                              MinWidth="80"
                              Text="{Binding TicketNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
@@ -66,33 +84,12 @@
                                 <ic:InvokeCommandAction Command="{Binding PayTicketCommand}"/>
                             </behaviors:KeyDownTriggerBehavior>
                         </i:Interaction.Behaviors>
-                    </TextBox>
+                    </TextBox>-->
                     <Button x:Name="buttonPayTicket_btn"
                             Grid.Column="1"
-                            Content="Pay Ticket"
-                            Command="{Binding PayTicketCommand}"
+                            Content="Query"
+                            Command="{Binding SearchQuerySubmittedCommand}"
                             HorizontalAlignment="Center"/>
-                    <AutoSuggestBox MinWidth="150" 
-                                    AutomationProperties.Name="Basic AutoSuggestBox"
-                                    PlaceholderText="Search"
-                                    Margin="20,0,0,0"
-                                    QueryIcon="Find"
-                                    TextMemberPath="propertyName"
-                                    UpdateTextOnSelect="True"
-                                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                    ItemsSource="{Binding SuggestionList}">
-                        <i:Interaction.Behaviors>
-                            <ic:EventTriggerBehavior EventName="TextChanged">
-                                <ic:InvokeCommandAction Command="{Binding TextChangedCommand}"/>
-                            </ic:EventTriggerBehavior>
-                            <ic:EventTriggerBehavior EventName="SuggestionChosen">
-                                <ic:InvokeCommandAction Command="{Binding SearchSuggestionChosenCommand, UpdateSourceTrigger=LostFocus}" />
-                            </ic:EventTriggerBehavior>
-                            <ic:EventTriggerBehavior EventName="QuerySubmitted">
-                                <ic:InvokeCommandAction Command="{Binding SearchQuerySubmittedCommand}" />
-                            </ic:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                    </AutoSuggestBox>
                 </StackPanel>
                 <TextBlock x:Name="validTicketMessage_txtBlock"
                            Text="{Binding ValidTicketMessage}"

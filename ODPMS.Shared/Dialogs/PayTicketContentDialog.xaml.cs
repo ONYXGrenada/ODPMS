@@ -89,6 +89,13 @@ namespace ODPMS.Dialogs
 
             if (LocalSettings.Values["ReceiptDisclaimer"] != null)
                 this.receiptDisclaimer_txtBlock.Text = LocalSettings.Values["ReceiptDisclaimer"] as string;
+
+            if (ticket.Status == "Open" || ticket.Status == "Partial")
+            {
+                this.IsPrimaryButtonEnabled = true;
+                this.paymentAmount_txt.IsEnabled = true;
+                this.printReceipt_chk.IsEnabled = true;
+            }
         }
 
         

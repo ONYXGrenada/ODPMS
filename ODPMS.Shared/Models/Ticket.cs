@@ -42,7 +42,7 @@ namespace ODPMS.Models
         {
             int gracePeriod = 5;
 
-            if (Type == "Hourly")
+            if (Type == "Hourly" && Status == "Open")
             {
                 Closed = DateTime.Now;
                 TimeSpan ts = (DateTime)Closed - Created;
