@@ -147,7 +147,7 @@ namespace ODPMS.Dialogs
             // Attempt to print receipt
             if (printReceipt)
             {
-                string printStatus = receipt.ToPrint();
+                string printStatus = receipt.ToPrint(settings);
                 if (printStatus == "Success")
                 {
                     ticket.PayTicket(payAmount);
