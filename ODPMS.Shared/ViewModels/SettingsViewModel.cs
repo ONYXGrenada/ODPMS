@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml.Media.Imaging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System.Text.Json.Serialization;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
@@ -53,6 +55,9 @@ namespace ODPMS.ViewModels
         string ticketDisclaimer;
 
         [ObservableProperty]
+        string printerCOMPort;
+
+        [ObservableProperty]
         bool defaultPrintReceipt;
         
         [ObservableProperty]
@@ -64,6 +69,10 @@ namespace ODPMS.ViewModels
         public ObservableCollection<User> Users { get; } = new();
         public ObservableCollection<TicketType> TicketTypes { get; } = new();
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        string appSettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            "Onyx Digital", "OPMS", "Data");
+        string appSettingsFile = "appsettings.json";
+        Settings settings = new();
         public static List<string> Statuses { get; } = new() { "Active", "Inactive" };
         public static List<string> UserTypes { get; } = new() { "admin", "user" };
 
@@ -100,6 +109,15 @@ namespace ODPMS.ViewModels
             }
             FirstName = App.LoggedInUser.FirstName;
             LastName = App.LoggedInUser.LastName;
+
+            if (File.Exists(Path.Combine(appSettingsPath, appSettingsFile)))
+            {
+                var config = new ConfigurationBuilder()
+                .SetBasePath(appSettingsPath)
+                .AddJsonFile(appSettingsFile).Build();
+
+                settings = config.Get<Settings>();
+            }
 
             GetCompanyData();
             GetTicketSettings();
@@ -142,15 +160,66 @@ namespace ODPMS.ViewModels
                 CompanyLogo = new BitmapImage(resourceUri2);
             }
 
+            CompanyName = settings.CompanySettings.CompanyName;
+            CompanyAddress = settings.CompanySettings.CompanyAddress;
+            CompanyEmail = settings.CompanySettings.CompanyEmail;
+            CompanyPhone = settings.CompanySettings.CompanyPhone;
+            
+            if (settings.CompanySettings.CompanyLogo != null)
+            {
+                string clogo = settings.CompanySettings.CompanyLogo;
+                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                {
+                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    CompanyLogo = new BitmapImage(resourceUri);
+                }
+            }
+            else
+            {
+                Uri resourceUri2 = new Uri("ms-appx:///Assets/Images/logo-placeholder.png");
+                CompanyLogo = new BitmapImage(resourceUri2);
+            }
         }
 
         [ICommand]
-        private void UpdateCompany()
+        private async void UpdateCompany()
         {
-            LocalSettings.Values["CompanyName"] = CompanyName;
-            LocalSettings.Values["CompanyAddress"] = CompanyAddress;
-            LocalSettings.Values["CompanyEmail"] = CompanyEmail;
-            LocalSettings.Values["CompanyPhone"] = CompanyPhone;
+            if (IsBusy)
+                return;
+            try
+            {
+                IsBusy = true;
+
+                LocalSettings.Values["CompanyName"] = CompanyName;
+                LocalSettings.Values["CompanyAddress"] = CompanyAddress;
+                LocalSettings.Values["CompanyEmail"] = CompanyEmail;
+                LocalSettings.Values["CompanyPhone"] = CompanyPhone;
+
+                settings.CompanySettings.CompanyName = CompanyName;
+                settings.CompanySettings.CompanyAddress = CompanyAddress;
+                settings.CompanySettings.CompanyEmail = CompanyEmail;
+                settings.CompanySettings.CompanyPhone = CompanyPhone;
+
+                var jsonWriteOptions = new JsonSerializerOptions()
+                {
+                    WriteIndented = true
+                };
+                jsonWriteOptions.Converters.Add(new JsonStringEnumConverter());
+                var newJson = JsonSerializer.Serialize(settings, jsonWriteOptions);
+                await File.WriteAllTextAsync(Path.Combine(appSettingsPath, appSettingsFile), newJson);
+            }
+            catch (Exception ex)
+            {
+                ContentDialog contentDialog = new();
+                contentDialog.Title = "Error";
+                contentDialog.Content = string.Format("The following error occurred: {0}", ex.Message);
+                contentDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await contentDialog.ShowAsync();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         [ICommand]
@@ -322,6 +391,7 @@ namespace ODPMS.ViewModels
                 CompanyLogo = new BitmapImage(resourceUri);
 
                 LocalSettings.Values["CompanyLogo"] = "clogo" + file.FileType;
+                settings.CompanySettings.CompanyLogo = "clogo" + file.FileType;
             }
             else
             {
@@ -336,17 +406,52 @@ namespace ODPMS.ViewModels
 
             if (LocalSettings.Values["TicketDisclaimer"] != null)
                 TicketDisclaimer = LocalSettings.Values["TicketDisclaimer"] as string;
+
+            TicketMessage = settings.TicketSettings.TicketMessage;
+            TicketDisclaimer = settings.TicketSettings.TicketDisclaimer;
         }
 
         [ICommand]
-        private void UpdateTicketSettings()
+        private async void UpdateTicketSettings()
         {
-            LocalSettings.Values["TicketMessage"] = TicketMessage;
-            LocalSettings.Values["TicketDisclaimer"] = TicketDisclaimer;
+            if (IsBusy)
+                return;
+            try
+            {
+                IsBusy = true;
+                LocalSettings.Values["TicketMessage"] = TicketMessage;
+                LocalSettings.Values["TicketDisclaimer"] = TicketDisclaimer;
+
+                settings.TicketSettings.TicketMessage = TicketMessage;
+                settings.TicketSettings.TicketDisclaimer = TicketDisclaimer;
+
+                var jsonWriteOptions = new JsonSerializerOptions()
+                {
+                    WriteIndented = true
+                };
+                jsonWriteOptions.Converters.Add(new JsonStringEnumConverter());
+                var newJson = JsonSerializer.Serialize(settings, jsonWriteOptions);
+                await File.WriteAllTextAsync(Path.Combine(appSettingsPath, appSettingsFile), newJson);
+            }
+            catch (Exception ex)
+            {
+                ContentDialog contentDialog = new();
+                contentDialog.Title = "Error";
+                contentDialog.Content = string.Format("The following error occurred: {0}", ex.Message);
+                contentDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await contentDialog.ShowAsync();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private void GetReceiptSettings()
         {
+            if (LocalSettings.Values["PrinterCOMPort"] != null)
+                PrinterCOMPort = LocalSettings.Values["PrinterCOMPort"] as string;
+            
             if (LocalSettings.Values["DefaultPrintReceipt"] != null)
                 DefaultPrintReceipt = (bool)LocalSettings.Values["DefaultPrintReceipt"];
             else
@@ -360,14 +465,51 @@ namespace ODPMS.ViewModels
 
             if (LocalSettings.Values["ReceiptDisclaimer"] != null)
                 ReceiptDisclaimer = LocalSettings.Values["ReceiptDisclaimer"] as string;
+
+            PrinterCOMPort = settings.ReceiptSettings.PrinterCOMPort;
+            DefaultPrintReceipt = settings.ReceiptSettings.DefaultPrintReceipt;
+            ReceiptMessage = settings.ReceiptSettings.ReceiptMessage;
+            ReceiptDisclaimer = settings.ReceiptSettings.ReceiptDisclaimer;
         }
 
         [ICommand]
-        private void UpdateReceiptSettings()
+        private async void UpdateReceiptSettings()
         {
-            LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
-            LocalSettings.Values["ReceiptMessage"] = ReceiptMessage;
-            LocalSettings.Values["ReceiptDisclaimer"] = ReceiptDisclaimer;
+            if (IsBusy)
+                return;
+            try
+            {
+                IsBusy = true;
+                LocalSettings.Values["PrinterCOMPort"] = PrinterCOMPort;
+                LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
+                LocalSettings.Values["ReceiptMessage"] = ReceiptMessage;
+                LocalSettings.Values["ReceiptDisclaimer"] = ReceiptDisclaimer;
+
+                settings.ReceiptSettings.PrinterCOMPort = PrinterCOMPort;
+                settings.ReceiptSettings.DefaultPrintReceipt = DefaultPrintReceipt;
+                settings.ReceiptSettings.ReceiptMessage = ReceiptMessage;
+                settings.ReceiptSettings.ReceiptDisclaimer = ReceiptDisclaimer;
+
+                var jsonWriteOptions = new JsonSerializerOptions()
+                {
+                    WriteIndented = true
+                };
+                jsonWriteOptions.Converters.Add(new JsonStringEnumConverter());
+                var newJson = JsonSerializer.Serialize(settings, jsonWriteOptions);
+                await File.WriteAllTextAsync(Path.Combine(appSettingsPath, appSettingsFile), newJson);
+            }
+            catch (Exception ex)
+            {
+                ContentDialog contentDialog = new();
+                contentDialog.Title = "Error";
+                contentDialog.Content = string.Format("The following error occurred: {0}", ex.Message);
+                contentDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await contentDialog.ShowAsync();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         [ICommand]

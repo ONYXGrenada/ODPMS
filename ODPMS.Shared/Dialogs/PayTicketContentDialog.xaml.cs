@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 using System.Windows.Input;
 using Microsoft.UI;
+using Microsoft.Extensions.Configuration;
 
 namespace ODPMS.Dialogs
 {
@@ -15,6 +16,11 @@ namespace ODPMS.Dialogs
         private Receipt receipt;
         private bool printReceipt;
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        string appSettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            "Onyx Digital", "OPMS", "Data");
+        string appSettingsFile = "appsettings.json";
+        Settings settings = new();
+        public string PrinterCOMPort;
         private double payAmount;
         private int PayTicketNumber { get; set; }
         public PayTicketContentDialog(int PayTicketNumber)
@@ -26,6 +32,16 @@ namespace ODPMS.Dialogs
 
         async void Init()
         {
+            // Get settings from json file
+            if (File.Exists(Path.Combine(appSettingsPath, appSettingsFile)))
+            {
+                var config = new ConfigurationBuilder()
+                .SetBasePath(appSettingsPath)
+                .AddJsonFile(appSettingsFile).Build();
+
+                settings = config.Get<Settings>();
+            }
+            
             // Get Ticket
             ticket = await Ticket.GetTicket(this.PayTicketNumber);
             ticket.UpdateCost();
@@ -81,6 +97,21 @@ namespace ODPMS.Dialogs
                 }
             }
 
+            this.companyName_txtBlock.Text = settings.CompanySettings.CompanyName;
+            this.companyAddress_txtBlock.Text = settings.CompanySettings.CompanyAddress;
+            this.companyEmail_txtBlock.Text = settings.CompanySettings.CompanyEmail;
+            this.companyPhone_txtBlock.Text = settings.CompanySettings.CompanyPhone;
+
+            if (settings.CompanySettings.CompanyLogo != null)
+            {
+                string clogo = settings.CompanySettings.CompanyLogo;
+                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                {
+                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
+                }
+            }
+
             if (LocalSettings.Values["DefaultPrintReceipt"] != null)
                 this.printReceipt_chk.IsChecked = (bool)LocalSettings.Values["DefaultPrintReceipt"];
 
@@ -89,6 +120,11 @@ namespace ODPMS.Dialogs
 
             if (LocalSettings.Values["ReceiptDisclaimer"] != null)
                 this.receiptDisclaimer_txtBlock.Text = LocalSettings.Values["ReceiptDisclaimer"] as string;
+
+            PrinterCOMPort = settings.ReceiptSettings.PrinterCOMPort;
+            this.printReceipt_chk.IsChecked = settings.ReceiptSettings.DefaultPrintReceipt;
+            this.receiptMessage_txtBlock.Text = settings.ReceiptSettings.ReceiptMessage;
+            this.receiptDisclaimer_txtBlock.Text = settings.ReceiptSettings.ReceiptDisclaimer;
 
             if (ticket.Status == "Open" || ticket.Status == "Partial")
             {

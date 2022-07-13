@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 using BarcodeLib;
 using Windows.Storage.Streams;
+using Microsoft.Extensions.Configuration;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,6 +24,10 @@ namespace ODPMS.Dialogs
         private Ticket NewTicket;
         private TicketType NewTicketType;
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
+        string appSettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            "Onyx Digital", "OPMS", "Data");
+        string appSettingsFile = "appsettings.json";
+        Settings settings = new();
         private double payAmount;
         private int PayTicketNumber { get; set; }
         
@@ -35,6 +40,16 @@ namespace ODPMS.Dialogs
 
         async void Init()
         {
+            // Get settings from json file
+            if (File.Exists(Path.Combine(appSettingsPath, appSettingsFile)))
+            {
+                var config = new ConfigurationBuilder()
+                .SetBasePath(appSettingsPath)
+                .AddJsonFile(appSettingsFile).Build();
+
+                settings = config.Get<Settings>();
+            }
+
             // Get ticket types
             var ticketTypes = await TicketType.GetTicketTypesByStatus("Active");
 
@@ -91,11 +106,29 @@ namespace ODPMS.Dialogs
                 }
             }
 
+            this.companyName_txtBlock.Text = settings.CompanySettings.CompanyName;
+            this.companyAddress_txtBlock.Text = settings.CompanySettings.CompanyAddress;
+            this.companyEmail_txtBlock.Text = settings.CompanySettings.CompanyEmail;
+            this.companyPhone_txtBlock.Text = settings.CompanySettings.CompanyPhone;
+
+            if (settings.CompanySettings.CompanyLogo != null)
+            {
+                string clogo = settings.CompanySettings.CompanyLogo;
+                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                {
+                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
+                }
+            }
+
             if (LocalSettings.Values["TicketMessage"] != null)
                 this.ticketMessage_txtBlock.Text = LocalSettings.Values["TicketMessage"] as string;
 
             if (LocalSettings.Values["TicketDisclaimer"] != null)
                 this.ticketDisclaimer_txtBlock.Text = LocalSettings.Values["TicketDisclaimer"] as string;
+
+            this.ticketMessage_txtBlock.Text = settings.TicketSettings.TicketMessage;
+            this.ticketDisclaimer_txtBlock.Text = settings.TicketSettings.TicketDisclaimer;
 
             this.ticketNumber_txtBlock.Text = NewTicket.Id.ToString();
             this.ticketDate_txtBlock.Text = NewTicket.Created.ToString("MM/dd/yyyy");

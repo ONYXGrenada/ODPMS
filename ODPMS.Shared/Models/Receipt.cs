@@ -159,11 +159,11 @@ namespace ODPMS.Models
         #endregion
 
         #region Print Functions
-        public string ToPrint()
+        public string ToPrint(Settings settings)
         {
             try
             {
-                var printer = new SerialPrinter(portName: "COM5", baudRate: 115200);
+                var printer = new SerialPrinter(portName: settings.ReceiptSettings.PrinterCOMPort, baudRate: 115200);
                 var e = new EPSON();
                 printer.Write(
                   ByteSplicer.Combine(
@@ -213,7 +213,7 @@ namespace ODPMS.Models
             }
             catch (Exception ex)
             {
-                return StatusMessage = string.Format("Failed to print to the Receipt Printer. {0}", ex.Message);
+                return StatusMessage = string.Format("Failed to print receipt to the printer. {0}", ex.Message);
             }
         }
         #endregion

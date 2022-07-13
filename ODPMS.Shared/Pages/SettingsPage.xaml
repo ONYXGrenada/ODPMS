@@ -355,9 +355,19 @@
 
             <StackPanel Margin="5"
                         Spacing="8">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <TextBlock MinWidth="140"
+                               Text="Printer COM Port:" />
+                    <TextBox x:Name="printerCOMPort_txt"
+                             Text="{Binding PrinterCOMPort, Mode=TwoWay}"
+                             MinWidth="110"/>
+                </StackPanel>
                 <CheckBox x:Name="defaultPrintReceipt_chk" 
-                          Content="Print Receipt (Default)"
-                          IsChecked="{Binding DefaultPrintReceipt, Mode=TwoWay}"/>
+                          FlowDirection="RightToLeft"
+                          Content="Print Receipt (Default):"
+                          IsChecked="{Binding DefaultPrintReceipt, Mode=TwoWay}"
+                          />
                 <TextBlock MinWidth="110"
                            Text="Message:" />
                 <TextBox x:Name="receiptMessage_txt"

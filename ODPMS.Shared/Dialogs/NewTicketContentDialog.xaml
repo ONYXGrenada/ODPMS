@@ -117,7 +117,7 @@
                    HorizontalAlignment="Center"/>
         </StackPanel>
         <StackPanel x:Name="ticketFooter_sp">
-            <TextBlock x:Name="ticketGreeting_txtBlock"
+            <TextBlock x:Name="ticketMessage_txtBlock"
                        TextWrapping="Wrap"
                        TextAlignment="Center"
                        FontSize="12"
