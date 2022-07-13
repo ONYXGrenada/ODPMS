@@ -51,6 +51,10 @@ namespace ODPMS.ViewModels
 
         async void Init()
         {
+            // Check float for first daily login
+            if (App.LoggedInUser.Username != "admin")
+                CheckForFloat(App.LoggedInUser.Username);
+
             var tickets = await Ticket.GetAllTickets();
             SearchList = new List<string>();
 
@@ -99,6 +103,23 @@ namespace ODPMS.ViewModels
             OtherTicketsHeader = String.Format("Other Tickets ({0})", OtherTicketList.Count);
 
             WelcomeMessage = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
+        }
+
+        public async void CheckForFloat(string userId)
+        {
+
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+            await App.Database.Init();
+            var query = App.Database.Current.Table<CashFloat>().Where(v => v.User.Equals(userId) && v.Created.Equals(today));
+            var StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+            Debug.WriteLine(StatusMessage);
+
+            if (await query.CountAsync() == 0)
+            {
+                ContentDialog floatDialog = new CashFloatContentDialog();
+                floatDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await floatDialog.ShowAsync();
+            }
         }
 
         [ICommand]
