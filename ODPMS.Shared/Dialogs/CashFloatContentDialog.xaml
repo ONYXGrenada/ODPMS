@@ -15,6 +15,7 @@
         <TextBlock Text="Enter cash float:"
                    Grid.Row="3"/>
         <TextBox x:Name="cashFloat_txt"
-                 PlaceholderText="Cash Float"/>
+                 PlaceholderText="Cash Float"
+                 BeforeTextChanging="TextBox_OnBeforeTextChanging"/>
     </StackPanel>
 </ContentDialog>

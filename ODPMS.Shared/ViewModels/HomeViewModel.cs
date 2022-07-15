@@ -51,10 +51,12 @@ namespace ODPMS.ViewModels
 
         async void Init()
         {
-            // Check float for first daily login
-            if (App.LoggedInUser.Username != "admin")
-                CheckForFloat(App.LoggedInUser.Username);
+            CheckForFloat(App.LoggedInUser.Username);
 
+            // Check float for first daily login
+            /*if (App.LoggedInUser.Username != "admin")
+                CheckForFloat(App.LoggedInUser.Username);
+            */
             var tickets = await Ticket.GetAllTickets();
             SearchList = new List<string>();
 
@@ -121,6 +123,8 @@ namespace ODPMS.ViewModels
                 await floatDialog.ShowAsync();
             }
         }
+
+        
 
         [ICommand]
         async void NewTicket()

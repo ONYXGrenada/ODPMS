@@ -318,10 +318,47 @@ namespace ODPMS.ViewModels
         [ICommand]
         async void AdjustFloat()
         {
-            // Display the cash float dialog
-            ContentDialog cashFloat = new CashFloatContentDialog();
-            cashFloat.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
-            await cashFloat.ShowAsync();
+            User user = SelectedUser;
+
+            if (user == null)
+                user = App.LoggedInUser;
+
+            string userId = user.Username;
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+            await App.Database.Init();
+            var query = App.Database.Current.Table<CashFloat>().Where(v => v.User.Equals(userId) && v.Created.Equals(today));
+            var StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+            Debug.WriteLine(StatusMessage);
+            var cashFloatList = await query.FirstOrDefaultAsync();
+            var amount = cashFloatList.Amount;
+            var id = cashFloatList.Id;
+
+            var userFloat = await CashFloat.GetCashFloat(id);
+
+            
+            
+
+            int exists = await query.CountAsync();
+
+            if (exists == 0)
+            {
+                //show dialog that user has not entered float for the day
+                ContentDialog cashFloatAlert = new CashFloatAlertContentDialog();
+                cashFloatAlert.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await cashFloatAlert.ShowAsync();
+            }
+            else
+            {
+                // Display the cash float update dialog
+                ContentDialog cashFloat = new CashFloatUpdateContentDialog(userFloat);
+                //ContentDialog cashFloat = new CashFloatUpdateContentDialog(userId, amount);
+                cashFloat.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await cashFloat.ShowAsync();
+            }
+
+
+
+            
         }
 
         [ICommand]
@@ -529,5 +566,7 @@ namespace ODPMS.ViewModels
             else
                 IsTicketTypeSelected = false;
         }
+
+        
     }
 }

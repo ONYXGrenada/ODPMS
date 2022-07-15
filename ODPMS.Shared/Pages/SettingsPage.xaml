@@ -133,7 +133,7 @@
                                             HorizontalAlignment="Stretch"/>
                                     <Button x:Name="buttonFloat_btn"
                                             ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
-                                            Content="Float"
+                                            Content="Edit Float"
                                             Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.AdjustFloatCommand, RelativeSource={RelativeSource Self}}"
                                             CommandParameter="{Binding}"
                                             HorizontalAlignment="Stretch"/>
