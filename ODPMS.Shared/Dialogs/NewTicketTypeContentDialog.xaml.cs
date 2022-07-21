@@ -25,13 +25,13 @@ namespace ODPMS.Dialogs
                 statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
                 statusMessage_txtBlock.Text = "Description is required.";
             }
-            if (string.IsNullOrEmpty(this.period_txt.Text))
+            else if (string.IsNullOrEmpty(this.period_txt.Text))
             {
                 args.Cancel = true;
                 statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
                 statusMessage_txtBlock.Text = "Quantity is required.";
             }
-            if (string.IsNullOrEmpty(this.unitCost_txt.Text))
+            else if (string.IsNullOrEmpty(this.unitCost_txt.Text))
             {
                 args.Cancel = true;
                 statusMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);

@@ -18,6 +18,7 @@
     <_Globbed_Compile Remove="Dialogs\CashFloatContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\CashFloatUpdateContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\ContentDialog1.xaml.cs" />
+    <_Globbed_Compile Remove="Dialogs\DeleteConfirmContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\NewSpecialTicketContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\NewTicketTypeContentDialog.xaml.cs" />
     <_Globbed_Compile Remove="Dialogs\ResetPasswordContentDialog.xaml.cs" />
@@ -61,6 +62,7 @@
   <ItemGroup>
     <_Globbled_Page Remove="Dialogs\CashFloatAlertContentDialog.xaml" />
     <_Globbled_Page Remove="Dialogs\CashFloatUpdateContentDialog.xaml" />
+    <_Globbled_Page Remove="Dialogs\DeleteConfirmContentDialog.xaml" />
     <_Globbled_Page Remove="Dialogs\NewTicketTypeContentDialog.xaml" />
     <_Globbled_Page Remove="Pages\AppsPage.xaml" />
     <_Globbled_Page Remove="Pages\BlankPage1.xaml" />

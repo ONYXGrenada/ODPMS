@@ -51,7 +51,20 @@ namespace ODPMS.Models
                 TimeSpan ts = (DateTime)Closed - Created;
 
                 if (ts.TotalMinutes % 60 >= gracePeriod)
-                    Cost = Rate * Math.Ceiling(ts.TotalHours);
+                {
+                    
+
+                    if (ts.TotalHours >= 8)
+                    {
+                        Cost = 12 * Math.Ceiling(ts.TotalDays);
+                    }
+                    else
+                    {
+                        Cost = Rate * Math.Ceiling(ts.TotalHours);
+                    }
+                }
+                    
+                
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }

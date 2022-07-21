@@ -304,13 +304,22 @@ namespace ODPMS.ViewModels
         [ICommand]
         async void DeleteUser(User deletedUser)
         {
-            await User.DeleteUser(deletedUser);
+            
+           // await User.DeleteUser(deletedUser);
+
+            
+           
+
+            ContentDialog deleteConfirm = new DeleteConfirmContentDialog(deletedUser);
+            deleteConfirm.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+            await deleteConfirm.ShowAsync();
+
 
             var users = await User.GetAllUsersDisplay();
 
             if (Users.Count != 0)
                 Users.Clear();
-            
+
             foreach (var user in users)
                 Users.Add(user);
         }
@@ -381,7 +390,11 @@ namespace ODPMS.ViewModels
         [ICommand]
         async void DeleteTicketType(TicketType selected)
         {
-            await TicketType.DeleteTicketType(selected);
+            // await TicketType.DeleteTicketType(selected);
+
+            ContentDialog deleteConfirm = new DeleteConfirmContentDialog(selected);
+            deleteConfirm.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+            await deleteConfirm.ShowAsync();
 
             var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
 

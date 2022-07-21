@@ -27,6 +27,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Dialogs\CashFloatUpdateContentDialog.xaml.cs">
       <DependentUpon>CashFloatUpdateContentDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Dialogs\DeleteConfirmContentDialog.xaml.cs">
+      <DependentUpon>DeleteConfirmContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Dialogs\OtherTicketsContentDialog.xaml.cs">
       <DependentUpon>OtherTicketsContentDialog.xaml</DependentUpon>
     </Compile>
@@ -81,6 +84,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Dialogs\CashFloatUpdateContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Dialogs\DeleteConfirmContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
