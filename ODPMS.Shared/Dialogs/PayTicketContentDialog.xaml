@@ -40,6 +40,11 @@
                          x:Name="paymentAmount_txt" 
                          TextChanged="PayAmount_Changed"
                          IsEnabled="False"/>
+                <TextBlock x:Name="balanceMessage_txtBlock"
+                           Grid.Row="4"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"/>
                 <TextBlock Grid.Row="2" 
                            x:Name="changeReturned_txtBlock"
                            TextWrapping="Wrap"/>

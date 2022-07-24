@@ -174,10 +174,24 @@ namespace ODPMS.Dialogs
 
             NewTicket.UpdateClosed();
 
-            if (payAmount > 0)
+           /* if (payAmount > 0)
                 NewTicket.PayTicket(payAmount);
+           */
 
-            await Ticket.CreateTicket(NewTicket);
+            NewTicket.PayTicket(payAmount);
+            if (NewTicket.Balance > 0)
+            {
+                args.Cancel = true;
+                balanceMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                balanceMessage_txtBlock.Text = "Please collect " + NewTicket.Balance.ToString("C2") + " from  customer.";
+
+            }
+            else
+            {
+                await Ticket.CreateTicket(NewTicket);
+            }
+
+            
         }
 
         private void SecondaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)

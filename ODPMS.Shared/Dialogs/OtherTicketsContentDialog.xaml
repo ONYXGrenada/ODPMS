@@ -51,6 +51,11 @@
                      PlaceholderText="Pay Amount"/>
             <TextBlock x:Name="changeReturned_txtBlock"
                        TextWrapping="Wrap"/>
+            <TextBlock x:Name="balanceMessage_txtBlock"
+                           Grid.Row="4"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"/>
 
 
             <!--<Expander Grid.Row="7"

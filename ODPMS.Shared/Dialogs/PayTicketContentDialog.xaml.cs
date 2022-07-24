@@ -164,8 +164,21 @@ namespace ODPMS.Dialogs
             else
             {
                 ticket.PayTicket(payAmount);
-                await Ticket.UpdateTicket(ticket);
-                await Receipt.CreateReceipt(receipt);
+
+                if (ticket.Balance > 0)
+                {
+                    args.Cancel = true;
+                    balanceMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    balanceMessage_txtBlock.Text = "Please collect " + ticket.Balance.ToString("C2") + " from  customer.";
+                    
+
+                }
+                else
+                {
+                    await Ticket.UpdateTicket(ticket);
+                    await Receipt.CreateReceipt(receipt);
+                }
+                
             }
         }
 

@@ -85,7 +85,7 @@ namespace ODPMS.Models
                 return;
 
             int gracePeriod = 5;
-            PayAmount += payAmount;
+            PayAmount = payAmount;
 
             if (Type == "Hourly")
             {
@@ -105,7 +105,9 @@ namespace ODPMS.Models
             if (Balance == 0)
                 Status = "Paid";
             else if (Balance > 0)
-                Status = "Partial";
+            {
+                //Status = "Partial";
+            }
         }
 
         public void UpdateClosed()
