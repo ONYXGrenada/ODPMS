@@ -54,6 +54,24 @@ namespace ODPMS.Models
             return new CashFloat();
         }
 
+        public static async Task<CashFloat> GetCashFloatByUser(string username)
+        {
+            try
+            {
+                await App.Database.Init();
+                string today = DateTime.Now.ToString("yyyy-MM-dd");
+                var query = App.Database.Current.Table<CashFloat>().Where(v => v.User.Equals(username) && v.Created.Equals(today));
+                StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
+
+                return await query.FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+            }
+            return null;
+        }
+
         public static async Task UpdateCashFloat(CashFloat cashFloat)
         {
             int result = 0;
@@ -92,8 +110,6 @@ namespace ODPMS.Models
             {
                 await App.Database.Init();
                 result = await App.Database.Current.DeleteAsync<CashFloat>(id);
-
-
 
                 StatusMessage = string.Format("{0} record(s) deleted [Ticket: {1})", result, id);
             }
@@ -135,20 +151,13 @@ namespace ODPMS.Models
                 {
                     result = true;
                 }
-
             }
             catch (Exception ex)
             {
                 StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
             }
-
             return result;
-
         }
-
-
-
-
         #endregion
     }
 }

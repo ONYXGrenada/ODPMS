@@ -8,9 +8,9 @@ namespace ODPMS.ViewModels
         [AlsoNotifyChangeFor(nameof(IsNotBusy))]
         bool isBusy;
 
+        public bool IsNotBusy => !IsBusy;
+
         [ObservableProperty]
         string title;
-
-        public bool IsNotBusy => !IsBusy;
     }
 }

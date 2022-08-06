@@ -136,6 +136,7 @@
                                             Content="Edit Float"
                                             Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.AdjustFloatCommand, RelativeSource={RelativeSource Self}}"
                                             CommandParameter="{Binding}"
+                                            IsEnabled="{Binding IsDeletable}"
                                             HorizontalAlignment="Stretch"/>
                                 </StackPanel>
                             </DataTemplate>

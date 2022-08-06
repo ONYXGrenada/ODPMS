@@ -304,12 +304,6 @@ namespace ODPMS.ViewModels
         [ICommand]
         async void DeleteUser(User deletedUser)
         {
-            
-           // await User.DeleteUser(deletedUser);
-
-            
-           
-
             ContentDialog deleteConfirm = new DeleteConfirmContentDialog(deletedUser);
             deleteConfirm.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await deleteConfirm.ShowAsync();
@@ -325,31 +319,14 @@ namespace ODPMS.ViewModels
         }
 
         [ICommand]
-        async void AdjustFloat()
+        async void AdjustFloat(User selectedUser)
         {
-            User user = SelectedUser;
+            if (selectedUser == null)
+                return;
+;
+            var userCashFloat = await CashFloat.GetCashFloatByUser(selectedUser.Username);
 
-            if (user == null)
-                user = App.LoggedInUser;
-
-            string userId = user.Username;
-            var today = DateTime.Now.ToString("yyyy-MM-dd");
-            await App.Database.Init();
-            var query = App.Database.Current.Table<CashFloat>().Where(v => v.User.Equals(userId) && v.Created.Equals(today));
-            var StatusMessage = string.Format("{0} record(s) found in the ticket table)", await query.CountAsync());
-            Debug.WriteLine(StatusMessage);
-            var cashFloatList = await query.FirstOrDefaultAsync();
-            var amount = cashFloatList.Amount;
-            var id = cashFloatList.Id;
-
-            var userFloat = await CashFloat.GetCashFloat(id);
-
-            
-            
-
-            int exists = await query.CountAsync();
-
-            if (exists == 0)
+            if (userCashFloat == null)
             {
                 //show dialog that user has not entered float for the day
                 ContentDialog cashFloatAlert = new CashFloatAlertContentDialog();
@@ -359,15 +336,10 @@ namespace ODPMS.ViewModels
             else
             {
                 // Display the cash float update dialog
-                ContentDialog cashFloat = new CashFloatUpdateContentDialog(userFloat);
-                //ContentDialog cashFloat = new CashFloatUpdateContentDialog(userId, amount);
+                ContentDialog cashFloat = new CashFloatUpdateContentDialog(userCashFloat);
                 cashFloat.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
                 await cashFloat.ShowAsync();
-            }
-
-
-
-            
+            } 
         }
 
         [ICommand]
