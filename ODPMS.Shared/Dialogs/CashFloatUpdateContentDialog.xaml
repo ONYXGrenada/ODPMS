@@ -6,11 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Alert"
+    Title="Cash Float"
     PrimaryButtonText="OK"
-    PrimaryButtonClick="CashFloatUpdateContentDialog_PrimaryButtonClick">
-
-
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="CashFloatUpdateContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="CashFloatUpdateContentDialog_SecondaryButtonClick"
+    CornerRadius="8">
 
     <StackPanel Spacing="8">
         <TextBlock  x:Name="lbl_info"
@@ -20,7 +21,6 @@
         <TextBox x:Name="cashFloatUpdate_txt"
                  PlaceholderText="Enter New Float"
                  BeforeTextChanging="TextBox_OnBeforeTextChanging"/>
-        
     </StackPanel>
 
 </ContentDialog>

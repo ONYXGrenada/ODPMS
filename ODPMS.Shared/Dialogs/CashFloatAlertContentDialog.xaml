@@ -6,18 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Alert"
+    Title="Cash Float"
     PrimaryButtonText="OK"
-    PrimaryButtonClick="CashFloatAlertContentDialog_PrimaryButtonClick">
-
-
+    PrimaryButtonClick="CashFloatAlertContentDialog_PrimaryButtonClick"
+    CornerRadius="8">
 
     <StackPanel Spacing="8">
         <TextBlock Text="Cash float has not been added for this user today."
                 Grid.Row="3"/>
         <TextBlock Text="Please ask the user to log in to enter his/her float."
                 Grid.Row="3"/>
-        
     </StackPanel>
 
 </ContentDialog>

@@ -10,8 +10,6 @@ namespace ODPMS.Dialogs
         public CashFloatUpdateContentDialog()
         {
             this.InitializeComponent();
-
-            
         }
 
         private void TextBox_OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
@@ -23,8 +21,7 @@ namespace ODPMS.Dialogs
         {
             this.InitializeComponent();
 
-            this.lbl_info.Text = String.Format("{0} has existing cash float of {1}",user,amount.ToString("C2"));
-
+            this.lbl_info.Text = String.Format("User {0} has existing cash float of {1}.",user,amount.ToString("C2"));
 
         }
 
@@ -34,8 +31,7 @@ namespace ODPMS.Dialogs
             
             userFloat = cashFloat;
 
-            this.lbl_info.Text = String.Format("{0} has existing cash float of {1}", cashFloat.User, cashFloat.Amount.ToString("C2"));
-
+            this.lbl_info.Text = String.Format("User {0} has existing cash float of {1}.", cashFloat.User, cashFloat.Amount.ToString("C2"));
 
         }
 
@@ -56,9 +52,10 @@ namespace ODPMS.Dialogs
             userFloat.Updated = DateTime.Now;
 
             await CashFloat.UpdateCashFloat(userFloat);
-
         }
 
-        
+        private void CashFloatUpdateContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+        }
     }
 }

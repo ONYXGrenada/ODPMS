@@ -10,15 +10,12 @@
     PrimaryButtonText="Delete"
     PrimaryButtonClick="DeleteConfirmContentDialog_PrimaryButtonClick"
     SecondaryButtonText="Cancel"
-    SecondaryButtonClick="DeleteConfirmContentDialog_SecondaryButtonClick">
-
-
+    SecondaryButtonClick="DeleteConfirmContentDialog_SecondaryButtonClick"
+    CornerRadius="8">
 
     <StackPanel Spacing="8">
         <TextBlock x:Name="lblDeleteMsg" Text=""
                 Grid.Row="3"/>
-        
-        
     </StackPanel>
 
 </ContentDialog>

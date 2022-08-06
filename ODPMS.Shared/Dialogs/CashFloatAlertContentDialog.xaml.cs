@@ -11,8 +11,6 @@ namespace ODPMS.Dialogs
 
         private void CashFloatAlertContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-        }
-
-        
+        } 
     }
 }

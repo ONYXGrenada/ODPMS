@@ -76,6 +76,12 @@
                     Content="Update User"
                     Command="{Binding UpdateUserCommand}"
                     MinWidth="160"/>
+            
+            <Button Style="{StaticResource AccentButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Content="Reset Password"
+                    Command="{Binding ResetPasswordCommand}"
+                    MinWidth="160"/>
         </StackPanel>
 
         <!--Section 2: Users Administration -->
