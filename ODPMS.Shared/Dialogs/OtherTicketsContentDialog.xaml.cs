@@ -13,6 +13,7 @@ using Windows.Storage;
 using BarcodeLib;
 using Windows.Storage.Streams;
 using Microsoft.Extensions.Configuration;
+using ODPMS.Models;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,20 +23,19 @@ namespace ODPMS.Dialogs
     {
         ObservableCollection<TicketType> TicketTypesList = new ObservableCollection<TicketType>();
         private Ticket NewTicket;
-        private TicketType NewTicketType;
+        private Receipt NewReceipt;
+        private TicketType SelectedTicketType;
         public static ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         string appSettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
             "Onyx Digital", "OPMS", "Data");
         string appSettingsFile = "appsettings.json";
         Settings settings = new();
         private double payAmount;
-        private int PayTicketNumber { get; set; }
         
         public OtherTicketsContentDialog()
         {
             this.InitializeComponent();
-            Init();
-            
+            Init(); 
         }
 
         async void Init()
@@ -66,7 +66,7 @@ namespace ODPMS.Dialogs
             this.ticketType_cb.SelectedIndex = 0;
             this.ticketType_cb.SelectionChanged += ticketType_cb_SelectionChanged;
 
-            // Create new ticket object
+            // Create a new ticket
             var tickets = await Ticket.GetAllTickets();
 
             NewTicket = new();
@@ -82,6 +82,18 @@ namespace ODPMS.Dialogs
             NewTicket.UpdatedBy = App.LoggedInUser.Username;
             NewTicket.IsDeletable = true;
 
+            // Create a new receipt
+            var receipts = await Receipt.GetAllReceipts();
+
+            NewReceipt = new();
+            if (receipts.Count == 0)
+                NewReceipt.Id = 1;
+            else
+                NewReceipt.Id = receipts.Select(x => x.Id).Max() + 1;
+            NewReceipt.TicketNumber = NewTicket.Id;
+            NewReceipt.TicketType = NewTicket.Type;
+            NewReceipt.Created = DateTime.Now;
+            NewReceipt.User = App.LoggedInUser.Username;
 
             // Set field values
             if (LocalSettings.Values["CompanyName"] != null)
@@ -141,57 +153,53 @@ namespace ODPMS.Dialogs
             string registration = this.vehicleNum_txt.Text;
             string ticketDescription = this.ticketType_cb.Items[this.ticketType_cb.SelectedIndex].ToString();
 
+            if (registration == "")
+            {
+                args.Cancel = true;
+                balanceMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
+                balanceMessage_txtBlock.Text = $"Please enter a valid vehicle registration number.";
+                return;
+            }
+
             foreach (var ticketType in TicketTypesList)
                 if (ticketType.Description == ticketDescription)
-                    NewTicketType = ticketType;
+                    SelectedTicketType = ticketType;
 
             double payAmount;
             Double.TryParse(this.paymentAmount_txt.Text, out payAmount);
             int customerId = 0;
 
-            //var tickets = await Ticket.GetAllTickets();
-
-            //NewTicket = new();
-            //if (tickets.Count == 0)
-            //    NewTicket.Id = 1;
-            //else
-            //    NewTicket.Id = tickets.Select(x => x.Id).Max() + 1;
-
-            NewTicket.Type = NewTicketType.Type;
-            NewTicket.Description = NewTicketType.Description;
-            //NewTicket.Created = DateTime.Now;
-            //NewTicket.Status = "Open";
+            // Update the new ticket
+            NewTicket.Type = SelectedTicketType.Type;
+            NewTicket.Description = SelectedTicketType.Description;
             NewTicket.CustomerId = customerId;
             NewTicket.Registration = registration;
-            NewTicket.Period = NewTicketType.Period;
-            NewTicket.Rate = NewTicketType.Rate;
-            NewTicket.Cost = NewTicketType.Rate;
-            NewTicket.Balance = NewTicketType.Rate;
-            //NewTicket.User = App.LoggedInUser.Username;
-            //NewTicket.Updated = DateTime.Now;
-            //NewTicket.UpdatedBy = App.LoggedInUser.Username;
-            //NewTicket.IsDeletable = true;
+            NewTicket.Period = SelectedTicketType.Period;
+            NewTicket.Rate = SelectedTicketType.Rate;
+            NewTicket.Cost = SelectedTicketType.Rate;
+            NewTicket.Balance = SelectedTicketType.Rate;
 
             NewTicket.UpdateClosed();
-
-           /* if (payAmount > 0)
-                NewTicket.PayTicket(payAmount);
-           */
-
             NewTicket.PayTicket(payAmount);
+
+            // Update the new receipt
+            NewReceipt.Cost = NewTicket.Cost;
+            NewReceipt.Paid = NewTicket.PayAmount;
+            NewReceipt.Balance = NewTicket.Balance;
+            if (NewTicket.Balance == 0)
+                NewReceipt.Status = "Paid";
+            
             if (NewTicket.Balance > 0)
             {
                 args.Cancel = true;
                 balanceMessage_txtBlock.Foreground = new SolidColorBrush(Colors.Red);
-                balanceMessage_txtBlock.Text = "Please collect " + NewTicket.Balance.ToString("C2") + " from  customer.";
-
+                balanceMessage_txtBlock.Text = $"Please collect {NewTicket.Balance.ToString("C2")} from customer.";
             }
             else
             {
                 await Ticket.CreateTicket(NewTicket);
-            }
-
-            
+                await Receipt.CreateReceipt(NewReceipt);
+            }     
         }
 
         private void SecondaryButton_Clicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -203,9 +211,9 @@ namespace ODPMS.Dialogs
             string selectedItem = this.ticketType_cb.Items[this.ticketType_cb.SelectedIndex].ToString();
             foreach (var ticketType in TicketTypesList)
                 if (ticketType.Description == selectedItem)
-                    NewTicketType = ticketType;
+                    SelectedTicketType = ticketType;
 
-            if (NewTicketType.Description == "Hourly")
+            if (SelectedTicketType.Description == "Hourly")
             {
                 this.changeReturned_txtBlock.Text = "";
             }
@@ -219,7 +227,7 @@ namespace ODPMS.Dialogs
                 {
                     payAmount = 0.0;
                 }
-                double change = NewTicketType.Rate - payAmount;
+                double change = SelectedTicketType.Rate - payAmount;
                 if (change > 0)
                 {
                     this.changeReturned_txtBlock.Text = string.Format("The customer still has {0} outstanding", change.ToString("C", CultureInfo.CurrentCulture));
@@ -229,7 +237,6 @@ namespace ODPMS.Dialogs
                     this.changeReturned_txtBlock.Text = string.Format("Please return {0} to the customer", (change * -1).ToString("C", CultureInfo.CurrentCulture));
                 }
             }
-            
         }
 
         private void ticketType_cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -248,6 +255,7 @@ namespace ODPMS.Dialogs
                     this.paymentAmount_txt.IsReadOnly = false;
 
                     this.typePeriod.Text = fromDate + " - " + toDate;
+                    SelectedTicketType = ticketType;
                     break;
                 }
             }                
@@ -263,9 +271,7 @@ namespace ODPMS.Dialogs
             barcode.Encode(TYPE.CODE93, ticketNumber, 200, 100);
             barcode.SaveImage(filePath, SaveTypes.JPG);
 
-
             //Place barcode on ticket
-
             var barcodePath = await ApplicationData.Current.LocalFolder.GetFileAsync("ticket" + ticketNumber + ".jpg");
             using (IRandomAccessStream fileStream = await barcodePath.OpenAsync(Windows.Storage.FileAccessMode.Read))
             {

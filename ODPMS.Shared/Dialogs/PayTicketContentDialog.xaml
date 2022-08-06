@@ -16,7 +16,6 @@
     CloseButtonClick="CloseButton_Clicked"
     DefaultButton="Primary"
     CornerRadius="8">
-    <!--Opened="PayTicket_Opened">-->
 
     <Grid ColumnDefinitions="210,Auto"
           ColumnSpacing="8">

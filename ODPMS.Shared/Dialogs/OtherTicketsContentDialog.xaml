@@ -12,6 +12,7 @@
     SecondaryButtonText="Cancel"
     PrimaryButtonClick="PrimaryButton_Clicked"
     SecondaryButtonClick="SecondaryButton_Clicked"
+    DefaultButton="Primary"
     CornerRadius="8">
 
     <Grid ColumnDefinitions="210,Auto"

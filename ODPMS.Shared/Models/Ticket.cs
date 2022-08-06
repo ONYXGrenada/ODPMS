@@ -52,19 +52,22 @@ namespace ODPMS.Models
 
                 if (ts.TotalMinutes % 60 >= gracePeriod)
                 {
-                    
-
                     if (ts.TotalHours >= 8)
                     {
                         Cost = 12 * Math.Ceiling(ts.TotalDays);
+                        Balance = Cost;
                     }
                     else
                     {
                         Cost = Rate * Math.Ceiling(ts.TotalHours);
+                        Balance = Cost;
                     }
                 }
                 else
+                {
                     Cost = Rate * Math.Floor(ts.TotalHours);
+                    Balance = Cost;
+                }
             }
         }
 
@@ -237,7 +240,7 @@ namespace ODPMS.Models
                 await App.Database.Init();
                 result = await App.Database.Current.InsertAsync(ticket);
 
-                StatusMessage = string.Format("{0} record(s) added [Ticket: {1})", result, ticket.Id);
+                StatusMessage = string.Format("{0} record(s) added [Ticket: {1}])", result, ticket.Id);
             }
             catch (Exception ex)
             {
