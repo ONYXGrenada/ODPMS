@@ -63,8 +63,6 @@ namespace ODPMS.Models
                         Cost = Rate * Math.Ceiling(ts.TotalHours);
                     }
                 }
-                    
-                
                 else
                     Cost = Rate * Math.Floor(ts.TotalHours);
             }
@@ -104,10 +102,8 @@ namespace ODPMS.Models
 
             if (Balance == 0)
                 Status = "Paid";
-            else if (Balance > 0)
-            {
-                //Status = "Partial";
-            }
+            else
+                Status = "Partial";
         }
 
         public void UpdateClosed()
