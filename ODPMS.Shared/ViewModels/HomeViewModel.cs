@@ -122,9 +122,7 @@ namespace ODPMS.ViewModels
                 floatDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
                 await floatDialog.ShowAsync();
             }
-        }
-
-        
+        }        
 
         [ICommand]
         async void NewTicket()

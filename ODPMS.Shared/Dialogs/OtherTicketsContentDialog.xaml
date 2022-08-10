@@ -15,7 +15,7 @@
     DefaultButton="Primary"
     CornerRadius="8">
 
-    <Grid ColumnDefinitions="210,Auto"
+    <Grid ColumnDefinitions="225,Auto"
           ColumnSpacing="8">
         <StackPanel Spacing="8">
             <StackPanel Spacing="4">
@@ -32,16 +32,18 @@
 
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
-                <TextBlock Text="Vehicle #:"/>
+                <TextBlock Text="Vehicle #:"
+                           VerticalAlignment="Center"/>
                 <TextBox x:Name="vehicleNum_txt"
-                         PlaceholderText="Vehicle #"/>
+                         PlaceholderText="Vehicle #" 
+                         Width="160"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
                 <TextBlock Text="Type:"/>
                 <ComboBox x:Name="ticketType_cb"
-                      SelectionChanged="ticketType_cb_SelectionChanged">
+                          SelectionChanged="ticketType_cb_SelectionChanged">
                 </ComboBox>
             </StackPanel>
 
@@ -104,8 +106,8 @@
         </StackPanel>
         <StackPanel x:Name="ticketTemplate_sp"
                     Grid.Column="1"
-                    MaxWidth="280"
-                    MinWidth="280"
+                    MaxWidth="265"
+                    MinWidth="265"
                     Padding="8,8"
                     Background="White">
             <StackPanel x:Name="ticketHeader_sp">
