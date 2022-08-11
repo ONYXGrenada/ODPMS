@@ -54,6 +54,7 @@ namespace ODPMS.Dialogs
                 receipt.Id = 1;
             else
                 receipt.Id = receipts.Select(x => x.Id).Max() + 1;
+
             receipt.TicketNumber = ticket.Id;
             receipt.TicketType = ticket.Type;
             receipt.Created = DateTime.Now;
@@ -72,30 +73,32 @@ namespace ODPMS.Dialogs
             this.receiptTime_txtBlock.Text = receipt.Created.ToString("T");
             this.ticketNumberReceipt_txtBlock.Text = receipt.TicketNumber.ToString();
             this.receiptCost_txtBlock.Text = receipt.Cost.ToString("C", CultureInfo.CurrentCulture);
-            this.receiptPaid_txtBlock.Text = receipt.Paid.ToString("C", CultureInfo.CurrentCulture);
-            this.receiptBalance_txtBlock.Text = receipt.Balance.ToString("C", CultureInfo.CurrentCulture);
+            //this.receiptPaid_txtBlock.Text = receipt.Paid.ToString("C", CultureInfo.CurrentCulture);
+            //this.receiptBalance_txtBlock.Text = receipt.Balance.ToString("C", CultureInfo.CurrentCulture);
+            this.receiptPaid_txtBlock.Text = ticket.PayAmount.ToString("C", CultureInfo.CurrentCulture);
+            this.receiptBalance_txtBlock.Text = ticket.Balance.ToString("C", CultureInfo.CurrentCulture);
 
-            if (LocalSettings.Values["CompanyName"] != null)
-                this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
+            //if (LocalSettings.Values["CompanyName"] != null)
+            //    this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
 
-            if (LocalSettings.Values["CompanyAddress"] != null)
-                this.companyAddress_txtBlock.Text = LocalSettings.Values["CompanyAddress"] as string;
+            //if (LocalSettings.Values["CompanyAddress"] != null)
+            //    this.companyAddress_txtBlock.Text = LocalSettings.Values["CompanyAddress"] as string;
 
-            if (LocalSettings.Values["CompanyEmail"] != null)
-                this.companyEmail_txtBlock.Text = LocalSettings.Values["CompanyEmail"] as string;
+            //if (LocalSettings.Values["CompanyEmail"] != null)
+            //    this.companyEmail_txtBlock.Text = LocalSettings.Values["CompanyEmail"] as string;
 
-            if (LocalSettings.Values["CompanyPhone"] != null)
-                this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
+            //if (LocalSettings.Values["CompanyPhone"] != null)
+            //    this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
 
-            if (LocalSettings.Values["CompanyLogo"] != null)
-            {
-                string clogo = LocalSettings.Values["CompanyLogo"] as string;
-                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
-                {
-                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
-                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
-                }
-            }
+            //if (LocalSettings.Values["CompanyLogo"] != null)
+            //{
+            //    string clogo = LocalSettings.Values["CompanyLogo"] as string;
+            //    if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+            //    {
+            //        Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+            //        this.companyLogo_img.Source = new BitmapImage(resourceUri);
+            //    }
+            //}
 
             this.companyName_txtBlock.Text = settings.CompanySettings.CompanyName;
             this.companyAddress_txtBlock.Text = settings.CompanySettings.CompanyAddress;
@@ -105,21 +108,21 @@ namespace ODPMS.Dialogs
             if (settings.CompanySettings.CompanyLogo != null)
             {
                 string clogo = settings.CompanySettings.CompanyLogo;
-                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                if (File.Exists(Path.Combine(appSettingsPath, clogo)))
                 {
-                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    Uri resourceUri = new Uri(Path.Combine(appSettingsPath, clogo), UriKind.Relative);
                     this.companyLogo_img.Source = new BitmapImage(resourceUri);
                 }
             }
 
-            if (LocalSettings.Values["DefaultPrintReceipt"] != null)
-                this.printReceipt_chk.IsChecked = (bool)LocalSettings.Values["DefaultPrintReceipt"];
+            //if (LocalSettings.Values["DefaultPrintReceipt"] != null)
+            //    this.printReceipt_chk.IsChecked = (bool)LocalSettings.Values["DefaultPrintReceipt"];
 
-            if (LocalSettings.Values["ReceiptMessage"] != null)
-                this.receiptMessage_txtBlock.Text = LocalSettings.Values["ReceiptMessage"] as string;
+            //if (LocalSettings.Values["ReceiptMessage"] != null)
+            //    this.receiptMessage_txtBlock.Text = LocalSettings.Values["ReceiptMessage"] as string;
 
-            if (LocalSettings.Values["ReceiptDisclaimer"] != null)
-                this.receiptDisclaimer_txtBlock.Text = LocalSettings.Values["ReceiptDisclaimer"] as string;
+            //if (LocalSettings.Values["ReceiptDisclaimer"] != null)
+            //    this.receiptDisclaimer_txtBlock.Text = LocalSettings.Values["ReceiptDisclaimer"] as string;
 
             PrinterCOMPort = settings.ReceiptSettings.PrinterCOMPort;
             this.printReceipt_chk.IsChecked = settings.ReceiptSettings.DefaultPrintReceipt;
@@ -151,6 +154,8 @@ namespace ODPMS.Dialogs
                 if (printStatus == "Success")
                 {
                     ticket.PayTicket(payAmount);
+                    if (ticket.Balance > 0)
+                        receipt.Status = "Paid";
                     await Ticket.UpdateTicket(ticket);
                     await Receipt.CreateReceipt(receipt);
                 }
@@ -173,6 +178,7 @@ namespace ODPMS.Dialogs
                 }
                 else
                 {
+                    receipt.Status = "Paid";
                     await Ticket.UpdateTicket(ticket);
                     await Receipt.CreateReceipt(receipt);
                 }

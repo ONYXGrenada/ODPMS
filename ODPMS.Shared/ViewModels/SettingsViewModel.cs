@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -93,7 +94,13 @@ namespace ODPMS.ViewModels
                     Users.Clear();
 
                 foreach (var user in users)
+                {
+                    if (user.Username == App.LoggedInUser.Username)
+                        user.IsDeletable = false;
+
                     Users.Add(user);
+                }
+                    
 
                 var ticketTypes = await TicketType.GetAllTicketTypesDisplay();
 
@@ -132,45 +139,45 @@ namespace ODPMS.ViewModels
 
         private void GetCompanyData()
         {
-            if (LocalSettings.Values["CompanyName"] != null)
-                CompanyName = LocalSettings.Values["CompanyName"] as string;
+            //if (LocalSettings.Values["CompanyName"] != null)
+            //    CompanyName = LocalSettings.Values["CompanyName"] as string;
 
-            if (LocalSettings.Values["CompanyAddress"] != null)
-                CompanyAddress = LocalSettings.Values["CompanyAddress"] as string;
+            //if (LocalSettings.Values["CompanyAddress"] != null)
+            //    CompanyAddress = LocalSettings.Values["CompanyAddress"] as string;
 
-            if (LocalSettings.Values["CompanyEmail"] != null)
-                CompanyEmail = LocalSettings.Values["CompanyEmail"] as string;
+            //if (LocalSettings.Values["CompanyEmail"] != null)
+            //    CompanyEmail = LocalSettings.Values["CompanyEmail"] as string;
 
-            if (LocalSettings.Values["CompanyPhone"] != null)
-                CompanyPhone = LocalSettings.Values["CompanyPhone"] as string;
+            //if (LocalSettings.Values["CompanyPhone"] != null)
+            //    CompanyPhone = LocalSettings.Values["CompanyPhone"] as string;
 
-            if (LocalSettings.Values["CompanyLogo"] != null)
-            {
-                string clogo = LocalSettings.Values["CompanyLogo"] as string;
-                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
-                {
-                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
-                    CompanyLogo = new BitmapImage(resourceUri);
-                }
-            }
+            //if (LocalSettings.Values["CompanyLogo"] != null)
+            //{
+            //    string clogo = LocalSettings.Values["CompanyLogo"] as string;
+            //    if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+            //    {
+            //        Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+            //        CompanyLogo = new BitmapImage(resourceUri);
+            //    }
+            //}
 
-            else
-            {
-                Uri resourceUri2 = new Uri("ms-appx:///Assets/Images/logo-placeholder.png");
-                CompanyLogo = new BitmapImage(resourceUri2);
-            }
+            //else
+            //{
+            //    Uri resourceUri2 = new Uri("ms-appx:///Assets/Images/logo-placeholder.png");
+            //    CompanyLogo = new BitmapImage(resourceUri2);
+            //}
 
             CompanyName = settings.CompanySettings.CompanyName;
             CompanyAddress = settings.CompanySettings.CompanyAddress;
             CompanyEmail = settings.CompanySettings.CompanyEmail;
             CompanyPhone = settings.CompanySettings.CompanyPhone;
             
-            if (settings.CompanySettings.CompanyLogo != null)
+            if (settings.CompanySettings.CompanyLogo != "")
             {
                 string clogo = settings.CompanySettings.CompanyLogo;
-                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                if (File.Exists(Path.Combine(appSettingsPath, clogo)))
                 {
-                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    Uri resourceUri = new Uri(Path.Combine(appSettingsPath, clogo), UriKind.Relative);
                     CompanyLogo = new BitmapImage(resourceUri);
                 }
             }
@@ -190,10 +197,10 @@ namespace ODPMS.ViewModels
             {
                 IsBusy = true;
 
-                LocalSettings.Values["CompanyName"] = CompanyName;
-                LocalSettings.Values["CompanyAddress"] = CompanyAddress;
-                LocalSettings.Values["CompanyEmail"] = CompanyEmail;
-                LocalSettings.Values["CompanyPhone"] = CompanyPhone;
+                //LocalSettings.Values["CompanyName"] = CompanyName;
+                //LocalSettings.Values["CompanyAddress"] = CompanyAddress;
+                //LocalSettings.Values["CompanyEmail"] = CompanyEmail;
+                //LocalSettings.Values["CompanyPhone"] = CompanyPhone;
 
                 settings.CompanySettings.CompanyName = CompanyName;
                 settings.CompanySettings.CompanyAddress = CompanyAddress;
@@ -356,7 +363,7 @@ namespace ODPMS.ViewModels
                 TicketTypes.Clear();
 
             foreach (var ticketType in ticketTypes)
-                TicketTypes.Add(ticketType);
+                    TicketTypes.Add(ticketType);
         }
 
         [ICommand]
@@ -395,39 +402,66 @@ namespace ODPMS.ViewModels
         [ICommand]
         private async void GetCompanyLogo()
         {
-            FileOpenPicker openPicker = new FileOpenPicker();
-            openPicker.ViewMode = PickerViewMode.Thumbnail;
-            openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
-            openPicker.FileTypeFilter.Add(".jpg");
-            openPicker.FileTypeFilter.Add(".png");
-
-            Window window = (Application.Current as App)?.Window;
-            var hwnd = WindowNative.GetWindowHandle(window);
-            InitializeWithWindow.Initialize(openPicker, hwnd);
-
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            if (file != null)
+            if (IsBusy)
+                return;
+            try
             {
-                File.Copy(file.Path, ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, true);
-                Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\clogo" + file.FileType, UriKind.Relative);
-                CompanyLogo = new BitmapImage(resourceUri);
+                IsBusy = true;
 
-                LocalSettings.Values["CompanyLogo"] = "clogo" + file.FileType;
-                settings.CompanySettings.CompanyLogo = "clogo" + file.FileType;
+                FileOpenPicker openPicker = new FileOpenPicker();
+                openPicker.ViewMode = PickerViewMode.Thumbnail;
+                openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+                openPicker.FileTypeFilter.Add(".jpg");
+                openPicker.FileTypeFilter.Add(".png");
+
+                Window window = (Application.Current as App)?.Window;
+                var hwnd = WindowNative.GetWindowHandle(window);
+                InitializeWithWindow.Initialize(openPicker, hwnd);
+
+                StorageFile file = await openPicker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    File.Copy(file.Path, Path.Combine(appSettingsPath, "clogo" + file.FileType), true);
+                    Uri resourceUri = new Uri(Path.Combine(appSettingsPath, "clogo", file.FileType), UriKind.Relative);
+                    CompanyLogo = new BitmapImage(resourceUri);
+
+                    //LocalSettings.Values["CompanyLogo"] = "clogo" + file.FileType;
+                    settings.CompanySettings.CompanyLogo = "clogo" + file.FileType;
+                }
+                else
+                {
+                    //OutputTextBlock.Text = "Operation cancelled.";
+                }
+
+                var jsonWriteOptions = new JsonSerializerOptions()
+                {
+                    WriteIndented = true
+                };
+                jsonWriteOptions.Converters.Add(new JsonStringEnumConverter());
+                var newJson = JsonSerializer.Serialize(settings, jsonWriteOptions);
+                await File.WriteAllTextAsync(Path.Combine(appSettingsPath, appSettingsFile), newJson);
             }
-            else
+            catch (Exception ex)
             {
-                //OutputTextBlock.Text = "Operation cancelled.";
+                ContentDialog contentDialog = new();
+                contentDialog.Title = "Error";
+                contentDialog.Content = string.Format("The following error occurred: {0}", ex.Message);
+                contentDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
+                await contentDialog.ShowAsync();
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
         private void GetTicketSettings()
         {
-            if (LocalSettings.Values["TicketMessage"] != null)
-                TicketMessage = LocalSettings.Values["TicketMessage"] as string;
+            //if (LocalSettings.Values["TicketMessage"] != null)
+            //    TicketMessage = LocalSettings.Values["TicketMessage"] as string;
 
-            if (LocalSettings.Values["TicketDisclaimer"] != null)
-                TicketDisclaimer = LocalSettings.Values["TicketDisclaimer"] as string;
+            //if (LocalSettings.Values["TicketDisclaimer"] != null)
+            //    TicketDisclaimer = LocalSettings.Values["TicketDisclaimer"] as string;
 
             TicketMessage = settings.TicketSettings.TicketMessage;
             TicketDisclaimer = settings.TicketSettings.TicketDisclaimer;
@@ -441,8 +475,8 @@ namespace ODPMS.ViewModels
             try
             {
                 IsBusy = true;
-                LocalSettings.Values["TicketMessage"] = TicketMessage;
-                LocalSettings.Values["TicketDisclaimer"] = TicketDisclaimer;
+                //LocalSettings.Values["TicketMessage"] = TicketMessage;
+                //LocalSettings.Values["TicketDisclaimer"] = TicketDisclaimer;
 
                 settings.TicketSettings.TicketMessage = TicketMessage;
                 settings.TicketSettings.TicketDisclaimer = TicketDisclaimer;
@@ -471,22 +505,22 @@ namespace ODPMS.ViewModels
 
         private void GetReceiptSettings()
         {
-            if (LocalSettings.Values["PrinterCOMPort"] != null)
-                PrinterCOMPort = LocalSettings.Values["PrinterCOMPort"] as string;
+            //if (LocalSettings.Values["PrinterCOMPort"] != null)
+            //    PrinterCOMPort = LocalSettings.Values["PrinterCOMPort"] as string;
             
-            if (LocalSettings.Values["DefaultPrintReceipt"] != null)
-                DefaultPrintReceipt = (bool)LocalSettings.Values["DefaultPrintReceipt"];
-            else
-            {
-                DefaultPrintReceipt = true;
-                LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
-            }
+            //if (LocalSettings.Values["DefaultPrintReceipt"] != null)
+            //    DefaultPrintReceipt = (bool)LocalSettings.Values["DefaultPrintReceipt"];
+            //else
+            //{
+            //    DefaultPrintReceipt = true;
+            //    LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
+            //}
 
-            if (LocalSettings.Values["ReceiptMessage"] != null)
-                ReceiptMessage = LocalSettings.Values["ReceiptMessage"] as string;
+            //if (LocalSettings.Values["ReceiptMessage"] != null)
+            //    ReceiptMessage = LocalSettings.Values["ReceiptMessage"] as string;
 
-            if (LocalSettings.Values["ReceiptDisclaimer"] != null)
-                ReceiptDisclaimer = LocalSettings.Values["ReceiptDisclaimer"] as string;
+            //if (LocalSettings.Values["ReceiptDisclaimer"] != null)
+            //    ReceiptDisclaimer = LocalSettings.Values["ReceiptDisclaimer"] as string;
 
             PrinterCOMPort = settings.ReceiptSettings.PrinterCOMPort;
             DefaultPrintReceipt = settings.ReceiptSettings.DefaultPrintReceipt;
@@ -502,10 +536,10 @@ namespace ODPMS.ViewModels
             try
             {
                 IsBusy = true;
-                LocalSettings.Values["PrinterCOMPort"] = PrinterCOMPort;
-                LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
-                LocalSettings.Values["ReceiptMessage"] = ReceiptMessage;
-                LocalSettings.Values["ReceiptDisclaimer"] = ReceiptDisclaimer;
+                //LocalSettings.Values["PrinterCOMPort"] = PrinterCOMPort;
+                //LocalSettings.Values["DefaultPrintReceipt"] = DefaultPrintReceipt;
+                //LocalSettings.Values["ReceiptMessage"] = ReceiptMessage;
+                //LocalSettings.Values["ReceiptDisclaimer"] = ReceiptDisclaimer;
 
                 settings.ReceiptSettings.PrinterCOMPort = PrinterCOMPort;
                 settings.ReceiptSettings.DefaultPrintReceipt = DefaultPrintReceipt;

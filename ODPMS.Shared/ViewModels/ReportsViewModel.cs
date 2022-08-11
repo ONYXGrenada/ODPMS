@@ -59,10 +59,10 @@ namespace ODPMS.ViewModels
             ReportTypeList.Add(new ComboBoxItem() { Name = "Tickets", Content = "Tickets" });
             SelectedReport = ReportTypeList[0];
 
-            StatusList.Add(new ComboBoxItem() { Name = "All", Content = "All" });
-            StatusList.Add(new ComboBoxItem() { Name = "Active", Content = "Active"});
+            StatusList.Add(new ComboBoxItem() { Name = "All", Content = "All" });            
             StatusList.Add(new ComboBoxItem() { Name = "Closed", Content = "Closed"});
             StatusList.Add(new ComboBoxItem() { Name = "Delete", Content = "Delete" });
+            StatusList.Add(new ComboBoxItem() { Name = "Open", Content = "Open" });
             StatusList.Add(new ComboBoxItem() { Name = "Paid", Content = "Paid"});
             SelectedStatus = StatusList[0];
 

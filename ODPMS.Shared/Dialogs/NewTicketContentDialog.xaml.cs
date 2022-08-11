@@ -37,28 +37,30 @@ namespace ODPMS.Dialogs
 
                 settings = config.Get<Settings>();
             }
+
+            //this.companyName_txtBlock.Text = settings.CompanySettings.CompanyName;
             
-            if (LocalSettings.Values["CompanyName"] != null)
-                this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
+            //if (LocalSettings.Values["CompanyName"] != null)
+            //    this.companyName_txtBlock.Text = LocalSettings.Values["CompanyName"] as string;
 
-            if (LocalSettings.Values["CompanyAddress"] != null)
-                this.companyAddress_txtBlock.Text = LocalSettings.Values["CompanyAddress"] as string;
+            //if (LocalSettings.Values["CompanyAddress"] != null)
+            //    this.companyAddress_txtBlock.Text = LocalSettings.Values["CompanyAddress"] as string;
 
-            if (LocalSettings.Values["CompanyEmail"] != null)
-                this.companyEmail_txtBlock.Text = LocalSettings.Values["CompanyEmail"] as string;
+            //if (LocalSettings.Values["CompanyEmail"] != null)
+            //    this.companyEmail_txtBlock.Text = LocalSettings.Values["CompanyEmail"] as string;
 
-            if (LocalSettings.Values["CompanyPhone"] != null)
-                this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
+            //if (LocalSettings.Values["CompanyPhone"] != null)
+            //    this.companyPhone_txtBlock.Text = LocalSettings.Values["CompanyPhone"] as string;
             
-            if (LocalSettings.Values["CompanyLogo"] != null)
-            {
-                string clogo = LocalSettings.Values["CompanyLogo"] as string;
-                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
-                {
-                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
-                    this.companyLogo_img.Source = new BitmapImage(resourceUri);
-}
-}
+            //if (LocalSettings.Values["CompanyLogo"] != null)
+            //{
+            //    string clogo = LocalSettings.Values["CompanyLogo"] as string;
+            //    if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+            //    {
+            //        Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+            //        this.companyLogo_img.Source = new BitmapImage(resourceUri);
+            //    }
+            //}
 
             this.companyName_txtBlock.Text = settings.CompanySettings.CompanyName;
             this.companyAddress_txtBlock.Text = settings.CompanySettings.CompanyAddress;
@@ -68,18 +70,18 @@ namespace ODPMS.Dialogs
             if (settings.CompanySettings.CompanyLogo != null)
 {
                 string clogo = settings.CompanySettings.CompanyLogo;
-                if (File.Exists(ApplicationData.Current.LocalFolder.Path + "\\" + clogo))
+                if (File.Exists(Path.Combine(appSettingsPath, clogo)))
                 {
-                    Uri resourceUri = new Uri(ApplicationData.Current.LocalFolder.Path + "\\" + clogo, UriKind.Relative);
+                    Uri resourceUri = new Uri(Path.Combine(appSettingsPath, clogo), UriKind.Relative);
                     this.companyLogo_img.Source = new BitmapImage(resourceUri);
                 }
             }
 
-            if (LocalSettings.Values["TicketMessage"] != null)
-                this.ticketMessage_txtBlock.Text = LocalSettings.Values["TicketMessage"] as string;
+            //if (LocalSettings.Values["TicketMessage"] != null)
+            //    this.ticketMessage_txtBlock.Text = LocalSettings.Values["TicketMessage"] as string;
 
-            if (LocalSettings.Values["TicketDisclaimer"] != null)
-                this.ticketDisclaimer_txtBlock.Text = LocalSettings.Values["TicketDisclaimer"] as string;
+            //if (LocalSettings.Values["TicketDisclaimer"] != null)
+            //    this.ticketDisclaimer_txtBlock.Text = LocalSettings.Values["TicketDisclaimer"] as string;
 
             this.ticketMessage_txtBlock.Text = settings.TicketSettings.TicketMessage;
             this.ticketDisclaimer_txtBlock.Text = settings.TicketSettings.TicketDisclaimer;
@@ -130,16 +132,23 @@ namespace ODPMS.Dialogs
         {
             //Create barcode
 			Barcode barcode = new Barcode();
-            await ApplicationData.Current.LocalFolder.CreateFileAsync("ticket" + ticketNumber + ".jpg", CreationCollisionOption.OpenIfExists);
-            string filePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "ticket" + ticketNumber + ".jpg");
+            //await ApplicationData.Current.LocalFolder.CreateFileAsync("ticket" + ticketNumber + ".jpg", CreationCollisionOption.OpenIfExists);
+
+            string filePath = Path.Combine(appSettingsPath, "ticket" + ticketNumber + ".jpg");
+            //File.Create(filePath);
+            //barcode.SaveImage()
+
             //barcode.IncludeLabel = true;
             barcode.Encode(TYPE.CODE93, ticketNumber, 200, 100);
             barcode.SaveImage(filePath, SaveTypes.JPG);
 
 
-			//Place barcode on ticket
-			
-            var barcodePath = await ApplicationData.Current.LocalFolder.GetFileAsync("ticket" + ticketNumber + ".jpg");
+            //Place barcode on ticket
+
+           // var barcodePath = await ApplicationData.Current.LocalFolder.GetFileAsync("ticket" + ticketNumber + ".jpg");
+            var barcodePath = await StorageFile.GetFileFromPathAsync(filePath);
+           
+
             using (IRandomAccessStream fileStream = await barcodePath.OpenAsync(Windows.Storage.FileAccessMode.Read))
             {
                 BitmapImage image = new BitmapImage();

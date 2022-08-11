@@ -61,7 +61,7 @@ namespace ODPMS.Dialogs
                 NewUser.Updated = DateTime.Now;
                 NewUser.UpdatedBy = App.LoggedInUser.Username;
                 NewUser.IsDeletable = true;
-                await User.CreateUser(NewUser);
+                await User.CreateUser(NewUser);                
             }
         }
 

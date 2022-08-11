@@ -21,8 +21,7 @@
         <TextBlock Text="Type:"/>
         <ComboBox x:Name="ticketType_cb"
                   Grid.Column="1">
-            <ComboBoxItem Name="Hourly" Content="Hourly" IsSelected="True"/>
-            <ComboBoxItem Name="Daily" Content="Daily"/>
+            <ComboBoxItem Name="Daily" Content="Daily" IsSelected="True"/>
             <ComboBoxItem Name="Weekly" Content="Weekly"/>
             <ComboBoxItem Name="Monthly" Content="Monthly"/>
         </ComboBox>
