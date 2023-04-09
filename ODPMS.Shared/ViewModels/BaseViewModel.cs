@@ -1,11 +1,13 @@
 ﻿
 
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace ODPMS.ViewModels
 {
     public partial class BaseViewModel : ObservableObject
     {
         [ObservableProperty]
-        [AlsoNotifyChangeFor(nameof(IsNotBusy))]
+        [NotifyPropertyChangedFor(nameof(IsNotBusy))]
         bool isBusy;
 
         public bool IsNotBusy => !IsBusy;

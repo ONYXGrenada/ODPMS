@@ -11,7 +11,7 @@ namespace ODPMS.ViewModels
     public partial class SettingsViewModel : BaseViewModel
     {
         [ObservableProperty]
-        [AlsoNotifyChangeFor(nameof(IsNotUserSelected))]
+        [NotifyPropertyChangedFor(nameof(IsNotUserSelected))]
         bool isUserSelected;
 
         public bool IsNotUserSelected => !IsUserSelected;
@@ -131,7 +131,7 @@ namespace ODPMS.ViewModels
             GetReceiptSettings();
         }
 
-        [ICommand]
+        [RelayCommand]
         private async void GetUsers()
         {
             await User.GetAllUsers();
@@ -188,7 +188,7 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
+        [RelayCommand]
         private async void UpdateCompany()
         {
             if (IsBusy)
@@ -229,8 +229,8 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
-        async void UpdateUser()
+        [RelayCommand]
+        private async void UpdateUser()
         {
             if (FirstName != App.LoggedInUser.FirstName || LastName != App.LoggedInUser.LastName)
             {
@@ -248,8 +248,8 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
-        async void ResetPassword(User user)
+        [RelayCommand]
+        private async void ResetPassword(User user)
         {
             if (user == null)
                 user = App.LoggedInUser;
@@ -269,8 +269,8 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
-        async void AddUser()
+        [RelayCommand]
+        private async void AddUser()
         {
             // Display the new user dialog
             ContentDialog newUserDialog = new NewUserContentDialog();
@@ -286,8 +286,8 @@ namespace ODPMS.ViewModels
                 Users.Add(user);
         }
 
-        [ICommand]
-        async void UpdateOtherUser()
+        [RelayCommand]
+        private async void UpdateOtherUser()
         {
             User updatedUser = SelectedUser;
             await User.UpdateUser(updatedUser);
@@ -308,8 +308,8 @@ namespace ODPMS.ViewModels
                 Users.Add(user);
         }
 
-        [ICommand]
-        async void DeleteUser(User deletedUser)
+        [RelayCommand]
+        private async void DeleteUser(User deletedUser)
         {
             ContentDialog deleteConfirm = new DeleteConfirmContentDialog(deletedUser);
             deleteConfirm.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
@@ -325,8 +325,8 @@ namespace ODPMS.ViewModels
                 Users.Add(user);
         }
 
-        [ICommand]
-        async void AdjustFloat(User selectedUser)
+        [RelayCommand]
+        private async void AdjustFloat(User selectedUser)
         {
             if (selectedUser == null)
                 return;
@@ -349,8 +349,8 @@ namespace ODPMS.ViewModels
             } 
         }
 
-        [ICommand]
-        async void AddTicketType()
+        [RelayCommand]
+        private async void AddTicketType()
         {
             // Display the new user dialog
             ContentDialog newTicketType = new NewTicketTypeContentDialog();
@@ -366,8 +366,8 @@ namespace ODPMS.ViewModels
                     TicketTypes.Add(ticketType);
         }
 
-        [ICommand]
-        async void DeleteTicketType(TicketType selected)
+        [RelayCommand]
+        private async void DeleteTicketType(TicketType selected)
         {
             // await TicketType.DeleteTicketType(selected);
 
@@ -384,8 +384,8 @@ namespace ODPMS.ViewModels
                 TicketTypes.Add(ticketType);
         }
 
-        [ICommand]
-        async void UpdateTicketType()
+        [RelayCommand]
+        private async void UpdateTicketType()
         {
             TicketType updatedTicket = SelectedTicketType;
             await TicketType.UpdateTicketType(updatedTicket);
@@ -399,7 +399,7 @@ namespace ODPMS.ViewModels
                 TicketTypes.Add(ticketType);
         }
 
-        [ICommand]
+        [RelayCommand]
         private async void GetCompanyLogo()
         {
             if (IsBusy)
@@ -467,7 +467,7 @@ namespace ODPMS.ViewModels
             TicketDisclaimer = settings.TicketSettings.TicketDisclaimer;
         }
 
-        [ICommand]
+        [RelayCommand]
         private async void UpdateTicketSettings()
         {
             if (IsBusy)
@@ -528,7 +528,7 @@ namespace ODPMS.ViewModels
             ReceiptDisclaimer = settings.ReceiptSettings.ReceiptDisclaimer;
         }
 
-        [ICommand]
+        [RelayCommand]
         private async void UpdateReceiptSettings()
         {
             if (IsBusy)
@@ -568,8 +568,8 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
-        void UserSelected()
+        [RelayCommand]
+        private void UserSelected()
         {
             if (SelectedUser != null)
                 IsUserSelected = true;
@@ -577,8 +577,8 @@ namespace ODPMS.ViewModels
                 IsUserSelected = false;
         }
 
-        [ICommand]
-        void TicketTypeSelected()
+        [RelayCommand]
+        private void TicketTypeSelected()
         {
             if (SelectedTicketType != null && SelectedTicketType.IsDeletable)
                 IsTicketTypeSelected = true;

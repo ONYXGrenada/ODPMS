@@ -35,9 +35,6 @@ namespace ODPMS.ViewModels
         Visibility visibleOtherTicketList;
 
         [ObservableProperty]
-        bool canDelete;
-
-        [ObservableProperty]
         List<string> suggestionList;
 
         [ObservableProperty]
@@ -49,14 +46,19 @@ namespace ODPMS.ViewModels
             Init();
         }
 
-        async void Init()
+        private void Init()
         {
-            //CheckForFloat(App.LoggedInUser.Username);
-
             // Check float for first daily login
             if (App.LoggedInUser.Username != "admin")
                 CheckForFloat(App.LoggedInUser.Username);
             
+            WelcomeMessage = $"Welcome {App.LoggedInUser.FirstName}!";
+
+            Refresh();
+        }
+
+        private async void Refresh()
+        {
             var tickets = await Ticket.GetAllTickets();
             SearchList = new List<string>();
 
@@ -85,7 +87,7 @@ namespace ODPMS.ViewModels
                     if (ticket.Type == "Hourly")
                         SearchList.Add(ticket.Id.ToString());
                     else
-                        SearchList.Add( $"{ticket.Id.ToString()} - {ticket.Registration.ToString()}");
+                        SearchList.Add($"{ticket.Id.ToString()} - {ticket.Registration.ToString()}");
                 }
             }
 
@@ -95,19 +97,17 @@ namespace ODPMS.ViewModels
                 VisibleTicketList = Visibility.Visible;
             else
                 VisibleTicketList = Visibility.Collapsed;
-            
+
             if (OtherTicketList.Count != 0)
                 VisibleOtherTicketList = Visibility.Visible;
             else
                 VisibleOtherTicketList = Visibility.Collapsed;
 
-            DailyTicketsHeader = String.Format("Daily Tickets ({0})", TicketList.Count);
-            OtherTicketsHeader = String.Format("Other Tickets ({0})", OtherTicketList.Count);
-
-            WelcomeMessage = String.Format("Welcome {0}!", App.LoggedInUser.FirstName);
+            DailyTicketsHeader = $"Daily Tickets ({TicketList.Count})";
+            OtherTicketsHeader = $"Daily Tickets ({OtherTicketList.Count})";
         }
 
-        public async void CheckForFloat(string userId)
+        private async void CheckForFloat(string userId)
         {
 
             var today = DateTime.Now.ToString("yyyy-MM-dd");
@@ -124,28 +124,28 @@ namespace ODPMS.ViewModels
             }
         }        
 
-        [ICommand]
-        async void NewTicket()
+        [RelayCommand]
+        private async void NewTicket()
         {
             // Display the new ticket dialog
             ContentDialog ticketDialog = new NewTicketContentDialog();
             ticketDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await ticketDialog.ShowAsync();
-            Init();
+            Refresh();
         }
 
-        [ICommand]
-        async void OtherTickets()
+        [RelayCommand]
+        private async void OtherTickets()
         {
             // Display the new ticket dialog
             ContentDialog ticketDialog = new OtherTicketsContentDialog();
             ticketDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
             await ticketDialog.ShowAsync();
-            Init();
+            Refresh();
         }
 
-        [ICommand]
-        async void PayTicket()
+        [RelayCommand]
+        private async void PayTicket()
         {
             // Display the pay ticket dialog
             ValidTicketMessage = "";
@@ -157,9 +157,9 @@ namespace ODPMS.ViewModels
                 if (checkTicket.Id > 0)
                 {
                     if (checkTicket.Status == "Paid")
-                        ValidTicketMessage = string.Format("This ticket has already been paid.");
+                        ValidTicketMessage = $"This ticket has already been paid.";
                     else if (checkTicket.Status == "Closed")
-                        ValidTicketMessage = string.Format("This ticket is no longer valid.");
+                        ValidTicketMessage = $"This ticket is no longer valid.";
 
                     else
                     {
@@ -167,7 +167,7 @@ namespace ODPMS.ViewModels
                         payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
                         await payDialog.ShowAsync();
 
-                        Init();
+                        Refresh();
 
                         TicketNumber = "";
                         SelectedTicket = null;
@@ -175,17 +175,17 @@ namespace ODPMS.ViewModels
                 }
                 else
                 {
-                    ValidTicketMessage = string.Format("The ticket number you entered does not exist or is not open.");
+                    ValidTicketMessage = $"The ticket number you entered does not exist or is not open.";
                 }
             }
             else
             {
-                ValidTicketMessage = string.Format("That was not a valid ticket number.");
+                ValidTicketMessage = $"That was not a valid ticket number.";
             }
         }
 
-        [ICommand]
-        async void DeleteTicket(Ticket ticket)
+        [RelayCommand]
+        private async void DeleteTicket(Ticket ticket)
         {
             if (IsBusy)
                 return;
@@ -205,7 +205,7 @@ namespace ODPMS.ViewModels
                     await Ticket.DeleteTicket(ticket);
                 }
                 TicketNumber = "";
-                Init();
+                Refresh();
             }
             catch (Exception ex)
             {
@@ -215,12 +215,11 @@ namespace ODPMS.ViewModels
             finally
             {
                 IsBusy = false;
-                //IsRefreshing = false;
             }
         }
 
-        [ICommand]
-        async void SelectTicket()
+        [RelayCommand]
+        private async void SelectTicket()
         {
             if (IsBusy)
                 return;
@@ -254,8 +253,8 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]            
-        public void TextChanged()
+        [RelayCommand]            
+        private void TextChanged()
         {   
             SuggestionList = new List<string>();
             var splitText = TicketNumber.ToLower().Split(" ");
@@ -278,14 +277,14 @@ namespace ODPMS.ViewModels
 
         }
 
-        [ICommand]
-        public void SearchSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args)
+        [RelayCommand]
+        private void SearchSuggestionChosen(AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             TicketNumber = args.SelectedItem.ToString();
         }
 
-        [ICommand]
-        async void SearchQuerySubmitted()
+        [RelayCommand]
+        private async void SearchQuerySubmitted()
         {
             ValidTicketMessage = "";
             int ticketNumber = 0;
@@ -334,7 +333,7 @@ namespace ODPMS.ViewModels
                     payDialog.XamlRoot = (Application.Current as App)?.Window.Content.XamlRoot;
                     await payDialog.ShowAsync();
 
-                    Init();
+                    Refresh();
 
                     TicketNumber = "";
                     SelectedTicket = null;

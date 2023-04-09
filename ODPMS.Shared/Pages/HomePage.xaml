@@ -125,13 +125,21 @@
                     <controls:DataGridTemplateColumn Header="Actions">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button x:Name="buttonDeleteTicket_btn"
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="buttonPayTicket_btn"
+                                        ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
+                                        Content="Pay"
+                                        Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.PayTicketCommand, RelativeSource={RelativeSource Self}}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalAlignment="Stretch"/>
+                                    <Button x:Name="buttonDeleteTicket_btn"
                                         ui:FrameworkElementExtensions.AncestorType="controls:DataGrid"
                                         Content="Delete"
                                         Command="{Binding (ui:FrameworkElementExtensions.Ancestor).DataContext.DeleteTicketCommand, RelativeSource={RelativeSource Self}}"
                                         CommandParameter="{Binding}"
                                         IsEnabled="{Binding IsDeletable}"
                                         HorizontalAlignment="Stretch"/>
+                                </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>
                     </controls:DataGridTemplateColumn>

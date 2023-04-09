@@ -16,7 +16,7 @@ namespace ODPMS.ViewModels
         [ObservableProperty]
         SolidColorBrush statusMessageColor;
 
-        [ICommand]
+        [RelayCommand]
         private async void Login()
         {
             App.LoggedInUser = await User.Login(Username, Password);
@@ -57,7 +57,7 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
+        [RelayCommand]
         private void PasswordChanged()
         {
             StatusMessageColor = new SolidColorBrush(Colors.Black);

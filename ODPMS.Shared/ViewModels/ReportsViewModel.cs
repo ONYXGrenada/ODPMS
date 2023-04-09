@@ -72,7 +72,7 @@ namespace ODPMS.ViewModels
             StatusIsEnabled = false;
         }
 
-        [ICommand]
+        [RelayCommand]
         private async void ReportSubmit()
         {
             IsNotEmpty = false;
@@ -128,7 +128,7 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
+        [RelayCommand]
         private async void ReportExport()
         {
             string suggFileName = "";
@@ -179,7 +179,7 @@ namespace ODPMS.ViewModels
             }
         }
 
-        [ICommand]
+        [RelayCommand]
         public void SelectedReport_Changed()
         {
             if (SelectedReport.Name == "Receipts")
